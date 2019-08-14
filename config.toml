@@ -1,0 +1,33 @@
+# Author:  		Jude de Villiers
+# Origin:  		E&E Engineering - Stellenbosch University
+# For:				Supertools, Coldflux Project - IARPA
+# Created: 		2019-05-09
+# Modified:
+# license: 
+# Description: Configuration file for defining stuffs
+# File:				 config.toml
+
+# version = 0.3
+
+# Optional run parameters which can be utilised instead of CLI parameters
+[run_parameters]
+	# current possible commands: SFQABC; ABC; SFQblif
+	# Command     = "SFQABC"
+	# Command     = "ABC"
+	Command     = "SFQblif"
+
+	# SFQblif
+	blifFileName = "data/blif/rca2.blif"
+	# blifFileName = "data/blif/adder3bit.blif"
+	# blifFileName = "data/blif/adder6bit.blif"
+
+	# ABC
+	# veriFileName = "data/verilog/rca2.v"
+	# glibFileName = "data/abc/abc.genlib"
+
+	# SQFABC
+	# veriFileName = "data/verilog/rca2.v"
+	# glibFileName = "data/abc/abc.genlib"
+
+	# Output file
+	# outFileName = "data/results/JoSIM_HASH_KSA4_route_opt.cir"

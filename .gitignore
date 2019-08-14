@@ -1,0 +1,6 @@
+data/
+build/
+include/abc/
+bin/
+/projectFile.sublime-project
+/projectFile.sublime-workspace

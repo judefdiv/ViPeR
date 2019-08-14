@@ -1,0 +1,57 @@
+Current tasks:
+	□	Routing
+	□	Documentation
+	□	CMOStoSFQ leveling cleaner
+
+Must get DONE:
+	□	Allow the splitters to have more than 2 outputs?
+
+Not now: 
+	□	Improve progress bar
+
+ColdFlux Main Taks:
+	□	P2-A1-M1: Extend logic/RTL synthesis tool capability to handle the established SuperTools Library Format
+	□	Logic synthesis
+	□	Clock synthesis (H-tree)
+	□	Create/implement a standard interchange file for cell library
+	□	Logic placement
+	□	Clock placement
+	□	Basic routing
+
+	□	P2-A3-M3: Develop advanced placement and routing techniques accounting for routability, timing margins, etc.
+	□	Advanced placement techniques for routability
+	□	Advanced routing techniques for timing margins
+	□	Advanced ... techniques for ...
+
+	□	P2-A3-M4: Develop advanced (integrated) place-and-rout tool
+	□	Implement advanced placement and routing techniques
+	
+Completed:
+	June:
+		✔	implemented cmake @done (19-06-03 11:50)
+		✔	ABC basic integration @done (19-06-10 08:41)
+		✔	Basic implementation for BLIF parser @done (19-06-14 10:59)
+		✔	Basic implementation to draw dot files @done (19-06-19 12:22)
+		✔	Convert .blif to .gv(Dot format) @done (19-06-20 09:50)
+		✔	Able to have multi input and outputs for .blif and for .blif to .gv converter. @done (19-06-21 09:52)
+		✔	Create .blif files @done (19-06-23 11:52)
+		✔	Creating and inserting Splitter @done (19-06-24 11:16)
+		✔	Determine circuit levels(clk timing) @done (19-06-25 09:03)
+		✔	Basic insertion on DFFs @done (19-06-26 09:03)
+		✔	Updating CLI. Work on output file naming @done (19-07-01 10:07)
+	July:
+		✔	Created basic ViPer logo @done (19-07-01 11:01)
+		✔	Initial improved SFQBlif created @done (19-07-01 12:34)
+		✔	Rewrote BlifSFQ @done (19-07-15 10:14)
+		✔	Condensed BlifParser with ForgeSFQBlif @done (19-07-16 09:12)
+		✔	Able to insert splitters effectively @done (19-07-19 10:22)
+		✔	Able to determine basic levels @done (19-07-19 10:22)
+		✔	Effectively inserting DFFs @done (19-07-30 09:25)
+	August:
+		✔	Remove extra/redundant DFFs @done (19-08-07 13:53)
+		✔	Created a dot parser in blifPaser @done (19-08-07 13:54)
+		✔	Die2Sim clean up, split from ViPeR @done (19-08-14 10:53)
+		□	
+
+Notes:
+	

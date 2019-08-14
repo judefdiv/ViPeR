@@ -1,0 +1,363 @@
+# Author:  		Jude de Villiers
+# Origin:  		E&E Engineering - Stellenbosch University
+# For:					Supertools, Coldflux Project - IARPA
+# Created: 		2019-05-24
+# Modified:
+# license: 
+# Description: Configuration file with extras
+# File:				 config_notes.toml
+
+# version = 0.3
+
+# Optional run parameters which can be utilised instead of CLI parameters
+[run_parameters]
+	# current possible commands: gds; josim; decipherer
+	# Command     = "gds"
+	Command     = "josim"
+
+	# Decipherer
+	# deciFileName = "../LEFDEF/LSmitll/KSA4.def"
+
+	# LSmitll
+	# defFileName = "../LEFDEF/LSmitll/KSA4.def"
+	# lefFileName = "../LEFDEF/LSmitll/lef_2_metals.lef"
+
+	lefFileName = "../LEFDEF/lef_2_metals.lef"
+
+	# Kogge-Stone adders
+	defFileName = "../LEFDEF/KSA4_route_opt.def"
+	# defFileName = "../LEFDEF/KSA8_route_opt.def"
+	# defFileName = "../LEFDEF/KSA16_route_opt.def"
+	# defFileName = "../LEFDEF/KSA32_route_opt.def"
+
+	# Array multipliers
+	# defFileName = "../LEFDEF/arrmult4_route_opt.def"
+	# defFileName = "../LEFDEF/arrmult8_route_opt.def"
+	# defFileName = "../LEFDEF/arrmult16_placed_route_opt.def"
+
+	# Integer divider
+	# defFileName = "../LEFDEF/ID4s_route_opt.def"
+	# defFileName = "../LEFDEF/ID8s_route_opt.def"
+	# defFileName = "../LEFDEF/ID16s_route_opt.def"
+
+	# Output file names
+	# outFileName = "../results/KSA4_route_opt.gds2"
+	# outFileName = "../results/JoSIM_HASH_KSA4_route_opt.cir"
+
+# The arrays shows the pins of the cells for the SPICE sub-circuits.
+# The order of the pins/ports are important due to mapping
+[LSmitll_netlist]
+	LSMITLL_AND2T   = ["IN_CLK", "IN_1", "IN_2", "OUT"]
+	LSmitll_DCSFQ   = ["IN", "OUT"]
+	LSMITLL_DFFT    = ["IN", "IN_CLK", "OUT"]
+	LSMITLL_JTLT    = ["IN", "OUT"]
+	LSmitll_MERGET  = ["IN_1", "IN_2", "OUT"]
+	LSMITLL_NDROT   = ["IN_SET", "IN_RESET", "IN_CLK", "OUT"]
+	LSMITLL_NOTT    = ["IN_1", "IN_CLK", "OUT"]
+	LSMITLL_OR2T    = ["IN_CLK", "IN_1", "IN_2", "OUT"]
+	LSmitll_SFQDC1  = ["IN", "OUT"]
+	MITLL_SPLITT    = ["IN", "OUT_1", "OUT_2"]
+	LSMITLL_XORT    = ["IN_CLK", "IN_1", "IN_2", "OUT"]
+	PAD             = ["P1"]																		# does NOT EXIST, used for mapping in/out pins
+
+# GDS file location of the cell library
+[LSmitll_GDS_File_Location]
+	DFFT    = "../Cell_Library/LSmitll/LSmitll_DFFT.gds"
+	JTLT    = "../Cell_Library/LSmitll/LSmitll_jtlt.gds"
+	MERGET  = "../Cell_Library/LSmitll/LSmitll_MERGET.gds"
+	NOTT    = "../Cell_Library/LSmitll/LSmitll_NOTT.gds"
+	SPLITT  = "../Cell_Library/LSmitll/LSmitll_SPLITT.gds"
+	# AND2T = ""
+	# OR2T  = ""
+	# XOR2T = ""
+
+# use only when LED/DEF was developed for a cell library
+[LSmitll_LEF2GDS_Ref_Name]
+	NOTT      = "LSmitll_NOTT"
+	DFFT      = "LSmitll_DFFT"
+	JTLT      = "LSmitll_jtlt"
+	SPLITT    = "LSmitll_SPLITT"
+	MERGET    = "LSmitll_MERGET"
+	# NDRO      = ""
+	# MUX21     = ""
+	# PAD       = ""
+	# AND2T     = ""
+	# XOR2T     = ""
+	# OR2T      = ""
+	# SPLITCLK0 = ""
+	# SPLITCLK1 = ""
+	# SPLITCLK2 = ""
+	# SPLITCLK3 = ""
+	# SPLITCLK4 = ""
+	# SPLITCLK5 = ""
+	# SPLITCLK6 = ""
+	# SPLITCLK7 = ""
+	# SPLITT = "SPLITT"
+	# DFFT   = "DFFT"
+
+[USC2LSmitll]
+	AND2       = "LSMITLL_AND2T"
+	DCSFQ      = "LSmitll_DCSFQ"
+	DFF        = "LSMITLL_DFFT"
+	JTL        = "LSMITLL_JTLT"
+	Merge      = "LSmitll_MERGET"
+	NDRO       = "LSMITLL_NDROT"
+	NOT        = "LSMITLL_NOTT"
+	OR2        = "LSMITLL_OR2T"
+	SFQDC      = "LSmitll_SFQDC1"
+	XOR2a      = "LSMITLL_XORT"
+	SPLITTER   = "MITLL_SPLITT"
+	SPLITCLK0  = "MITLL_SPLITT"
+	SPLITCLK1  = "MITLL_SPLITT"
+	SPLITCLK2  = "MITLL_SPLITT"
+	SPLITCLK3  = "MITLL_SPLITT"
+	SPLITCLK4  = "MITLL_SPLITT"
+	SPLITCLK5  = "MITLL_SPLITT"
+	SPLITCLK6  = "MITLL_SPLITT"
+	SPLITCLK7  = "MITLL_SPLITT"
+	PAD        = "PAD"
+	P1         = "P1"
+	IN_CLK     = "IN_CLK"
+	IN_A       = "IN_1"
+	IN_B       = "IN_2"
+	IN_IN      = "IN"
+	OUT_OUT    = "OUT"
+	OUT_CLK    = "??"
+	IN_CLK_S   = "IN"
+	OUT_OUT1   = "OUT_1"
+	OUT_OUT2   = "OUT_2"
+	OUT_CLK1   = "OUT_1"
+	OUT_CLK2   = "OUT_2"
+	IN_SET     = "IN"
+
+# The arrays shows the names of the pins of the macros(cells) for in the LEF/DEF file.
+[USC_LEF]
+	PAD       = ["P1"]
+	AND2      = ["IN_A", "IN_B", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	XOR2a     = ["IN_A", "IN_B", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	OR2       = ["IN_A", "IN_B", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	NOT       = ["IN_A", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	DFF       = ["IN_SET", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	MUX21     = ["IN_A", "IN_SEL", "IN_B", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	NDRO      = ["IN_SET", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	SPLITTER  = ["IN_IN", "OUT_OUT1", "OUT_OUT2", "IN_CLK", "OUT_CLK"]
+	Merge     = ["IN_A", "IN_B", "OUT_OUT", "IN_CLK", "OUT_CLK"]
+	SPLITCLK0 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK1 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK2 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK3 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK4 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK5 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK6 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+	SPLITCLK7 = ["IN_CLK", "OUT_CLK1", "OUT_CLK2"]
+
+# Convertion due to NON STANDARD naming scheme
+# [USC2LSmitllTable]
+# 	PAD       = {P1 = "P1"}
+# 	AND2      = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	XOR2a     = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	OR2       = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	NOT       = {IN_A = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	DFF       = {IN_SET = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	MUX21     = {IN_A = "??", IN_SEL = "??", IN_B = "??", OUT_OUT = "??", IN_CLK = "??", OUT_CLK = "??"}
+# 	NDRO      = {IN_SET = "IN_SET", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	Merge     = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+# 	SPLITTER  = {IN_IN = "IN", OUT_OUT1 = "OUT_1", OUT_OUT2 = "OUT_2", IN_CLK = "??", OUT_CLK = "??"}
+# 	SPLITCLK0 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK1 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK2 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK3 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK4 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK5 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK6 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+# 	SPLITCLK7 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+
+# USC2LSmitllTable = [
+# 	{name = "PAD", P1 = "P1"},
+# 	{name = "AND2", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "XOR2a", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "OR2", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "NOT", IN_A = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "DFF", IN_SET = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "MUX21", IN_A = "??", IN_SEL = "??", IN_B = "??", OUT_OUT = "??", IN_CLK = "??", OUT_CLK = "??"},
+# 	{name = "NDRO", IN_SET = "IN_SET", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "Merge", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+# 	{name = "SPLITTER", IN_IN = "IN", OUT_OUT1 = "OUT_1", OUT_OUT2 = "OUT_2", IN_CLK = "??", OUT_CLK = "??"},
+# 	{name = "SPLITCLK0", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK1", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK2", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK3", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK4", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK5", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK6", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# 	{name = "SPLITCLK7", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+# ]
+
+
+
+# ---------------------------------------------------------------------------
+# --------------------------- Translator stuffs -----------------------------
+# ---------------------------------------------------------------------------
+
+[USC2LSmitllTable]
+	PAD       = {P1 = "P1"}
+	AND2      = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	XOR2a     = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	OR2       = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	NOT       = {IN_A = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	DFF       = {IN_SET = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	MUX21     = {IN_A = "??", IN_SEL = "??", IN_B = "??", OUT_OUT = "??", IN_CLK = "??", OUT_CLK = "??"}
+	NDRO      = {IN_SET = "IN_SET", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	Merge     = {IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"}
+	SPLITTER  = {IN_IN = "IN", OUT_OUT1 = "OUT_1", OUT_OUT2 = "OUT_2", IN_CLK = "??", OUT_CLK = "??"}
+	SPLITCLK0 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK1 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK2 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK3 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK4 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK5 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK6 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+	SPLITCLK7 = {IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"}
+
+USC2LSmitllTable = [
+	{name = "PAD", P1 = "P1"},
+	{name = "AND2", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "XOR2a", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "OR2", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "NOT", IN_A = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "DFF", IN_SET = "IN", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "MUX21", IN_A = "??", IN_SEL = "??", IN_B = "??", OUT_OUT = "??", IN_CLK = "??", OUT_CLK = "??"},
+	{name = "NDRO", IN_SET = "IN_SET", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "Merge", IN_A = "IN_1", IN_B = "IN_2", OUT_OUT = "OUT", IN_CLK = "IN_CLK", OUT_CLK = "??"},
+	{name = "SPLITTER", IN_IN = "IN", OUT_OUT1 = "OUT_1", OUT_OUT2 = "OUT_2", IN_CLK = "??", OUT_CLK = "??"},
+	{name = "SPLITCLK0", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK1", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK2", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK3", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK4", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK5", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK6", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+	{name = "SPLITCLK7", IN_CLK = "IN", OUT_CLK1 = "OUT_1", OUT_CLK2 = "OUT_2"},
+]
+
+[[USC2LSmitllTable]]
+	name = "PAD"
+	P1 = "P1"
+
+[[USC2LSmitllTable]]
+	name = "AND2"
+	IN_A = "IN_1"
+	IN_B = "IN_2"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "XOR2a"
+	IN_A = "IN_1"
+	IN_B = "IN_2"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "OR2"
+	IN_A = "IN_1"
+	IN_B = "IN_2"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "NOT"
+	IN_A = "IN"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "DFF"
+	IN_SET = "IN"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "MUX21"
+	IN_A = "??"
+	IN_SEL = "??"
+	IN_B = "??"
+	OUT_OUT = "??"
+	IN_CLK = "??"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "NDRO"
+	IN_SET = "IN_SET"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+	
+[[USC2LSmitllTable]]
+	name = "Merge"
+	IN_A = "IN_1"
+	IN_B = "IN_2"
+	OUT_OUT = "OUT"
+	IN_CLK = "IN_CLK"
+	OUT_CLK = "??"
+
+[[USC2LSmitllTable]]
+	name = "SPLITTER"
+	IN_IN = "IN"
+	OUT_OUT1 = "OUT_1"
+	OUT_OUT2 = "OUT_2"
+	IN_CLK = "??"
+	OUT_CLK = "??"
+	
+[[USC2LSmitllTable]]
+	name = "SPLITCLK0"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK1"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK2"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK3"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK4"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK5"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK6"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
+
+[[USC2LSmitllTable]]
+	name = "SPLITCLK7"
+	IN_CLK = "IN"
+	OUT_CLK1 = "OUT_1"
+	OUT_CLK2 = "OUT_2"
