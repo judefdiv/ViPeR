@@ -4,16 +4,16 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-07-3
  * Modified:
- * license: 
+ * license:
  * Description: Parser/class for BLIF (The Berkeley Logic Interchange Format).
  * File:				ParserBlif.cpp
  */
 
-#include "die2sim/ParserBlif.hpp"
+#include "viper/ParserBlif.hpp"
 
 /* ----------------------------------------------------------------------------------------
    ---------------------------------- Refined blif Parser ---------------------------------
-   ---------------------------------------------------------------------------------------- */ 
+   ---------------------------------------------------------------------------------------- */
 
 int SFQBlif::no_SFQBlif_inst = 0;
 
@@ -85,7 +85,7 @@ int SFQBlif::importStdBlif(string fileName){
 	for(unsigned int i = 0; i < this->inputCnt; i++){
 		fooNet.name = "net_" + to_string(this->nets.size());
 		fooNet.inNodes.push_back(i);
-		
+
 		for(unsigned int j = 0; j < stdGate.size(); j++){
 			for(unsigned int k = 0; k < stdGate[j].inputs.size(); k++){
 				if(!stdInputs[i].compare(stdGate[j].inputs[k])){
@@ -137,7 +137,7 @@ int SFQBlif::importStdBlif(string fileName){
 				fooNet.outNodes.push_back(j + this->inputCnt);
 				this->nodes[i + this->inputCnt + this->outputCnt].outNets[0] = this->nets.size();
 				this->nodes[j + this->inputCnt].inNets[0] = this->nets.size();
-				this->nets.push_back(fooNet);		
+				this->nets.push_back(fooNet);
 				fooNet.inNodes.clear();
 				fooNet.outNodes.clear();
 				break;
@@ -162,52 +162,58 @@ int SFQBlif::to_blif(string FileName){
 
   string lineStr;
 
-	lineStr = "# Created \"" + FileName + "\" using ABC and Die2Sim.\n";
+	lineStr = "# Created \"" + FileName + "\" using ABC and ViPeR.\n";
 	fputs(lineStr.c_str(), SFQblif);
 
 	lineStr = ".model " + this->modelName + "\n";
   fputs(lineStr.c_str(), SFQblif);
 
 	lineStr = ".inputs";
-	for(unsigned int i = 0; i < this->inputCnt; i++){
-		lineStr = lineStr + " " + this->nodes[i].name;
-	}
+
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
+  	if(!this->nodes[i].GateType.compare("input")){
+		  lineStr = lineStr + " " + this->nodes[i].name;
+		}
+  }
 	lineStr = lineStr + "\n";
   fputs(lineStr.c_str(), SFQblif);
 
 	lineStr = ".outputs";
-	for(unsigned int i = this->inputCnt; i < this->inputCnt + this->outputCnt; i++){
-		lineStr = lineStr + " " + this->nodes[i].name;
-	}
+	for(unsigned int i = 0; i < this->nodes.size(); i++){
+  	if(!this->nodes[i].GateType.compare("output")){
+		  lineStr = lineStr + " " + this->nodes[i].name;
+		}
+  }
 	lineStr = lineStr + "\n";
   fputs(lineStr.c_str(), SFQblif);
 
   // --------------- Gates -------------------
 
-  for(unsigned int i = this->inputCnt + this->outputCnt; i < this->nodes.size(); i++){
-
-  	if(!this->nodes[i].GateType.compare("NULL")){
-  		continue;
-  	}
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
+  	if(!this->nodes[i].GateType.compare("input") || !this->nodes[i].GateType.compare("output")){
+		  continue;
+		}
+		// cout << this->nodes[i].name << endl;
 
 		lineStr = ".gate " + this->nodes[i].GateType;
 
 		for(unsigned int j = 0; j < this->nodes[i].inNets.size(); j++){
-			if(this->nets[this->nodes[i].inNets[j]].inNodes[0] < this->inputCnt){
-				lineStr = lineStr + " in" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].name;
+			if(!this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].GateType.compare("input")){
+				lineStr += " in" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].name;
 			}
 			else{
-				lineStr = lineStr + " in" + to_string(j) + "=" + this->nets[this->nodes[i].inNets[j]].name;
+				lineStr += " in" + to_string(j) + "=" + this->nets[this->nodes[i].inNets[j]].name;
 			}
 		}
 
 		// Assuming that the output of the circuit can only be connected to a net with 1 output being it
 		for(unsigned int j = 0; j < this->nodes[i].outNets.size(); j++){
-			if(this->nets[this->nodes[i].outNets[j]].outNodes[0] < this->inputCnt + this->outputCnt){
-				lineStr = lineStr + " out" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].outNets[j]].outNodes[0]].name;
+			// if(this->nets[this->nodes[i].outNets[j]].outNodes[0] < this->inputCnt + this->outputCnt){
+			if(!this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].GateType.compare("output")){
+				lineStr += " out" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].outNets[j]].outNodes[0]].name;
 			}
 			else{
-				lineStr = lineStr + " out" + to_string(j) + "=" + this->nets[this->nodes[i].outNets[j]].name;
+				lineStr += " out" + to_string(j) + "=" + this->nets[this->nodes[i].outNets[j]].name;
 			}
 		}
 
@@ -220,12 +226,85 @@ int SFQBlif::to_blif(string FileName){
 
 	lineStr = ".end";
   fputs(lineStr.c_str(), SFQblif);
-  
+
   fclose(SFQblif);
   cout << ".blif file done." << endl;
 
 	return 1;
 }
+
+// int SFQBlif::to_blif(string FileName){
+
+// 	cout << "Generating SFQblif file:\"" << FileName << "\"" << endl;
+// 	FILE *SFQblif;
+//   SFQblif = fopen(FileName.c_str(), "w");
+
+//   string lineStr;
+
+// 	lineStr = "# Created \"" + FileName + "\" using ABC and ViPeR.\n";
+// 	fputs(lineStr.c_str(), SFQblif);
+
+// 	lineStr = ".model " + this->modelName + "\n";
+//   fputs(lineStr.c_str(), SFQblif);
+
+// 	lineStr = ".inputs";
+// 	for(unsigned int i = 0; i < this->inputCnt; i++){
+// 		lineStr = lineStr + " " + this->nodes[i].name;
+// 	}
+// 	lineStr = lineStr + "\n";
+//   fputs(lineStr.c_str(), SFQblif);
+
+// 	lineStr = ".outputs";
+// 	for(unsigned int i = this->inputCnt; i < this->inputCnt + this->outputCnt; i++){
+// 		lineStr = lineStr + " " + this->nodes[i].name;
+// 	}
+// 	lineStr = lineStr + "\n";
+//   fputs(lineStr.c_str(), SFQblif);
+
+//   // --------------- Gates -------------------
+
+//   for(unsigned int i = this->inputCnt + this->outputCnt; i < this->nodes.size(); i++){
+
+//   	if(!this->nodes[i].GateType.compare("NULL")){
+//   		continue;
+//   	}
+
+// 		lineStr = ".gate " + this->nodes[i].GateType;
+
+// 		for(unsigned int j = 0; j < this->nodes[i].inNets.size(); j++){
+// 			if(this->nets[this->nodes[i].inNets[j]].inNodes[0] < this->inputCnt){
+// 				lineStr = lineStr + " in" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].name;
+// 			}
+// 			else{
+// 				lineStr = lineStr + " in" + to_string(j) + "=" + this->nets[this->nodes[i].inNets[j]].name;
+// 			}
+// 		}
+
+// 		// Assuming that the output of the circuit can only be connected to a net with 1 output being it
+// 		for(unsigned int j = 0; j < this->nodes[i].outNets.size(); j++){
+// 			if(this->nets[this->nodes[i].outNets[j]].outNodes[0] < this->inputCnt + this->outputCnt){
+// 				lineStr = lineStr + " out" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].outNets[j]].outNodes[0]].name;
+// 			}
+// 			else{
+// 				lineStr = lineStr + " out" + to_string(j) + "=" + this->nets[this->nodes[i].outNets[j]].name;
+// 			}
+// 		}
+
+// 		lineStr = lineStr + "\n";
+// 	  fputs(lineStr.c_str(), SFQblif);
+//   }
+
+
+
+
+// 	lineStr = ".end";
+//   fputs(lineStr.c_str(), SFQblif);
+
+//   fclose(SFQblif);
+//   cout << ".blif file done." << endl;
+
+// 	return 1;
+// }
 
 /**
  * [SFQBlif::to_jpg - Creates a .jpg file using .gv(dot) file]
@@ -282,7 +361,7 @@ int SFQBlif::to_jpg(string fileName){
 
   lineStr = "}";
   fputs(lineStr.c_str(), dotFile);
-  
+
   fclose(dotFile);
   cout << "Dot file done." << endl;
 
@@ -317,7 +396,7 @@ void SFQBlif::to_str(){
 		cout << "\t\tGate No: " << i << endl;
 		cout << "\t\tType: " << this->nodes[i].GateType << endl;
 		cout << "\t\tName: " << this->nodes[i].name << endl;
-		
+
 		cout << "\t\tIn nets:";
 		for(unsigned int j = 0; j < this->nodes[i].inNets.size(); j++){
 			cout << "\t" << this->nodes[i].inNets[j];
@@ -347,7 +426,7 @@ void SFQBlif::to_str(){
 	cout << "\tNets: " << this->nets.size() << endl;
 	for(unsigned int i = 0; i < this->nets.size(); i++){
 		cout << "\t\tNet[" << i <<  "]: " << this->nets[i].name << endl;
-		
+
 		cout << "\t\tIn nodes:";
 		for(unsigned int j = 0; j < this->nets[i].inNodes.size(); j++){
 			cout << "\t" << this->nodes[this->nets[i].inNodes[j]].name;
@@ -365,7 +444,7 @@ void SFQBlif::to_str(){
 
 /* ----------------------------------------------------------------------------------------
    ------------------------------------- RAW blif Parser ----------------------------------
-   ---------------------------------------------------------------------------------------- */ 
+   ---------------------------------------------------------------------------------------- */
 
 /**
  * [sBlifFile::importBlif description]
@@ -387,7 +466,7 @@ int BlifFile::importBlif(string fileName){
 		cout << ".blif file FAILED to be properly opened" << endl;
 		return 0;
 	}
-	
+
 	while(getline(blifFile, lineIn)){
 		// removes leading white spaces and checks for commented and empty lines
 		tempChar = (char)lineIn.front();
@@ -511,7 +590,7 @@ void BlifFile::to_str(){
 
 int splitGateNet(vector<string> &fooVec, vector<string> &inputVec, vector<string> &outputVec){
 	for(unsigned int i = 2; i < fooVec.size()-1; i++){
-		size_t EqPos = 0;					
+		size_t EqPos = 0;
 		size_t StrLen = 0;
 
 		StrLen = fooVec[i].length();
@@ -519,7 +598,7 @@ int splitGateNet(vector<string> &fooVec, vector<string> &inputVec, vector<string
 		EqPos = fooVec[i].find("=");
 		if(EqPos == string::npos){
 			cout << "Error extracting .blif file. Incorrect naming of pins." << endl;
-			return 0;	
+			return 0;
 		}
 
 		EqPos++;
@@ -532,7 +611,7 @@ int splitGateNet(vector<string> &fooVec, vector<string> &inputVec, vector<string
 		}
 		else{
 			cout << "Error extracting .blif file. Incorrect naming of pins." << endl;
-			return 0;			
+			return 0;
 		}
 	}
 

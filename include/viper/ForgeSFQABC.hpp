@@ -4,7 +4,7 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-06-11
  * Modified:
- * license: 
+ * license:
  * Description: Creates SFQ circuits using ABC
  * File:				ForgeSFQABC.hpp
  */
@@ -12,11 +12,11 @@
 #include <string>
 #include <iostream>
 
-#include "die2sim/ParserBlif.hpp"
-#include "die2sim/ParserDot.hpp"
-#include "die2sim/ParserABC.hpp"
-#include "die2sim/genFunc.hpp"
-#include "die2sim/ForgeSFQblif.hpp"
+#include "viper/ParserBlif.hpp"
+#include "viper/ParserDot.hpp"
+#include "viper/ParserABC.hpp"
+#include "viper/genFunc.hpp"
+#include "viper/ForgeSFQblif.hpp"
 
 using namespace std;
 

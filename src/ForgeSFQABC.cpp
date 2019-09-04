@@ -1,15 +1,15 @@
-/**
+ /**
  * Author:  		Jude de Villiers
  * Origin:  		E&E Engineering - Stellenbosch University
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-06-11
  * Modified:
- * license: 
+ * license:
  * Description: Creates SFQ circuits using ABC
  * File:				ForgeSFQABC.cpp
  */
 
-#include "die2sim/ForgeSFQABC.hpp"
+#include "viper/ForgeSFQABC.hpp"
 
 /**
  * [runForgeSFQABC - To create a .blif sfq file using ABC]

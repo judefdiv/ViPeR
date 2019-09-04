@@ -4,12 +4,12 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-03-20
  * Modified:
- * license: 
+ * license:
  * Description: Useful general functions.
  * File:				genFunc.cpp
  */
 
-#include "die2sim/genFunc.hpp"
+#include "viper/genFunc.hpp"
 
 bool isStrDig(string wannaDig){
 	int i = 0;
@@ -46,7 +46,7 @@ void stringSplitVec(vector<string> &inVec, string inStr){
 	// int k;
 
 	inVec.clear();
-	
+
 	inStr = cleanWhite(inStr);						// remove whitespaces
 
 	WSposOld = 0;
@@ -62,7 +62,7 @@ void stringSplitVec(vector<string> &inVec, string inStr){
 		if(WSpos >= StrLen) break;
 	}
 
-  inVec.push_back("\0");									
+  inVec.push_back("\0");
 }
 
 /**
@@ -146,7 +146,7 @@ string cleanWhite(string inStr){
 		// cout << "found double whitespace" << endl;
 		tempStr.erase(wsPos, 1);
 		wsPos = tempStr.find("  ");
-	}	
+	}
 
 	//Removes trailing whitespaces
 	tempChar = (char)tempStr.back();

@@ -4,12 +4,12 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-06-19
  * Modified:
- * license: 
+ * license:
  * Description: Parser for blif to Dot.
  * File:				Parserdot.cpp
  */
 
-#include "die2sim/ParserDot.hpp"
+#include "viper/ParserDot.hpp"
 
 
 int DotFile::no_Dot_inst = 0;
@@ -148,7 +148,7 @@ int DotFile::genDot(){
 
   lineStr = "}";
   fputs(lineStr.c_str(), dotFile);
-  
+
   fclose(dotFile);
   cout << "Dot file done." << endl;
   return 1;
@@ -167,7 +167,7 @@ int runDot(string blifFileName, string gvFileName, string jpgFileName){
 	bashCmd = "dot -Tjpg " + gvFileName + " -o " + jpgFileName;
 
 	// drawDot(blifFileName, gvFileName);
-	
+
 	DotFile DotF;
 	DotF.setFileName(gvFileName);
 	DotF.importBlif(blifFileName);

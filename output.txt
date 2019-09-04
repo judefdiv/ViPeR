@@ -1,0 +1,9030 @@
+[H[2J[3J------------- Script to for Die2Sim ---------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lynx/myCloud/ViPeR/ViPeR/build
+[100%] Built target libabc
+[100%] Built target ViPeR
+  |\
+  | \
+  | |  
+  \  \  __     __  _   ____         ____
+   \  \ \ \   / / (_) |  _ \  __   |  _ \     ____ 
+   |  |  \ \ / /  | | | |_)| / _ \ | |_) |   /   ^\___ 
+   /  /   \ V /   | | |  __/ | __/ |  _ <   /       `_\
+  /  /     \_/    |_| |_|    \___| |_| \_\ /   _______/
+ /  /     _____                          _/   / 
+|  |     /     \       __              _/   _/
+\   \___/       \     /  \            /   _/
+ \         __    \___/    \__________/   /
+  \_______/  \         __               /
+              \_______/  \_____________/
+ 
+========================================================
+           Verilog to Placement and Routing
+                   for SFQ circuits.
+                 Author: JF de Villiers
+                Stellenbosch University
+              For IARPA, ColdFlux project
+========================================================
+Importing execution parameters from config.toml
+Converting CMOS .blif to SFQ .blif
+Importing "data/blif/adder3bit.blif" with Blif Parser.
+Converting CMOS circuit to SFQ.
+Inserting DFFs at the inputs.
+Determining levels.
+Determining levels done.
+Inserting 2 DFFs after: a2
+Inserting 2 DFFs after: b2
+Inserting DFFs at the throughout the circuit.
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_4
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_9
+Determining levels.
+Determining levels done.
+Inserting DFFs at the outputs.
+Inserting 4 DFFs after: XOR2T_0
+Inserting 3 DFFs after: XOR2T_3
+Inserting 1 DFFs after: XOR2T_8
+Determining levels.
+Determining levels done.
+All possible routes:
+a0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+a0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+b0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+b0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+Done inserting DFFs.
+Inserting Splitters.
+Inserting 1 SPLITs after: a0
+Inserting 1 SPLITs after: a1
+Inserting 1 SPLITs after: DFF_22
+Inserting 1 SPLITs after: b0
+Inserting 1 SPLITs after: b1
+Inserting 1 SPLITs after: DFF_24
+Inserting 1 SPLITs after: AND2T_1
+Inserting 1 SPLITs after: XOR2T_2
+Inserting 1 SPLITs after: OR2T_6
+Inserting 1 SPLITs after: XOR2T_7
+Done inserting splitters.
+Determining levels without splitters.
+Determining levels without splitters done.
+The routes are balanced.
+Determining levels without splitters.
+Determining levels without splitters done.
+Clock levels:
+0: "a0"; "a1"; "a2"; "b0"; "b1"; b2
+1: "XOR2T_0"; "AND2T_1"; "XOR2T_2"; "AND2T_4"; "DFF_23"; "DFF_25"; "SPLIT_36"; "SPLIT_37"; "SPLIT_39"; SPLIT_40
+2: "XOR2T_3"; "AND2T_5"; "DFF_22"; "DFF_24"; "DFF_26"; "DFF_31"; "SPLIT_42"; SPLIT_43
+3: "OR2T_6"; "XOR2T_7"; "AND2T_9"; "DFF_30"; "DFF_34"; "SPLIT_38"; SPLIT_41
+4: "XOR2T_8"; "AND2T_10"; "DFF_27"; "DFF_29"; "DFF_33"; "SPLIT_44"; SPLIT_45
+5: "OR2T_11"; "DFF_28"; "DFF_32"; DFF_35
+6: "s0"; "s1"; "s2"; s3
+Clocking all the gates.
+Stats:
+	GateCnt: 12
+	inputCnt: 7
+	outputCnt: 4
+	splitCnt: 10
+	DFFCnt: 14
+Clock Pins: 26
+Clock levels: 5
+Clock splitters: 16
+Clock pins max: 32
+[0]: clk
+[1]: SPLITC_47
+[2]: SPLITC_48
+[3]: SPLITC_49
+[4]: SPLITC_50
+[5]: SPLITC_51
+[6]: SPLITC_52
+[7]: SPLITC_53
+[8]: SPLITC_54
+[8]: SPLITC_54
+[7]: SPLITC_53
+[8]: SPLITC_55
+[8]: SPLITC_55
+[6]: SPLITC_52
+[7]: SPLITC_56
+[8]: SPLITC_57
+[8]: SPLITC_57
+[7]: SPLITC_56
+[8]: SPLITC_58
+[8]: SPLITC_58
+[5]: SPLITC_51
+[6]: SPLITC_59
+[7]: SPLITC_60
+[8]: SPLITC_61
+[8]: SPLITC_61
+[7]: SPLITC_60
+[8]: SPLITC_62
+[8]: SPLITC_62
+[6]: SPLITC_59
+[7]: SPLITC_63
+[8]: SPLITC_64
+[8]: SPLITC_64
+[7]: SPLITC_63
+[8]: SPLITC_65
+[8]: SPLITC_65
+[4]: SPLITC_50
+[5]: SPLITC_66
+[6]: SPLITC_67
+[7]: SPLITC_68
+[8]: SPLITC_69
+[8]: SPLITC_69
+[7]: SPLITC_68
+[8]: SPLITC_70
+[8]: SPLITC_70
+[6]: SPLITC_67
+[7]: SPLITC_71
+[8]: SPLITC_72
+[8]: SPLITC_72
+[7]: SPLITC_71
+[8]: SPLITC_73
+[8]: SPLITC_73
+[5]: SPLITC_66
+[6]: SPLITC_74
+[7]: SPLITC_75
+[8]: SPLITC_76
+[8]: SPLITC_76
+[7]: SPLITC_75
+[8]: SPLITC_77
+[8]: SPLITC_77
+[6]: SPLITC_74
+[7]: SPLITC_78
+[8]: SPLITC_79
+[8]: SPLITC_79
+[7]: SPLITC_78
+[8]: SPLITC_80
+[8]: SPLITC_80
+[3]: SPLITC_49
+[4]: SPLITC_81
+[5]: SPLITC_82
+[6]: SPLITC_83
+[7]: SPLITC_84
+[8]: SPLITC_85
+[8]: SPLITC_85
+[7]: SPLITC_84
+[8]: SPLITC_86
+[8]: SPLITC_86
+[6]: SPLITC_83
+[7]: SPLITC_87
+[8]: SPLITC_88
+[8]: SPLITC_88
+[7]: SPLITC_87
+[8]: SPLITC_89
+[8]: SPLITC_89
+[5]: SPLITC_82
+[6]: SPLITC_90
+[7]: SPLITC_91
+[8]: SPLITC_92
+[8]: SPLITC_92
+[7]: SPLITC_91
+[8]: SPLITC_93
+[8]: SPLITC_93
+[6]: SPLITC_90
+[7]: SPLITC_94
+[8]: SPLITC_95
+[8]: SPLITC_95
+[7]: SPLITC_94
+[8]: SPLITC_96
+[8]: SPLITC_96
+[4]: SPLITC_81
+[5]: SPLITC_97
+[6]: SPLITC_98
+[7]: SPLITC_99
+[8]: SPLITC_100
+[8]: SPLITC_100
+[7]: SPLITC_99
+[8]: SPLITC_101
+[8]: SPLITC_101
+[6]: SPLITC_98
+[7]: SPLITC_102
+[8]: SPLITC_103
+[8]: SPLITC_103
+[7]: SPLITC_102
+[8]: SPLITC_104
+[8]: SPLITC_104
+[5]: SPLITC_97
+[6]: SPLITC_105
+[7]: SPLITC_106
+[8]: SPLITC_107
+[8]: SPLITC_107
+[7]: SPLITC_106
+[8]: SPLITC_108
+[8]: SPLITC_108
+[6]: SPLITC_105
+[7]: SPLITC_109
+[8]: SPLITC_110
+[8]: SPLITC_110
+[7]: SPLITC_109
+[8]: SPLITC_111
+[8]: SPLITC_111
+[2]: SPLITC_48
+[3]: SPLITC_112
+[4]: SPLITC_113
+[5]: SPLITC_114
+[6]: SPLITC_115
+[7]: SPLITC_116
+[8]: SPLITC_117
+[8]: SPLITC_117
+[7]: SPLITC_116
+[8]: SPLITC_118
+[8]: SPLITC_118
+[6]: SPLITC_115
+[7]: SPLITC_119
+[8]: SPLITC_120
+[8]: SPLITC_120
+[7]: SPLITC_119
+[8]: SPLITC_121
+[8]: SPLITC_121
+[5]: SPLITC_114
+[6]: SPLITC_122
+[7]: SPLITC_123
+[8]: SPLITC_124
+[8]: SPLITC_124
+[7]: SPLITC_123
+[8]: SPLITC_125
+[8]: SPLITC_125
+[6]: SPLITC_122
+[7]: SPLITC_126
+[8]: SPLITC_127
+[8]: SPLITC_127
+[7]: SPLITC_126
+[8]: SPLITC_128
+[8]: SPLITC_128
+[4]: SPLITC_113
+[5]: SPLITC_129
+[6]: SPLITC_130
+[7]: SPLITC_131
+[8]: SPLITC_132
+[8]: SPLITC_132
+[7]: SPLITC_131
+[8]: SPLITC_133
+[8]: SPLITC_133
+[6]: SPLITC_130
+[7]: SPLITC_134
+[8]: SPLITC_135
+[8]: SPLITC_135
+[7]: SPLITC_134
+[8]: SPLITC_136
+[8]: SPLITC_136
+[5]: SPLITC_129
+[6]: SPLITC_137
+[7]: SPLITC_138
+[8]: SPLITC_139
+[8]: SPLITC_139
+[7]: SPLITC_138
+[8]: SPLITC_140
+[8]: SPLITC_140
+[6]: SPLITC_137
+[7]: SPLITC_141
+[8]: SPLITC_142
+[8]: SPLITC_142
+[7]: SPLITC_141
+[8]: SPLITC_143
+[8]: SPLITC_143
+[3]: SPLITC_112
+[4]: SPLITC_144
+[5]: SPLITC_145
+[6]: SPLITC_146
+[7]: SPLITC_147
+[8]: SPLITC_148
+[8]: SPLITC_148
+[7]: SPLITC_147
+[8]: SPLITC_149
+[8]: SPLITC_149
+[6]: SPLITC_146
+[7]: SPLITC_150
+[8]: SPLITC_151
+[8]: SPLITC_151
+[7]: SPLITC_150
+[8]: SPLITC_152
+[8]: SPLITC_152
+[5]: SPLITC_145
+[6]: SPLITC_153
+[7]: SPLITC_154
+[8]: SPLITC_155
+[8]: SPLITC_155
+[7]: SPLITC_154
+[8]: SPLITC_156
+[8]: SPLITC_156
+[6]: SPLITC_153
+[7]: SPLITC_157
+[8]: SPLITC_158
+[8]: SPLITC_158
+[7]: SPLITC_157
+[8]: SPLITC_159
+[8]: SPLITC_159
+[4]: SPLITC_144
+[5]: SPLITC_160
+[6]: SPLITC_161
+[7]: SPLITC_162
+[8]: SPLITC_163
+[8]: SPLITC_163
+[7]: SPLITC_162
+[8]: SPLITC_164
+[8]: SPLITC_164
+[6]: SPLITC_161
+[7]: SPLITC_165
+[8]: SPLITC_166
+[8]: SPLITC_166
+[7]: SPLITC_165
+[8]: SPLITC_167
+[8]: SPLITC_167
+[5]: SPLITC_160
+[6]: SPLITC_168
+[7]: SPLITC_169
+[8]: SPLITC_170
+[8]: SPLITC_170
+[7]: SPLITC_169
+[8]: SPLITC_171
+[8]: SPLITC_171
+[6]: SPLITC_168
+[7]: SPLITC_172
+[8]: SPLITC_173
+[8]: SPLITC_173
+[7]: SPLITC_172
+[8]: SPLITC_174
+[8]: SPLITC_174
+[1]: SPLITC_47
+[2]: SPLITC_175
+[3]: SPLITC_176
+[4]: SPLITC_177
+[5]: SPLITC_178
+[6]: SPLITC_179
+[7]: SPLITC_180
+[8]: SPLITC_181
+[8]: SPLITC_181
+[7]: SPLITC_180
+[8]: SPLITC_182
+[8]: SPLITC_182
+[6]: SPLITC_179
+[7]: SPLITC_183
+[8]: SPLITC_184
+[8]: SPLITC_184
+[7]: SPLITC_183
+[8]: SPLITC_185
+[8]: SPLITC_185
+[5]: SPLITC_178
+[6]: SPLITC_186
+[7]: SPLITC_187
+[8]: SPLITC_188
+[8]: SPLITC_188
+[7]: SPLITC_187
+[8]: SPLITC_189
+[8]: SPLITC_189
+[6]: SPLITC_186
+[7]: SPLITC_190
+[8]: SPLITC_191
+[8]: SPLITC_191
+[7]: SPLITC_190
+[8]: SPLITC_192
+[8]: SPLITC_192
+[4]: SPLITC_177
+[5]: SPLITC_193
+[6]: SPLITC_194
+[7]: SPLITC_195
+[8]: SPLITC_196
+[8]: SPLITC_196
+[7]: SPLITC_195
+[8]: SPLITC_197
+[8]: SPLITC_197
+[6]: SPLITC_194
+[7]: SPLITC_198
+[8]: SPLITC_199
+[8]: SPLITC_199
+[7]: SPLITC_198
+[8]: SPLITC_200
+[8]: SPLITC_200
+[5]: SPLITC_193
+[6]: SPLITC_201
+[7]: SPLITC_202
+[8]: SPLITC_203
+[8]: SPLITC_203
+[7]: SPLITC_202
+[8]: SPLITC_204
+[8]: SPLITC_204
+[6]: SPLITC_201
+[7]: SPLITC_205
+[8]: SPLITC_206
+[8]: SPLITC_206
+[7]: SPLITC_205
+[8]: SPLITC_207
+[8]: SPLITC_207
+[3]: SPLITC_176
+[4]: SPLITC_208
+[5]: SPLITC_209
+[6]: SPLITC_210
+[7]: SPLITC_211
+[8]: SPLITC_212
+[8]: SPLITC_212
+[7]: SPLITC_211
+[8]: SPLITC_213
+[8]: SPLITC_213
+[6]: SPLITC_210
+[7]: SPLITC_214
+[8]: SPLITC_215
+[8]: SPLITC_215
+[7]: SPLITC_214
+[8]: SPLITC_216
+[8]: SPLITC_216
+[5]: SPLITC_209
+[6]: SPLITC_217
+[7]: SPLITC_218
+[8]: SPLITC_219
+[8]: SPLITC_219
+[7]: SPLITC_218
+[8]: SPLITC_220
+[8]: SPLITC_220
+[6]: SPLITC_217
+[7]: SPLITC_221
+[8]: SPLITC_222
+[8]: SPLITC_222
+[7]: SPLITC_221
+[8]: SPLITC_223
+[8]: SPLITC_223
+[4]: SPLITC_208
+[5]: SPLITC_224
+[6]: SPLITC_225
+[7]: SPLITC_226
+[8]: SPLITC_227
+[8]: SPLITC_227
+[7]: SPLITC_226
+[8]: SPLITC_228
+[8]: SPLITC_228
+[6]: SPLITC_225
+[7]: SPLITC_229
+[8]: SPLITC_230
+[8]: SPLITC_230
+[7]: SPLITC_229
+[8]: SPLITC_231
+[8]: SPLITC_231
+[5]: SPLITC_224
+[6]: SPLITC_232
+[7]: SPLITC_233
+[8]: SPLITC_234
+[8]: SPLITC_234
+[7]: SPLITC_233
+[8]: SPLITC_235
+[8]: SPLITC_235
+[6]: SPLITC_232
+[7]: SPLITC_236
+[8]: SPLITC_237
+[8]: SPLITC_237
+[7]: SPLITC_236
+[8]: SPLITC_238
+[8]: SPLITC_238
+[2]: SPLITC_175
+[3]: SPLITC_239
+[4]: SPLITC_240
+[5]: SPLITC_241
+[6]: SPLITC_242
+[7]: SPLITC_243
+[8]: SPLITC_244
+[8]: SPLITC_244
+[7]: SPLITC_243
+[8]: SPLITC_245
+[8]: SPLITC_245
+[6]: SPLITC_242
+[7]: SPLITC_246
+[8]: SPLITC_247
+[8]: SPLITC_247
+[7]: SPLITC_246
+[8]: SPLITC_248
+[8]: SPLITC_248
+[5]: SPLITC_241
+[6]: SPLITC_249
+[7]: SPLITC_250
+[8]: SPLITC_251
+[8]: SPLITC_251
+[7]: SPLITC_250
+[8]: SPLITC_252
+[8]: SPLITC_252
+[6]: SPLITC_249
+[7]: SPLITC_253
+[8]: SPLITC_254
+[8]: SPLITC_254
+[7]: SPLITC_253
+[8]: SPLITC_255
+[8]: SPLITC_255
+[4]: SPLITC_240
+[5]: SPLITC_256
+[6]: SPLITC_257
+[7]: SPLITC_258
+[8]: SPLITC_259
+[8]: SPLITC_259
+[7]: SPLITC_258
+[8]: SPLITC_260
+[8]: SPLITC_260
+[6]: SPLITC_257
+[7]: SPLITC_261
+[8]: SPLITC_262
+[8]: SPLITC_262
+[7]: SPLITC_261
+[8]: SPLITC_263
+[8]: SPLITC_263
+[5]: SPLITC_256
+[6]: SPLITC_264
+[7]: SPLITC_265
+[8]: SPLITC_266
+[8]: SPLITC_266
+[7]: SPLITC_265
+[8]: SPLITC_267
+[8]: SPLITC_267
+[6]: SPLITC_264
+[7]: SPLITC_268
+[8]: SPLITC_269
+[8]: SPLITC_269
+[7]: SPLITC_268
+[8]: SPLITC_270
+[8]: SPLITC_270
+[3]: SPLITC_239
+[4]: SPLITC_271
+[5]: SPLITC_272
+[6]: SPLITC_273
+[7]: SPLITC_274
+[8]: SPLITC_275
+[8]: SPLITC_275
+[7]: SPLITC_274
+[8]: SPLITC_276
+[8]: SPLITC_276
+[6]: SPLITC_273
+[7]: SPLITC_277
+[8]: SPLITC_278
+[8]: SPLITC_278
+[7]: SPLITC_277
+[8]: SPLITC_279
+[8]: SPLITC_279
+[5]: SPLITC_272
+[6]: SPLITC_280
+[7]: SPLITC_281
+[8]: SPLITC_282
+[8]: SPLITC_282
+[7]: SPLITC_281
+[8]: SPLITC_283
+[8]: SPLITC_283
+[6]: SPLITC_280
+[7]: SPLITC_284
+[8]: SPLITC_285
+[8]: SPLITC_285
+[7]: SPLITC_284
+[8]: SPLITC_286
+[8]: SPLITC_286
+[4]: SPLITC_271
+[5]: SPLITC_287
+[6]: SPLITC_288
+[7]: SPLITC_289
+[8]: SPLITC_290
+[8]: SPLITC_290
+[7]: SPLITC_289
+[8]: SPLITC_291
+[8]: SPLITC_291
+[6]: SPLITC_288
+[7]: SPLITC_292
+[8]: SPLITC_293
+[8]: SPLITC_293
+[7]: SPLITC_292
+[8]: SPLITC_294
+[8]: SPLITC_294
+[5]: SPLITC_287
+[6]: SPLITC_295
+[7]: SPLITC_296
+[8]: SPLITC_297
+[8]: SPLITC_297
+[7]: SPLITC_296
+[8]: SPLITC_298
+[8]: SPLITC_298
+[6]: SPLITC_295
+[7]: SPLITC_299
+[8]: SPLITC_300
+[8]: SPLITC_300
+[7]: SPLITC_299
+[8]: SPLITC_301
+[8]: SPLITC_301
+Clocking all the gates done.
+SFQBlif Class:
+	Model name: ADD3
+	No. Splitters: 0
+	No. DFFs: 0
+	No. Levels: 6
+	Nodes: 302
+		Gate No: 0
+		Type: input
+		Name: a0
+		In nets:
+		Out nets:	32
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 1
+		Type: input
+		Name: a1
+		In nets:
+		Out nets:	33
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 2
+		Type: input
+		Name: a2
+		In nets:
+		Out nets:	19
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 3
+		Type: input
+		Name: b0
+		In nets:
+		Out nets:	35
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 4
+		Type: input
+		Name: b1
+		In nets:
+		Out nets:	36
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 5
+		Type: input
+		Name: b2
+		In nets:
+		Out nets:	21
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 6
+		Type: output
+		Name: s0
+		In nets:	14
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 7
+		Type: output
+		Name: s1
+		In nets:	15
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 8
+		Type: output
+		Name: s2
+		In nets:	16
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 9
+		Type: output
+		Name: s3
+		In nets:	17
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 10
+		Type: XOR2T
+		Name: XOR2T_0
+		In nets:	3	0
+		Out nets:	27
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 11
+		Type: AND2T
+		Name: AND2T_1
+		In nets:	3	0
+		Out nets:	38
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 12
+		Type: XOR2T
+		Name: XOR2T_2
+		In nets:	4	1
+		Out nets:	39
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 13
+		Type: XOR2T
+		Name: XOR2T_3
+		In nets:	7	6
+		Out nets:	30
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 14
+		Type: AND2T
+		Name: AND2T_4
+		In nets:	4	1
+		Out nets:	22
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 15
+		Type: AND2T
+		Name: AND2T_5
+		In nets:	7	6
+		Out nets:	9
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 16
+		Type: OR2T
+		Name: OR2T_6
+		In nets:	9	8
+		Out nets:	40
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 17
+		Type: XOR2T
+		Name: XOR2T_7
+		In nets:	5	2
+		Out nets:	41
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 18
+		Type: XOR2T
+		Name: XOR2T_8
+		In nets:	11	10
+		Out nets:	31
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 19
+		Type: AND2T
+		Name: AND2T_9
+		In nets:	5	2
+		Out nets:	23
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 20
+		Type: AND2T
+		Name: AND2T_10
+		In nets:	11	10
+		Out nets:	13
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 21
+		Type: OR2T
+		Name: OR2T_11
+		In nets:	13	12
+		Out nets:	17
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 22
+		Type: DFF
+		Name: DFF_22
+		In nets:	18
+		Out nets:	34
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 23
+		Type: DFF
+		Name: DFF_23
+		In nets:	19
+		Out nets:	18
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 24
+		Type: DFF
+		Name: DFF_24
+		In nets:	20
+		Out nets:	37
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 25
+		Type: DFF
+		Name: DFF_25
+		In nets:	21
+		Out nets:	20
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 26
+		Type: DFF
+		Name: DFF_26
+		In nets:	22
+		Out nets:	8
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 27
+		Type: DFF
+		Name: DFF_27
+		In nets:	23
+		Out nets:	12
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 28
+		Type: DFF
+		Name: DFF_28
+		In nets:	24
+		Out nets:	14
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 29
+		Type: DFF
+		Name: DFF_29
+		In nets:	25
+		Out nets:	24
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 30
+		Type: DFF
+		Name: DFF_30
+		In nets:	26
+		Out nets:	25
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 31
+		Type: DFF
+		Name: DFF_31
+		In nets:	27
+		Out nets:	26
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 32
+		Type: DFF
+		Name: DFF_32
+		In nets:	28
+		Out nets:	15
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 33
+		Type: DFF
+		Name: DFF_33
+		In nets:	29
+		Out nets:	28
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 34
+		Type: DFF
+		Name: DFF_34
+		In nets:	30
+		Out nets:	29
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 35
+		Type: DFF
+		Name: DFF_35
+		In nets:	31
+		Out nets:	16
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 36
+		Type: SPLIT
+		Name: SPLIT_36
+		In nets:	32
+		Out nets:	0
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 37
+		Type: SPLIT
+		Name: SPLIT_37
+		In nets:	33
+		Out nets:	1
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 38
+		Type: SPLIT
+		Name: SPLIT_38
+		In nets:	34
+		Out nets:	2
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 39
+		Type: SPLIT
+		Name: SPLIT_39
+		In nets:	35
+		Out nets:	3
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 40
+		Type: SPLIT
+		Name: SPLIT_40
+		In nets:	36
+		Out nets:	4
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 41
+		Type: SPLIT
+		Name: SPLIT_41
+		In nets:	37
+		Out nets:	5
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 42
+		Type: SPLIT
+		Name: SPLIT_42
+		In nets:	38
+		Out nets:	6
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 43
+		Type: SPLIT
+		Name: SPLIT_43
+		In nets:	39
+		Out nets:	7
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 44
+		Type: SPLIT
+		Name: SPLIT_44
+		In nets:	40
+		Out nets:	10
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 45
+		Type: SPLIT
+		Name: SPLIT_45
+		In nets:	41
+		Out nets:	11
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 46
+		Type: input
+		Name: clk
+		In nets:
+		Out nets:	42
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 47
+		Type: SPLIT
+		Name: SPLITC_47
+		In nets:	42
+		Out nets:	43	44
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 48
+		Type: SPLIT
+		Name: SPLITC_48
+		In nets:	43
+		Out nets:	45	46
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 49
+		Type: SPLIT
+		Name: SPLITC_49
+		In nets:	45
+		Out nets:	47	48
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 50
+		Type: SPLIT
+		Name: SPLITC_50
+		In nets:	47
+		Out nets:	49	50
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 51
+		Type: SPLIT
+		Name: SPLITC_51
+		In nets:	49
+		Out nets:	51	52
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 52
+		Type: SPLIT
+		Name: SPLITC_52
+		In nets:	51
+		Out nets:	53	54
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 53
+		Type: SPLIT
+		Name: SPLITC_53
+		In nets:	53
+		Out nets:	55	56
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 54
+		Type: SPLIT
+		Name: SPLITC_54
+		In nets:	55
+		Out nets:	57	58
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 55
+		Type: SPLIT
+		Name: SPLITC_55
+		In nets:	56
+		Out nets:	59	60
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 56
+		Type: SPLIT
+		Name: SPLITC_56
+		In nets:	54
+		Out nets:	61	62
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 57
+		Type: SPLIT
+		Name: SPLITC_57
+		In nets:	61
+		Out nets:	63	64
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 58
+		Type: SPLIT
+		Name: SPLITC_58
+		In nets:	62
+		Out nets:	65	66
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 59
+		Type: SPLIT
+		Name: SPLITC_59
+		In nets:	52
+		Out nets:	67	68
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 60
+		Type: SPLIT
+		Name: SPLITC_60
+		In nets:	67
+		Out nets:	69	70
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 61
+		Type: SPLIT
+		Name: SPLITC_61
+		In nets:	69
+		Out nets:	71	72
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 62
+		Type: SPLIT
+		Name: SPLITC_62
+		In nets:	70
+		Out nets:	73	74
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 63
+		Type: SPLIT
+		Name: SPLITC_63
+		In nets:	68
+		Out nets:	75	76
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 64
+		Type: SPLIT
+		Name: SPLITC_64
+		In nets:	75
+		Out nets:	77	78
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 65
+		Type: SPLIT
+		Name: SPLITC_65
+		In nets:	76
+		Out nets:	79	80
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 66
+		Type: SPLIT
+		Name: SPLITC_66
+		In nets:	50
+		Out nets:	81	82
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 67
+		Type: SPLIT
+		Name: SPLITC_67
+		In nets:	81
+		Out nets:	83	84
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 68
+		Type: SPLIT
+		Name: SPLITC_68
+		In nets:	83
+		Out nets:	85	86
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 69
+		Type: SPLIT
+		Name: SPLITC_69
+		In nets:	85
+		Out nets:	87	88
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 70
+		Type: SPLIT
+		Name: SPLITC_70
+		In nets:	86
+		Out nets:	89	90
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 71
+		Type: SPLIT
+		Name: SPLITC_71
+		In nets:	84
+		Out nets:	91	92
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 72
+		Type: SPLIT
+		Name: SPLITC_72
+		In nets:	91
+		Out nets:	93	94
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 73
+		Type: SPLIT
+		Name: SPLITC_73
+		In nets:	92
+		Out nets:	95	96
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 74
+		Type: SPLIT
+		Name: SPLITC_74
+		In nets:	82
+		Out nets:	97	98
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 75
+		Type: SPLIT
+		Name: SPLITC_75
+		In nets:	97
+		Out nets:	99	100
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 76
+		Type: SPLIT
+		Name: SPLITC_76
+		In nets:	99
+		Out nets:	101	102
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 77
+		Type: SPLIT
+		Name: SPLITC_77
+		In nets:	100
+		Out nets:	103	104
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 78
+		Type: SPLIT
+		Name: SPLITC_78
+		In nets:	98
+		Out nets:	105	106
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 79
+		Type: SPLIT
+		Name: SPLITC_79
+		In nets:	105
+		Out nets:	107	108
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 80
+		Type: SPLIT
+		Name: SPLITC_80
+		In nets:	106
+		Out nets:	109	110
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 81
+		Type: SPLIT
+		Name: SPLITC_81
+		In nets:	48
+		Out nets:	111	112
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 82
+		Type: SPLIT
+		Name: SPLITC_82
+		In nets:	111
+		Out nets:	113	114
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 83
+		Type: SPLIT
+		Name: SPLITC_83
+		In nets:	113
+		Out nets:	115	116
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 84
+		Type: SPLIT
+		Name: SPLITC_84
+		In nets:	115
+		Out nets:	117	118
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 85
+		Type: SPLIT
+		Name: SPLITC_85
+		In nets:	117
+		Out nets:	119	120
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 86
+		Type: SPLIT
+		Name: SPLITC_86
+		In nets:	118
+		Out nets:	121	122
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 87
+		Type: SPLIT
+		Name: SPLITC_87
+		In nets:	116
+		Out nets:	123	124
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 88
+		Type: SPLIT
+		Name: SPLITC_88
+		In nets:	123
+		Out nets:	125	126
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 89
+		Type: SPLIT
+		Name: SPLITC_89
+		In nets:	124
+		Out nets:	127	128
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 90
+		Type: SPLIT
+		Name: SPLITC_90
+		In nets:	114
+		Out nets:	129	130
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 91
+		Type: SPLIT
+		Name: SPLITC_91
+		In nets:	129
+		Out nets:	131	132
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 92
+		Type: SPLIT
+		Name: SPLITC_92
+		In nets:	131
+		Out nets:	133	134
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 93
+		Type: SPLIT
+		Name: SPLITC_93
+		In nets:	132
+		Out nets:	135	136
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 94
+		Type: SPLIT
+		Name: SPLITC_94
+		In nets:	130
+		Out nets:	137	138
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 95
+		Type: SPLIT
+		Name: SPLITC_95
+		In nets:	137
+		Out nets:	139	140
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 96
+		Type: SPLIT
+		Name: SPLITC_96
+		In nets:	138
+		Out nets:	141	142
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 97
+		Type: SPLIT
+		Name: SPLITC_97
+		In nets:	112
+		Out nets:	143	144
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 98
+		Type: SPLIT
+		Name: SPLITC_98
+		In nets:	143
+		Out nets:	145	146
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 99
+		Type: SPLIT
+		Name: SPLITC_99
+		In nets:	145
+		Out nets:	147	148
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 100
+		Type: SPLIT
+		Name: SPLITC_100
+		In nets:	147
+		Out nets:	149	150
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 101
+		Type: SPLIT
+		Name: SPLITC_101
+		In nets:	148
+		Out nets:	151	152
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 102
+		Type: SPLIT
+		Name: SPLITC_102
+		In nets:	146
+		Out nets:	153	154
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 103
+		Type: SPLIT
+		Name: SPLITC_103
+		In nets:	153
+		Out nets:	155	156
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 104
+		Type: SPLIT
+		Name: SPLITC_104
+		In nets:	154
+		Out nets:	157	158
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 105
+		Type: SPLIT
+		Name: SPLITC_105
+		In nets:	144
+		Out nets:	159	160
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 106
+		Type: SPLIT
+		Name: SPLITC_106
+		In nets:	159
+		Out nets:	161	162
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 107
+		Type: SPLIT
+		Name: SPLITC_107
+		In nets:	161
+		Out nets:	163	164
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 108
+		Type: SPLIT
+		Name: SPLITC_108
+		In nets:	162
+		Out nets:	165	166
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 109
+		Type: SPLIT
+		Name: SPLITC_109
+		In nets:	160
+		Out nets:	167	168
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 110
+		Type: SPLIT
+		Name: SPLITC_110
+		In nets:	167
+		Out nets:	169	170
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 111
+		Type: SPLIT
+		Name: SPLITC_111
+		In nets:	168
+		Out nets:	171	172
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 112
+		Type: SPLIT
+		Name: SPLITC_112
+		In nets:	46
+		Out nets:	173	174
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 113
+		Type: SPLIT
+		Name: SPLITC_113
+		In nets:	173
+		Out nets:	175	176
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 114
+		Type: SPLIT
+		Name: SPLITC_114
+		In nets:	175
+		Out nets:	177	178
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 115
+		Type: SPLIT
+		Name: SPLITC_115
+		In nets:	177
+		Out nets:	179	180
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 116
+		Type: SPLIT
+		Name: SPLITC_116
+		In nets:	179
+		Out nets:	181	182
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 117
+		Type: SPLIT
+		Name: SPLITC_117
+		In nets:	181
+		Out nets:	183	184
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 118
+		Type: SPLIT
+		Name: SPLITC_118
+		In nets:	182
+		Out nets:	185	186
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 119
+		Type: SPLIT
+		Name: SPLITC_119
+		In nets:	180
+		Out nets:	187	188
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 120
+		Type: SPLIT
+		Name: SPLITC_120
+		In nets:	187
+		Out nets:	189	190
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 121
+		Type: SPLIT
+		Name: SPLITC_121
+		In nets:	188
+		Out nets:	191	192
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 122
+		Type: SPLIT
+		Name: SPLITC_122
+		In nets:	178
+		Out nets:	193	194
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 123
+		Type: SPLIT
+		Name: SPLITC_123
+		In nets:	193
+		Out nets:	195	196
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 124
+		Type: SPLIT
+		Name: SPLITC_124
+		In nets:	195
+		Out nets:	197	198
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 125
+		Type: SPLIT
+		Name: SPLITC_125
+		In nets:	196
+		Out nets:	199	200
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 126
+		Type: SPLIT
+		Name: SPLITC_126
+		In nets:	194
+		Out nets:	201	202
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 127
+		Type: SPLIT
+		Name: SPLITC_127
+		In nets:	201
+		Out nets:	203	204
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 128
+		Type: SPLIT
+		Name: SPLITC_128
+		In nets:	202
+		Out nets:	205	206
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 129
+		Type: SPLIT
+		Name: SPLITC_129
+		In nets:	176
+		Out nets:	207	208
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 130
+		Type: SPLIT
+		Name: SPLITC_130
+		In nets:	207
+		Out nets:	209	210
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 131
+		Type: SPLIT
+		Name: SPLITC_131
+		In nets:	209
+		Out nets:	211	212
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 132
+		Type: SPLIT
+		Name: SPLITC_132
+		In nets:	211
+		Out nets:	213	214
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 133
+		Type: SPLIT
+		Name: SPLITC_133
+		In nets:	212
+		Out nets:	215	216
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 134
+		Type: SPLIT
+		Name: SPLITC_134
+		In nets:	210
+		Out nets:	217	218
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 135
+		Type: SPLIT
+		Name: SPLITC_135
+		In nets:	217
+		Out nets:	219	220
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 136
+		Type: SPLIT
+		Name: SPLITC_136
+		In nets:	218
+		Out nets:	221	222
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 137
+		Type: SPLIT
+		Name: SPLITC_137
+		In nets:	208
+		Out nets:	223	224
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 138
+		Type: SPLIT
+		Name: SPLITC_138
+		In nets:	223
+		Out nets:	225	226
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 139
+		Type: SPLIT
+		Name: SPLITC_139
+		In nets:	225
+		Out nets:	227	228
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 140
+		Type: SPLIT
+		Name: SPLITC_140
+		In nets:	226
+		Out nets:	229	230
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 141
+		Type: SPLIT
+		Name: SPLITC_141
+		In nets:	224
+		Out nets:	231	232
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 142
+		Type: SPLIT
+		Name: SPLITC_142
+		In nets:	231
+		Out nets:	233	234
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 143
+		Type: SPLIT
+		Name: SPLITC_143
+		In nets:	232
+		Out nets:	235	236
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 144
+		Type: SPLIT
+		Name: SPLITC_144
+		In nets:	174
+		Out nets:	237	238
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 145
+		Type: SPLIT
+		Name: SPLITC_145
+		In nets:	237
+		Out nets:	239	240
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 146
+		Type: SPLIT
+		Name: SPLITC_146
+		In nets:	239
+		Out nets:	241	242
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 147
+		Type: SPLIT
+		Name: SPLITC_147
+		In nets:	241
+		Out nets:	243	244
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 148
+		Type: SPLIT
+		Name: SPLITC_148
+		In nets:	243
+		Out nets:	245	246
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 149
+		Type: SPLIT
+		Name: SPLITC_149
+		In nets:	244
+		Out nets:	247	248
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 150
+		Type: SPLIT
+		Name: SPLITC_150
+		In nets:	242
+		Out nets:	249	250
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 151
+		Type: SPLIT
+		Name: SPLITC_151
+		In nets:	249
+		Out nets:	251	252
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 152
+		Type: SPLIT
+		Name: SPLITC_152
+		In nets:	250
+		Out nets:	253	254
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 153
+		Type: SPLIT
+		Name: SPLITC_153
+		In nets:	240
+		Out nets:	255	256
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 154
+		Type: SPLIT
+		Name: SPLITC_154
+		In nets:	255
+		Out nets:	257	258
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 155
+		Type: SPLIT
+		Name: SPLITC_155
+		In nets:	257
+		Out nets:	259	260
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 156
+		Type: SPLIT
+		Name: SPLITC_156
+		In nets:	258
+		Out nets:	261	262
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 157
+		Type: SPLIT
+		Name: SPLITC_157
+		In nets:	256
+		Out nets:	263	264
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 158
+		Type: SPLIT
+		Name: SPLITC_158
+		In nets:	263
+		Out nets:	265	266
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 159
+		Type: SPLIT
+		Name: SPLITC_159
+		In nets:	264
+		Out nets:	267	268
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 160
+		Type: SPLIT
+		Name: SPLITC_160
+		In nets:	238
+		Out nets:	269	270
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 161
+		Type: SPLIT
+		Name: SPLITC_161
+		In nets:	269
+		Out nets:	271	272
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 162
+		Type: SPLIT
+		Name: SPLITC_162
+		In nets:	271
+		Out nets:	273	274
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 163
+		Type: SPLIT
+		Name: SPLITC_163
+		In nets:	273
+		Out nets:	275	276
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 164
+		Type: SPLIT
+		Name: SPLITC_164
+		In nets:	274
+		Out nets:	277	278
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 165
+		Type: SPLIT
+		Name: SPLITC_165
+		In nets:	272
+		Out nets:	279	280
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 166
+		Type: SPLIT
+		Name: SPLITC_166
+		In nets:	279
+		Out nets:	281	282
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 167
+		Type: SPLIT
+		Name: SPLITC_167
+		In nets:	280
+		Out nets:	283	284
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 168
+		Type: SPLIT
+		Name: SPLITC_168
+		In nets:	270
+		Out nets:	285	286
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 169
+		Type: SPLIT
+		Name: SPLITC_169
+		In nets:	285
+		Out nets:	287	288
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 170
+		Type: SPLIT
+		Name: SPLITC_170
+		In nets:	287
+		Out nets:	289	290
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 171
+		Type: SPLIT
+		Name: SPLITC_171
+		In nets:	288
+		Out nets:	291	292
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 172
+		Type: SPLIT
+		Name: SPLITC_172
+		In nets:	286
+		Out nets:	293	294
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 173
+		Type: SPLIT
+		Name: SPLITC_173
+		In nets:	293
+		Out nets:	295	296
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 174
+		Type: SPLIT
+		Name: SPLITC_174
+		In nets:	294
+		Out nets:	297	298
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 175
+		Type: SPLIT
+		Name: SPLITC_175
+		In nets:	44
+		Out nets:	299	300
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 176
+		Type: SPLIT
+		Name: SPLITC_176
+		In nets:	299
+		Out nets:	301	302
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 177
+		Type: SPLIT
+		Name: SPLITC_177
+		In nets:	301
+		Out nets:	303	304
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 178
+		Type: SPLIT
+		Name: SPLITC_178
+		In nets:	303
+		Out nets:	305	306
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 179
+		Type: SPLIT
+		Name: SPLITC_179
+		In nets:	305
+		Out nets:	307	308
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 180
+		Type: SPLIT
+		Name: SPLITC_180
+		In nets:	307
+		Out nets:	309	310
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 181
+		Type: SPLIT
+		Name: SPLITC_181
+		In nets:	309
+		Out nets:	311	312
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 182
+		Type: SPLIT
+		Name: SPLITC_182
+		In nets:	310
+		Out nets:	313	314
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 183
+		Type: SPLIT
+		Name: SPLITC_183
+		In nets:	308
+		Out nets:	315	316
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 184
+		Type: SPLIT
+		Name: SPLITC_184
+		In nets:	315
+		Out nets:	317	318
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 185
+		Type: SPLIT
+		Name: SPLITC_185
+		In nets:	316
+		Out nets:	319	320
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 186
+		Type: SPLIT
+		Name: SPLITC_186
+		In nets:	306
+		Out nets:	321	322
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 187
+		Type: SPLIT
+		Name: SPLITC_187
+		In nets:	321
+		Out nets:	323	324
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 188
+		Type: SPLIT
+		Name: SPLITC_188
+		In nets:	323
+		Out nets:	325	326
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 189
+		Type: SPLIT
+		Name: SPLITC_189
+		In nets:	324
+		Out nets:	327	328
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 190
+		Type: SPLIT
+		Name: SPLITC_190
+		In nets:	322
+		Out nets:	329	330
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 191
+		Type: SPLIT
+		Name: SPLITC_191
+		In nets:	329
+		Out nets:	331	332
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 192
+		Type: SPLIT
+		Name: SPLITC_192
+		In nets:	330
+		Out nets:	333	334
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 193
+		Type: SPLIT
+		Name: SPLITC_193
+		In nets:	304
+		Out nets:	335	336
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 194
+		Type: SPLIT
+		Name: SPLITC_194
+		In nets:	335
+		Out nets:	337	338
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 195
+		Type: SPLIT
+		Name: SPLITC_195
+		In nets:	337
+		Out nets:	339	340
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 196
+		Type: SPLIT
+		Name: SPLITC_196
+		In nets:	339
+		Out nets:	341	342
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 197
+		Type: SPLIT
+		Name: SPLITC_197
+		In nets:	340
+		Out nets:	343	344
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 198
+		Type: SPLIT
+		Name: SPLITC_198
+		In nets:	338
+		Out nets:	345	346
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 199
+		Type: SPLIT
+		Name: SPLITC_199
+		In nets:	345
+		Out nets:	347	348
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 200
+		Type: SPLIT
+		Name: SPLITC_200
+		In nets:	346
+		Out nets:	349	350
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 201
+		Type: SPLIT
+		Name: SPLITC_201
+		In nets:	336
+		Out nets:	351	352
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 202
+		Type: SPLIT
+		Name: SPLITC_202
+		In nets:	351
+		Out nets:	353	354
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 203
+		Type: SPLIT
+		Name: SPLITC_203
+		In nets:	353
+		Out nets:	355	356
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 204
+		Type: SPLIT
+		Name: SPLITC_204
+		In nets:	354
+		Out nets:	357	358
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 205
+		Type: SPLIT
+		Name: SPLITC_205
+		In nets:	352
+		Out nets:	359	360
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 206
+		Type: SPLIT
+		Name: SPLITC_206
+		In nets:	359
+		Out nets:	361	362
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 207
+		Type: SPLIT
+		Name: SPLITC_207
+		In nets:	360
+		Out nets:	363	364
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 208
+		Type: SPLIT
+		Name: SPLITC_208
+		In nets:	302
+		Out nets:	365	366
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 209
+		Type: SPLIT
+		Name: SPLITC_209
+		In nets:	365
+		Out nets:	367	368
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 210
+		Type: SPLIT
+		Name: SPLITC_210
+		In nets:	367
+		Out nets:	369	370
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 211
+		Type: SPLIT
+		Name: SPLITC_211
+		In nets:	369
+		Out nets:	371	372
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 212
+		Type: SPLIT
+		Name: SPLITC_212
+		In nets:	371
+		Out nets:	373	374
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 213
+		Type: SPLIT
+		Name: SPLITC_213
+		In nets:	372
+		Out nets:	375	376
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 214
+		Type: SPLIT
+		Name: SPLITC_214
+		In nets:	370
+		Out nets:	377	378
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 215
+		Type: SPLIT
+		Name: SPLITC_215
+		In nets:	377
+		Out nets:	379	380
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 216
+		Type: SPLIT
+		Name: SPLITC_216
+		In nets:	378
+		Out nets:	381	382
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 217
+		Type: SPLIT
+		Name: SPLITC_217
+		In nets:	368
+		Out nets:	383	384
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 218
+		Type: SPLIT
+		Name: SPLITC_218
+		In nets:	383
+		Out nets:	385	386
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 219
+		Type: SPLIT
+		Name: SPLITC_219
+		In nets:	385
+		Out nets:	387	388
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 220
+		Type: SPLIT
+		Name: SPLITC_220
+		In nets:	386
+		Out nets:	389	390
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 221
+		Type: SPLIT
+		Name: SPLITC_221
+		In nets:	384
+		Out nets:	391	392
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 222
+		Type: SPLIT
+		Name: SPLITC_222
+		In nets:	391
+		Out nets:	393	394
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 223
+		Type: SPLIT
+		Name: SPLITC_223
+		In nets:	392
+		Out nets:	395	396
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 224
+		Type: SPLIT
+		Name: SPLITC_224
+		In nets:	366
+		Out nets:	397	398
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 225
+		Type: SPLIT
+		Name: SPLITC_225
+		In nets:	397
+		Out nets:	399	400
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 226
+		Type: SPLIT
+		Name: SPLITC_226
+		In nets:	399
+		Out nets:	401	402
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 227
+		Type: SPLIT
+		Name: SPLITC_227
+		In nets:	401
+		Out nets:	403	404
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 228
+		Type: SPLIT
+		Name: SPLITC_228
+		In nets:	402
+		Out nets:	405	406
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 229
+		Type: SPLIT
+		Name: SPLITC_229
+		In nets:	400
+		Out nets:	407	408
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 230
+		Type: SPLIT
+		Name: SPLITC_230
+		In nets:	407
+		Out nets:	409	410
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 231
+		Type: SPLIT
+		Name: SPLITC_231
+		In nets:	408
+		Out nets:	411	412
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 232
+		Type: SPLIT
+		Name: SPLITC_232
+		In nets:	398
+		Out nets:	413	414
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 233
+		Type: SPLIT
+		Name: SPLITC_233
+		In nets:	413
+		Out nets:	415	416
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 234
+		Type: SPLIT
+		Name: SPLITC_234
+		In nets:	415
+		Out nets:	417	418
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 235
+		Type: SPLIT
+		Name: SPLITC_235
+		In nets:	416
+		Out nets:	419	420
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 236
+		Type: SPLIT
+		Name: SPLITC_236
+		In nets:	414
+		Out nets:	421	422
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 237
+		Type: SPLIT
+		Name: SPLITC_237
+		In nets:	421
+		Out nets:	423	424
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 238
+		Type: SPLIT
+		Name: SPLITC_238
+		In nets:	422
+		Out nets:	425	426
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 239
+		Type: SPLIT
+		Name: SPLITC_239
+		In nets:	300
+		Out nets:	427	428
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 240
+		Type: SPLIT
+		Name: SPLITC_240
+		In nets:	427
+		Out nets:	429	430
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 241
+		Type: SPLIT
+		Name: SPLITC_241
+		In nets:	429
+		Out nets:	431	432
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 242
+		Type: SPLIT
+		Name: SPLITC_242
+		In nets:	431
+		Out nets:	433	434
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 243
+		Type: SPLIT
+		Name: SPLITC_243
+		In nets:	433
+		Out nets:	435	436
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 244
+		Type: SPLIT
+		Name: SPLITC_244
+		In nets:	435
+		Out nets:	437	438
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 245
+		Type: SPLIT
+		Name: SPLITC_245
+		In nets:	436
+		Out nets:	439	440
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 246
+		Type: SPLIT
+		Name: SPLITC_246
+		In nets:	434
+		Out nets:	441	442
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 247
+		Type: SPLIT
+		Name: SPLITC_247
+		In nets:	441
+		Out nets:	443	444
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 248
+		Type: SPLIT
+		Name: SPLITC_248
+		In nets:	442
+		Out nets:	445	446
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 249
+		Type: SPLIT
+		Name: SPLITC_249
+		In nets:	432
+		Out nets:	447	448
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 250
+		Type: SPLIT
+		Name: SPLITC_250
+		In nets:	447
+		Out nets:	449	450
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 251
+		Type: SPLIT
+		Name: SPLITC_251
+		In nets:	449
+		Out nets:	451	452
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 252
+		Type: SPLIT
+		Name: SPLITC_252
+		In nets:	450
+		Out nets:	453	454
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 253
+		Type: SPLIT
+		Name: SPLITC_253
+		In nets:	448
+		Out nets:	455	456
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 254
+		Type: SPLIT
+		Name: SPLITC_254
+		In nets:	455
+		Out nets:	457	458
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 255
+		Type: SPLIT
+		Name: SPLITC_255
+		In nets:	456
+		Out nets:	459	460
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 256
+		Type: SPLIT
+		Name: SPLITC_256
+		In nets:	430
+		Out nets:	461	462
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 257
+		Type: SPLIT
+		Name: SPLITC_257
+		In nets:	461
+		Out nets:	463	464
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 258
+		Type: SPLIT
+		Name: SPLITC_258
+		In nets:	463
+		Out nets:	465	466
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 259
+		Type: SPLIT
+		Name: SPLITC_259
+		In nets:	465
+		Out nets:	467	468
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 260
+		Type: SPLIT
+		Name: SPLITC_260
+		In nets:	466
+		Out nets:	469	470
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 261
+		Type: SPLIT
+		Name: SPLITC_261
+		In nets:	464
+		Out nets:	471	472
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 262
+		Type: SPLIT
+		Name: SPLITC_262
+		In nets:	471
+		Out nets:	473	474
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 263
+		Type: SPLIT
+		Name: SPLITC_263
+		In nets:	472
+		Out nets:	475	476
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 264
+		Type: SPLIT
+		Name: SPLITC_264
+		In nets:	462
+		Out nets:	477	478
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 265
+		Type: SPLIT
+		Name: SPLITC_265
+		In nets:	477
+		Out nets:	479	480
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 266
+		Type: SPLIT
+		Name: SPLITC_266
+		In nets:	479
+		Out nets:	481	482
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 267
+		Type: SPLIT
+		Name: SPLITC_267
+		In nets:	480
+		Out nets:	483	484
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 268
+		Type: SPLIT
+		Name: SPLITC_268
+		In nets:	478
+		Out nets:	485	486
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 269
+		Type: SPLIT
+		Name: SPLITC_269
+		In nets:	485
+		Out nets:	487	488
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 270
+		Type: SPLIT
+		Name: SPLITC_270
+		In nets:	486
+		Out nets:	489	490
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 271
+		Type: SPLIT
+		Name: SPLITC_271
+		In nets:	428
+		Out nets:	491	492
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 272
+		Type: SPLIT
+		Name: SPLITC_272
+		In nets:	491
+		Out nets:	493	494
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 273
+		Type: SPLIT
+		Name: SPLITC_273
+		In nets:	493
+		Out nets:	495	496
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 274
+		Type: SPLIT
+		Name: SPLITC_274
+		In nets:	495
+		Out nets:	497	498
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 275
+		Type: SPLIT
+		Name: SPLITC_275
+		In nets:	497
+		Out nets:	499	500
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 276
+		Type: SPLIT
+		Name: SPLITC_276
+		In nets:	498
+		Out nets:	501	502
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 277
+		Type: SPLIT
+		Name: SPLITC_277
+		In nets:	496
+		Out nets:	503	504
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 278
+		Type: SPLIT
+		Name: SPLITC_278
+		In nets:	503
+		Out nets:	505	506
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 279
+		Type: SPLIT
+		Name: SPLITC_279
+		In nets:	504
+		Out nets:	507	508
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 280
+		Type: SPLIT
+		Name: SPLITC_280
+		In nets:	494
+		Out nets:	509	510
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 281
+		Type: SPLIT
+		Name: SPLITC_281
+		In nets:	509
+		Out nets:	511	512
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 282
+		Type: SPLIT
+		Name: SPLITC_282
+		In nets:	511
+		Out nets:	513	514
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 283
+		Type: SPLIT
+		Name: SPLITC_283
+		In nets:	512
+		Out nets:	515	516
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 284
+		Type: SPLIT
+		Name: SPLITC_284
+		In nets:	510
+		Out nets:	517	518
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 285
+		Type: SPLIT
+		Name: SPLITC_285
+		In nets:	517
+		Out nets:	519	520
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 286
+		Type: SPLIT
+		Name: SPLITC_286
+		In nets:	518
+		Out nets:	521	522
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 287
+		Type: SPLIT
+		Name: SPLITC_287
+		In nets:	492
+		Out nets:	523	524
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 288
+		Type: SPLIT
+		Name: SPLITC_288
+		In nets:	523
+		Out nets:	525	526
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 289
+		Type: SPLIT
+		Name: SPLITC_289
+		In nets:	525
+		Out nets:	527	528
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 290
+		Type: SPLIT
+		Name: SPLITC_290
+		In nets:	527
+		Out nets:	529	530
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 291
+		Type: SPLIT
+		Name: SPLITC_291
+		In nets:	528
+		Out nets:	531	532
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 292
+		Type: SPLIT
+		Name: SPLITC_292
+		In nets:	526
+		Out nets:	533	534
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 293
+		Type: SPLIT
+		Name: SPLITC_293
+		In nets:	533
+		Out nets:	535	536
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 294
+		Type: SPLIT
+		Name: SPLITC_294
+		In nets:	534
+		Out nets:	537	538
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 295
+		Type: SPLIT
+		Name: SPLITC_295
+		In nets:	524
+		Out nets:	539	540
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 296
+		Type: SPLIT
+		Name: SPLITC_296
+		In nets:	539
+		Out nets:	541	542
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 297
+		Type: SPLIT
+		Name: SPLITC_297
+		In nets:	541
+		Out nets:	543	544
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 298
+		Type: SPLIT
+		Name: SPLITC_298
+		In nets:	542
+		Out nets:	545	546
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 299
+		Type: SPLIT
+		Name: SPLITC_299
+		In nets:	540
+		Out nets:	547	548
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 300
+		Type: SPLIT
+		Name: SPLITC_300
+		In nets:	547
+		Out nets:	549	550
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 301
+		Type: SPLIT
+		Name: SPLITC_301
+		In nets:	548
+		Out nets:	551	552
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+	Nets: 553
+		Net[0]: net_0
+		In nodes:	SPLIT_36
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[1]: net_1
+		In nodes:	SPLIT_37
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[2]: net_2
+		In nodes:	SPLIT_38
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[3]: net_3
+		In nodes:	SPLIT_39
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[4]: net_4
+		In nodes:	SPLIT_40
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[5]: net_5
+		In nodes:	SPLIT_41
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[6]: net_6
+		In nodes:	SPLIT_42
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[7]: net_7
+		In nodes:	SPLIT_43
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[8]: net_8
+		In nodes:	DFF_26
+		Out nodes:	OR2T_6
+		Net[9]: net_9
+		In nodes:	AND2T_5
+		Out nodes:	OR2T_6
+		Net[10]: net_10
+		In nodes:	SPLIT_44
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[11]: net_11
+		In nodes:	SPLIT_45
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[12]: net_12
+		In nodes:	DFF_27
+		Out nodes:	OR2T_11
+		Net[13]: net_13
+		In nodes:	AND2T_10
+		Out nodes:	OR2T_11
+		Net[14]: net_14
+		In nodes:	DFF_28
+		Out nodes:	s0
+		Net[15]: net_15
+		In nodes:	DFF_32
+		Out nodes:	s1
+		Net[16]: net_16
+		In nodes:	DFF_35
+		Out nodes:	s2
+		Net[17]: net_17
+		In nodes:	OR2T_11
+		Out nodes:	s3
+		Net[18]: net_18
+		In nodes:	DFF_23
+		Out nodes:	DFF_22
+		Net[19]: net_19
+		In nodes:	a2
+		Out nodes:	DFF_23
+		Net[20]: net_20
+		In nodes:	DFF_25
+		Out nodes:	DFF_24
+		Net[21]: net_21
+		In nodes:	b2
+		Out nodes:	DFF_25
+		Net[22]: net_22
+		In nodes:	AND2T_4
+		Out nodes:	DFF_26
+		Net[23]: net_23
+		In nodes:	AND2T_9
+		Out nodes:	DFF_27
+		Net[24]: net_24
+		In nodes:	DFF_29
+		Out nodes:	DFF_28
+		Net[25]: net_25
+		In nodes:	DFF_30
+		Out nodes:	DFF_29
+		Net[26]: net_26
+		In nodes:	DFF_31
+		Out nodes:	DFF_30
+		Net[27]: net_27
+		In nodes:	XOR2T_0
+		Out nodes:	DFF_31
+		Net[28]: net_28
+		In nodes:	DFF_33
+		Out nodes:	DFF_32
+		Net[29]: net_29
+		In nodes:	DFF_34
+		Out nodes:	DFF_33
+		Net[30]: net_30
+		In nodes:	XOR2T_3
+		Out nodes:	DFF_34
+		Net[31]: net_31
+		In nodes:	XOR2T_8
+		Out nodes:	DFF_35
+		Net[32]: net_32
+		In nodes:	a0
+		Out nodes:	SPLIT_36
+		Net[33]: net_33
+		In nodes:	a1
+		Out nodes:	SPLIT_37
+		Net[34]: net_34
+		In nodes:	DFF_22
+		Out nodes:	SPLIT_38
+		Net[35]: net_35
+		In nodes:	b0
+		Out nodes:	SPLIT_39
+		Net[36]: net_36
+		In nodes:	b1
+		Out nodes:	SPLIT_40
+		Net[37]: net_37
+		In nodes:	DFF_24
+		Out nodes:	SPLIT_41
+		Net[38]: net_38
+		In nodes:	AND2T_1
+		Out nodes:	SPLIT_42
+		Net[39]: net_39
+		In nodes:	XOR2T_2
+		Out nodes:	SPLIT_43
+		Net[40]: net_40
+		In nodes:	OR2T_6
+		Out nodes:	SPLIT_44
+		Net[41]: net_41
+		In nodes:	XOR2T_7
+		Out nodes:	SPLIT_45
+		Net[42]: net_42
+		In nodes:	clk
+		Out nodes:	SPLITC_47
+		Net[43]: net_43
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_48
+		Net[44]: net_44
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_175
+		Net[45]: net_45
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_49
+		Net[46]: net_46
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_112
+		Net[47]: net_47
+		In nodes:	SPLITC_49
+		Out nodes:	SPLITC_50
+		Net[48]: net_48
+		In nodes:	SPLITC_49
+		Out nodes:	SPLITC_81
+		Net[49]: net_49
+		In nodes:	SPLITC_50
+		Out nodes:	SPLITC_51
+		Net[50]: net_50
+		In nodes:	SPLITC_50
+		Out nodes:	SPLITC_66
+		Net[51]: net_51
+		In nodes:	SPLITC_51
+		Out nodes:	SPLITC_52
+		Net[52]: net_52
+		In nodes:	SPLITC_51
+		Out nodes:	SPLITC_59
+		Net[53]: net_53
+		In nodes:	SPLITC_52
+		Out nodes:	SPLITC_53
+		Net[54]: net_54
+		In nodes:	SPLITC_52
+		Out nodes:	SPLITC_56
+		Net[55]: net_55
+		In nodes:	SPLITC_53
+		Out nodes:	SPLITC_54
+		Net[56]: net_56
+		In nodes:	SPLITC_53
+		Out nodes:	SPLITC_55
+		Net[57]: net_57
+		In nodes:	SPLITC_54
+		Out nodes:
+		Net[58]: net_58
+		In nodes:	SPLITC_54
+		Out nodes:
+		Net[59]: net_59
+		In nodes:	SPLITC_55
+		Out nodes:
+		Net[60]: net_60
+		In nodes:	SPLITC_55
+		Out nodes:
+		Net[61]: net_61
+		In nodes:	SPLITC_56
+		Out nodes:	SPLITC_57
+		Net[62]: net_62
+		In nodes:	SPLITC_56
+		Out nodes:	SPLITC_58
+		Net[63]: net_63
+		In nodes:	SPLITC_57
+		Out nodes:
+		Net[64]: net_64
+		In nodes:	SPLITC_57
+		Out nodes:
+		Net[65]: net_65
+		In nodes:	SPLITC_58
+		Out nodes:
+		Net[66]: net_66
+		In nodes:	SPLITC_58
+		Out nodes:
+		Net[67]: net_67
+		In nodes:	SPLITC_59
+		Out nodes:	SPLITC_60
+		Net[68]: net_68
+		In nodes:	SPLITC_59
+		Out nodes:	SPLITC_63
+		Net[69]: net_69
+		In nodes:	SPLITC_60
+		Out nodes:	SPLITC_61
+		Net[70]: net_70
+		In nodes:	SPLITC_60
+		Out nodes:	SPLITC_62
+		Net[71]: net_71
+		In nodes:	SPLITC_61
+		Out nodes:
+		Net[72]: net_72
+		In nodes:	SPLITC_61
+		Out nodes:
+		Net[73]: net_73
+		In nodes:	SPLITC_62
+		Out nodes:
+		Net[74]: net_74
+		In nodes:	SPLITC_62
+		Out nodes:
+		Net[75]: net_75
+		In nodes:	SPLITC_63
+		Out nodes:	SPLITC_64
+		Net[76]: net_76
+		In nodes:	SPLITC_63
+		Out nodes:	SPLITC_65
+		Net[77]: net_77
+		In nodes:	SPLITC_64
+		Out nodes:
+		Net[78]: net_78
+		In nodes:	SPLITC_64
+		Out nodes:
+		Net[79]: net_79
+		In nodes:	SPLITC_65
+		Out nodes:
+		Net[80]: net_80
+		In nodes:	SPLITC_65
+		Out nodes:
+		Net[81]: net_81
+		In nodes:	SPLITC_66
+		Out nodes:	SPLITC_67
+		Net[82]: net_82
+		In nodes:	SPLITC_66
+		Out nodes:	SPLITC_74
+		Net[83]: net_83
+		In nodes:	SPLITC_67
+		Out nodes:	SPLITC_68
+		Net[84]: net_84
+		In nodes:	SPLITC_67
+		Out nodes:	SPLITC_71
+		Net[85]: net_85
+		In nodes:	SPLITC_68
+		Out nodes:	SPLITC_69
+		Net[86]: net_86
+		In nodes:	SPLITC_68
+		Out nodes:	SPLITC_70
+		Net[87]: net_87
+		In nodes:	SPLITC_69
+		Out nodes:
+		Net[88]: net_88
+		In nodes:	SPLITC_69
+		Out nodes:
+		Net[89]: net_89
+		In nodes:	SPLITC_70
+		Out nodes:
+		Net[90]: net_90
+		In nodes:	SPLITC_70
+		Out nodes:
+		Net[91]: net_91
+		In nodes:	SPLITC_71
+		Out nodes:	SPLITC_72
+		Net[92]: net_92
+		In nodes:	SPLITC_71
+		Out nodes:	SPLITC_73
+		Net[93]: net_93
+		In nodes:	SPLITC_72
+		Out nodes:
+		Net[94]: net_94
+		In nodes:	SPLITC_72
+		Out nodes:
+		Net[95]: net_95
+		In nodes:	SPLITC_73
+		Out nodes:
+		Net[96]: net_96
+		In nodes:	SPLITC_73
+		Out nodes:
+		Net[97]: net_97
+		In nodes:	SPLITC_74
+		Out nodes:	SPLITC_75
+		Net[98]: net_98
+		In nodes:	SPLITC_74
+		Out nodes:	SPLITC_78
+		Net[99]: net_99
+		In nodes:	SPLITC_75
+		Out nodes:	SPLITC_76
+		Net[100]: net_100
+		In nodes:	SPLITC_75
+		Out nodes:	SPLITC_77
+		Net[101]: net_101
+		In nodes:	SPLITC_76
+		Out nodes:
+		Net[102]: net_102
+		In nodes:	SPLITC_76
+		Out nodes:
+		Net[103]: net_103
+		In nodes:	SPLITC_77
+		Out nodes:
+		Net[104]: net_104
+		In nodes:	SPLITC_77
+		Out nodes:
+		Net[105]: net_105
+		In nodes:	SPLITC_78
+		Out nodes:	SPLITC_79
+		Net[106]: net_106
+		In nodes:	SPLITC_78
+		Out nodes:	SPLITC_80
+		Net[107]: net_107
+		In nodes:	SPLITC_79
+		Out nodes:
+		Net[108]: net_108
+		In nodes:	SPLITC_79
+		Out nodes:
+		Net[109]: net_109
+		In nodes:	SPLITC_80
+		Out nodes:
+		Net[110]: net_110
+		In nodes:	SPLITC_80
+		Out nodes:
+		Net[111]: net_111
+		In nodes:	SPLITC_81
+		Out nodes:	SPLITC_82
+		Net[112]: net_112
+		In nodes:	SPLITC_81
+		Out nodes:	SPLITC_97
+		Net[113]: net_113
+		In nodes:	SPLITC_82
+		Out nodes:	SPLITC_83
+		Net[114]: net_114
+		In nodes:	SPLITC_82
+		Out nodes:	SPLITC_90
+		Net[115]: net_115
+		In nodes:	SPLITC_83
+		Out nodes:	SPLITC_84
+		Net[116]: net_116
+		In nodes:	SPLITC_83
+		Out nodes:	SPLITC_87
+		Net[117]: net_117
+		In nodes:	SPLITC_84
+		Out nodes:	SPLITC_85
+		Net[118]: net_118
+		In nodes:	SPLITC_84
+		Out nodes:	SPLITC_86
+		Net[119]: net_119
+		In nodes:	SPLITC_85
+		Out nodes:
+		Net[120]: net_120
+		In nodes:	SPLITC_85
+		Out nodes:
+		Net[121]: net_121
+		In nodes:	SPLITC_86
+		Out nodes:
+		Net[122]: net_122
+		In nodes:	SPLITC_86
+		Out nodes:
+		Net[123]: net_123
+		In nodes:	SPLITC_87
+		Out nodes:	SPLITC_88
+		Net[124]: net_124
+		In nodes:	SPLITC_87
+		Out nodes:	SPLITC_89
+		Net[125]: net_125
+		In nodes:	SPLITC_88
+		Out nodes:
+		Net[126]: net_126
+		In nodes:	SPLITC_88
+		Out nodes:
+		Net[127]: net_127
+		In nodes:	SPLITC_89
+		Out nodes:
+		Net[128]: net_128
+		In nodes:	SPLITC_89
+		Out nodes:
+		Net[129]: net_129
+		In nodes:	SPLITC_90
+		Out nodes:	SPLITC_91
+		Net[130]: net_130
+		In nodes:	SPLITC_90
+		Out nodes:	SPLITC_94
+		Net[131]: net_131
+		In nodes:	SPLITC_91
+		Out nodes:	SPLITC_92
+		Net[132]: net_132
+		In nodes:	SPLITC_91
+		Out nodes:	SPLITC_93
+		Net[133]: net_133
+		In nodes:	SPLITC_92
+		Out nodes:
+		Net[134]: net_134
+		In nodes:	SPLITC_92
+		Out nodes:
+		Net[135]: net_135
+		In nodes:	SPLITC_93
+		Out nodes:
+		Net[136]: net_136
+		In nodes:	SPLITC_93
+		Out nodes:
+		Net[137]: net_137
+		In nodes:	SPLITC_94
+		Out nodes:	SPLITC_95
+		Net[138]: net_138
+		In nodes:	SPLITC_94
+		Out nodes:	SPLITC_96
+		Net[139]: net_139
+		In nodes:	SPLITC_95
+		Out nodes:
+		Net[140]: net_140
+		In nodes:	SPLITC_95
+		Out nodes:
+		Net[141]: net_141
+		In nodes:	SPLITC_96
+		Out nodes:
+		Net[142]: net_142
+		In nodes:	SPLITC_96
+		Out nodes:
+		Net[143]: net_143
+		In nodes:	SPLITC_97
+		Out nodes:	SPLITC_98
+		Net[144]: net_144
+		In nodes:	SPLITC_97
+		Out nodes:	SPLITC_105
+		Net[145]: net_145
+		In nodes:	SPLITC_98
+		Out nodes:	SPLITC_99
+		Net[146]: net_146
+		In nodes:	SPLITC_98
+		Out nodes:	SPLITC_102
+		Net[147]: net_147
+		In nodes:	SPLITC_99
+		Out nodes:	SPLITC_100
+		Net[148]: net_148
+		In nodes:	SPLITC_99
+		Out nodes:	SPLITC_101
+		Net[149]: net_149
+		In nodes:	SPLITC_100
+		Out nodes:
+		Net[150]: net_150
+		In nodes:	SPLITC_100
+		Out nodes:
+		Net[151]: net_151
+		In nodes:	SPLITC_101
+		Out nodes:
+		Net[152]: net_152
+		In nodes:	SPLITC_101
+		Out nodes:
+		Net[153]: net_153
+		In nodes:	SPLITC_102
+		Out nodes:	SPLITC_103
+		Net[154]: net_154
+		In nodes:	SPLITC_102
+		Out nodes:	SPLITC_104
+		Net[155]: net_155
+		In nodes:	SPLITC_103
+		Out nodes:
+		Net[156]: net_156
+		In nodes:	SPLITC_103
+		Out nodes:
+		Net[157]: net_157
+		In nodes:	SPLITC_104
+		Out nodes:
+		Net[158]: net_158
+		In nodes:	SPLITC_104
+		Out nodes:
+		Net[159]: net_159
+		In nodes:	SPLITC_105
+		Out nodes:	SPLITC_106
+		Net[160]: net_160
+		In nodes:	SPLITC_105
+		Out nodes:	SPLITC_109
+		Net[161]: net_161
+		In nodes:	SPLITC_106
+		Out nodes:	SPLITC_107
+		Net[162]: net_162
+		In nodes:	SPLITC_106
+		Out nodes:	SPLITC_108
+		Net[163]: net_163
+		In nodes:	SPLITC_107
+		Out nodes:
+		Net[164]: net_164
+		In nodes:	SPLITC_107
+		Out nodes:
+		Net[165]: net_165
+		In nodes:	SPLITC_108
+		Out nodes:
+		Net[166]: net_166
+		In nodes:	SPLITC_108
+		Out nodes:
+		Net[167]: net_167
+		In nodes:	SPLITC_109
+		Out nodes:	SPLITC_110
+		Net[168]: net_168
+		In nodes:	SPLITC_109
+		Out nodes:	SPLITC_111
+		Net[169]: net_169
+		In nodes:	SPLITC_110
+		Out nodes:
+		Net[170]: net_170
+		In nodes:	SPLITC_110
+		Out nodes:
+		Net[171]: net_171
+		In nodes:	SPLITC_111
+		Out nodes:
+		Net[172]: net_172
+		In nodes:	SPLITC_111
+		Out nodes:
+		Net[173]: net_173
+		In nodes:	SPLITC_112
+		Out nodes:	SPLITC_113
+		Net[174]: net_174
+		In nodes:	SPLITC_112
+		Out nodes:	SPLITC_144
+		Net[175]: net_175
+		In nodes:	SPLITC_113
+		Out nodes:	SPLITC_114
+		Net[176]: net_176
+		In nodes:	SPLITC_113
+		Out nodes:	SPLITC_129
+		Net[177]: net_177
+		In nodes:	SPLITC_114
+		Out nodes:	SPLITC_115
+		Net[178]: net_178
+		In nodes:	SPLITC_114
+		Out nodes:	SPLITC_122
+		Net[179]: net_179
+		In nodes:	SPLITC_115
+		Out nodes:	SPLITC_116
+		Net[180]: net_180
+		In nodes:	SPLITC_115
+		Out nodes:	SPLITC_119
+		Net[181]: net_181
+		In nodes:	SPLITC_116
+		Out nodes:	SPLITC_117
+		Net[182]: net_182
+		In nodes:	SPLITC_116
+		Out nodes:	SPLITC_118
+		Net[183]: net_183
+		In nodes:	SPLITC_117
+		Out nodes:
+		Net[184]: net_184
+		In nodes:	SPLITC_117
+		Out nodes:
+		Net[185]: net_185
+		In nodes:	SPLITC_118
+		Out nodes:
+		Net[186]: net_186
+		In nodes:	SPLITC_118
+		Out nodes:
+		Net[187]: net_187
+		In nodes:	SPLITC_119
+		Out nodes:	SPLITC_120
+		Net[188]: net_188
+		In nodes:	SPLITC_119
+		Out nodes:	SPLITC_121
+		Net[189]: net_189
+		In nodes:	SPLITC_120
+		Out nodes:
+		Net[190]: net_190
+		In nodes:	SPLITC_120
+		Out nodes:
+		Net[191]: net_191
+		In nodes:	SPLITC_121
+		Out nodes:
+		Net[192]: net_192
+		In nodes:	SPLITC_121
+		Out nodes:
+		Net[193]: net_193
+		In nodes:	SPLITC_122
+		Out nodes:	SPLITC_123
+		Net[194]: net_194
+		In nodes:	SPLITC_122
+		Out nodes:	SPLITC_126
+		Net[195]: net_195
+		In nodes:	SPLITC_123
+		Out nodes:	SPLITC_124
+		Net[196]: net_196
+		In nodes:	SPLITC_123
+		Out nodes:	SPLITC_125
+		Net[197]: net_197
+		In nodes:	SPLITC_124
+		Out nodes:
+		Net[198]: net_198
+		In nodes:	SPLITC_124
+		Out nodes:
+		Net[199]: net_199
+		In nodes:	SPLITC_125
+		Out nodes:
+		Net[200]: net_200
+		In nodes:	SPLITC_125
+		Out nodes:
+		Net[201]: net_201
+		In nodes:	SPLITC_126
+		Out nodes:	SPLITC_127
+		Net[202]: net_202
+		In nodes:	SPLITC_126
+		Out nodes:	SPLITC_128
+		Net[203]: net_203
+		In nodes:	SPLITC_127
+		Out nodes:
+		Net[204]: net_204
+		In nodes:	SPLITC_127
+		Out nodes:
+		Net[205]: net_205
+		In nodes:	SPLITC_128
+		Out nodes:
+		Net[206]: net_206
+		In nodes:	SPLITC_128
+		Out nodes:
+		Net[207]: net_207
+		In nodes:	SPLITC_129
+		Out nodes:	SPLITC_130
+		Net[208]: net_208
+		In nodes:	SPLITC_129
+		Out nodes:	SPLITC_137
+		Net[209]: net_209
+		In nodes:	SPLITC_130
+		Out nodes:	SPLITC_131
+		Net[210]: net_210
+		In nodes:	SPLITC_130
+		Out nodes:	SPLITC_134
+		Net[211]: net_211
+		In nodes:	SPLITC_131
+		Out nodes:	SPLITC_132
+		Net[212]: net_212
+		In nodes:	SPLITC_131
+		Out nodes:	SPLITC_133
+		Net[213]: net_213
+		In nodes:	SPLITC_132
+		Out nodes:
+		Net[214]: net_214
+		In nodes:	SPLITC_132
+		Out nodes:
+		Net[215]: net_215
+		In nodes:	SPLITC_133
+		Out nodes:
+		Net[216]: net_216
+		In nodes:	SPLITC_133
+		Out nodes:
+		Net[217]: net_217
+		In nodes:	SPLITC_134
+		Out nodes:	SPLITC_135
+		Net[218]: net_218
+		In nodes:	SPLITC_134
+		Out nodes:	SPLITC_136
+		Net[219]: net_219
+		In nodes:	SPLITC_135
+		Out nodes:
+		Net[220]: net_220
+		In nodes:	SPLITC_135
+		Out nodes:
+		Net[221]: net_221
+		In nodes:	SPLITC_136
+		Out nodes:
+		Net[222]: net_222
+		In nodes:	SPLITC_136
+		Out nodes:
+		Net[223]: net_223
+		In nodes:	SPLITC_137
+		Out nodes:	SPLITC_138
+		Net[224]: net_224
+		In nodes:	SPLITC_137
+		Out nodes:	SPLITC_141
+		Net[225]: net_225
+		In nodes:	SPLITC_138
+		Out nodes:	SPLITC_139
+		Net[226]: net_226
+		In nodes:	SPLITC_138
+		Out nodes:	SPLITC_140
+		Net[227]: net_227
+		In nodes:	SPLITC_139
+		Out nodes:
+		Net[228]: net_228
+		In nodes:	SPLITC_139
+		Out nodes:
+		Net[229]: net_229
+		In nodes:	SPLITC_140
+		Out nodes:
+		Net[230]: net_230
+		In nodes:	SPLITC_140
+		Out nodes:
+		Net[231]: net_231
+		In nodes:	SPLITC_141
+		Out nodes:	SPLITC_142
+		Net[232]: net_232
+		In nodes:	SPLITC_141
+		Out nodes:	SPLITC_143
+		Net[233]: net_233
+		In nodes:	SPLITC_142
+		Out nodes:
+		Net[234]: net_234
+		In nodes:	SPLITC_142
+		Out nodes:
+		Net[235]: net_235
+		In nodes:	SPLITC_143
+		Out nodes:
+		Net[236]: net_236
+		In nodes:	SPLITC_143
+		Out nodes:
+		Net[237]: net_237
+		In nodes:	SPLITC_144
+		Out nodes:	SPLITC_145
+		Net[238]: net_238
+		In nodes:	SPLITC_144
+		Out nodes:	SPLITC_160
+		Net[239]: net_239
+		In nodes:	SPLITC_145
+		Out nodes:	SPLITC_146
+		Net[240]: net_240
+		In nodes:	SPLITC_145
+		Out nodes:	SPLITC_153
+		Net[241]: net_241
+		In nodes:	SPLITC_146
+		Out nodes:	SPLITC_147
+		Net[242]: net_242
+		In nodes:	SPLITC_146
+		Out nodes:	SPLITC_150
+		Net[243]: net_243
+		In nodes:	SPLITC_147
+		Out nodes:	SPLITC_148
+		Net[244]: net_244
+		In nodes:	SPLITC_147
+		Out nodes:	SPLITC_149
+		Net[245]: net_245
+		In nodes:	SPLITC_148
+		Out nodes:
+		Net[246]: net_246
+		In nodes:	SPLITC_148
+		Out nodes:
+		Net[247]: net_247
+		In nodes:	SPLITC_149
+		Out nodes:
+		Net[248]: net_248
+		In nodes:	SPLITC_149
+		Out nodes:
+		Net[249]: net_249
+		In nodes:	SPLITC_150
+		Out nodes:	SPLITC_151
+		Net[250]: net_250
+		In nodes:	SPLITC_150
+		Out nodes:	SPLITC_152
+		Net[251]: net_251
+		In nodes:	SPLITC_151
+		Out nodes:
+		Net[252]: net_252
+		In nodes:	SPLITC_151
+		Out nodes:
+		Net[253]: net_253
+		In nodes:	SPLITC_152
+		Out nodes:
+		Net[254]: net_254
+		In nodes:	SPLITC_152
+		Out nodes:
+		Net[255]: net_255
+		In nodes:	SPLITC_153
+		Out nodes:	SPLITC_154
+		Net[256]: net_256
+		In nodes:	SPLITC_153
+		Out nodes:	SPLITC_157
+		Net[257]: net_257
+		In nodes:	SPLITC_154
+		Out nodes:	SPLITC_155
+		Net[258]: net_258
+		In nodes:	SPLITC_154
+		Out nodes:	SPLITC_156
+		Net[259]: net_259
+		In nodes:	SPLITC_155
+		Out nodes:
+		Net[260]: net_260
+		In nodes:	SPLITC_155
+		Out nodes:
+		Net[261]: net_261
+		In nodes:	SPLITC_156
+		Out nodes:
+		Net[262]: net_262
+		In nodes:	SPLITC_156
+		Out nodes:
+		Net[263]: net_263
+		In nodes:	SPLITC_157
+		Out nodes:	SPLITC_158
+		Net[264]: net_264
+		In nodes:	SPLITC_157
+		Out nodes:	SPLITC_159
+		Net[265]: net_265
+		In nodes:	SPLITC_158
+		Out nodes:
+		Net[266]: net_266
+		In nodes:	SPLITC_158
+		Out nodes:
+		Net[267]: net_267
+		In nodes:	SPLITC_159
+		Out nodes:
+		Net[268]: net_268
+		In nodes:	SPLITC_159
+		Out nodes:
+		Net[269]: net_269
+		In nodes:	SPLITC_160
+		Out nodes:	SPLITC_161
+		Net[270]: net_270
+		In nodes:	SPLITC_160
+		Out nodes:	SPLITC_168
+		Net[271]: net_271
+		In nodes:	SPLITC_161
+		Out nodes:	SPLITC_162
+		Net[272]: net_272
+		In nodes:	SPLITC_161
+		Out nodes:	SPLITC_165
+		Net[273]: net_273
+		In nodes:	SPLITC_162
+		Out nodes:	SPLITC_163
+		Net[274]: net_274
+		In nodes:	SPLITC_162
+		Out nodes:	SPLITC_164
+		Net[275]: net_275
+		In nodes:	SPLITC_163
+		Out nodes:
+		Net[276]: net_276
+		In nodes:	SPLITC_163
+		Out nodes:
+		Net[277]: net_277
+		In nodes:	SPLITC_164
+		Out nodes:
+		Net[278]: net_278
+		In nodes:	SPLITC_164
+		Out nodes:
+		Net[279]: net_279
+		In nodes:	SPLITC_165
+		Out nodes:	SPLITC_166
+		Net[280]: net_280
+		In nodes:	SPLITC_165
+		Out nodes:	SPLITC_167
+		Net[281]: net_281
+		In nodes:	SPLITC_166
+		Out nodes:
+		Net[282]: net_282
+		In nodes:	SPLITC_166
+		Out nodes:
+		Net[283]: net_283
+		In nodes:	SPLITC_167
+		Out nodes:
+		Net[284]: net_284
+		In nodes:	SPLITC_167
+		Out nodes:
+		Net[285]: net_285
+		In nodes:	SPLITC_168
+		Out nodes:	SPLITC_169
+		Net[286]: net_286
+		In nodes:	SPLITC_168
+		Out nodes:	SPLITC_172
+		Net[287]: net_287
+		In nodes:	SPLITC_169
+		Out nodes:	SPLITC_170
+		Net[288]: net_288
+		In nodes:	SPLITC_169
+		Out nodes:	SPLITC_171
+		Net[289]: net_289
+		In nodes:	SPLITC_170
+		Out nodes:
+		Net[290]: net_290
+		In nodes:	SPLITC_170
+		Out nodes:
+		Net[291]: net_291
+		In nodes:	SPLITC_171
+		Out nodes:
+		Net[292]: net_292
+		In nodes:	SPLITC_171
+		Out nodes:
+		Net[293]: net_293
+		In nodes:	SPLITC_172
+		Out nodes:	SPLITC_173
+		Net[294]: net_294
+		In nodes:	SPLITC_172
+		Out nodes:	SPLITC_174
+		Net[295]: net_295
+		In nodes:	SPLITC_173
+		Out nodes:
+		Net[296]: net_296
+		In nodes:	SPLITC_173
+		Out nodes:
+		Net[297]: net_297
+		In nodes:	SPLITC_174
+		Out nodes:
+		Net[298]: net_298
+		In nodes:	SPLITC_174
+		Out nodes:
+		Net[299]: net_299
+		In nodes:	SPLITC_175
+		Out nodes:	SPLITC_176
+		Net[300]: net_300
+		In nodes:	SPLITC_175
+		Out nodes:	SPLITC_239
+		Net[301]: net_301
+		In nodes:	SPLITC_176
+		Out nodes:	SPLITC_177
+		Net[302]: net_302
+		In nodes:	SPLITC_176
+		Out nodes:	SPLITC_208
+		Net[303]: net_303
+		In nodes:	SPLITC_177
+		Out nodes:	SPLITC_178
+		Net[304]: net_304
+		In nodes:	SPLITC_177
+		Out nodes:	SPLITC_193
+		Net[305]: net_305
+		In nodes:	SPLITC_178
+		Out nodes:	SPLITC_179
+		Net[306]: net_306
+		In nodes:	SPLITC_178
+		Out nodes:	SPLITC_186
+		Net[307]: net_307
+		In nodes:	SPLITC_179
+		Out nodes:	SPLITC_180
+		Net[308]: net_308
+		In nodes:	SPLITC_179
+		Out nodes:	SPLITC_183
+		Net[309]: net_309
+		In nodes:	SPLITC_180
+		Out nodes:	SPLITC_181
+		Net[310]: net_310
+		In nodes:	SPLITC_180
+		Out nodes:	SPLITC_182
+		Net[311]: net_311
+		In nodes:	SPLITC_181
+		Out nodes:
+		Net[312]: net_312
+		In nodes:	SPLITC_181
+		Out nodes:
+		Net[313]: net_313
+		In nodes:	SPLITC_182
+		Out nodes:
+		Net[314]: net_314
+		In nodes:	SPLITC_182
+		Out nodes:
+		Net[315]: net_315
+		In nodes:	SPLITC_183
+		Out nodes:	SPLITC_184
+		Net[316]: net_316
+		In nodes:	SPLITC_183
+		Out nodes:	SPLITC_185
+		Net[317]: net_317
+		In nodes:	SPLITC_184
+		Out nodes:
+		Net[318]: net_318
+		In nodes:	SPLITC_184
+		Out nodes:
+		Net[319]: net_319
+		In nodes:	SPLITC_185
+		Out nodes:
+		Net[320]: net_320
+		In nodes:	SPLITC_185
+		Out nodes:
+		Net[321]: net_321
+		In nodes:	SPLITC_186
+		Out nodes:	SPLITC_187
+		Net[322]: net_322
+		In nodes:	SPLITC_186
+		Out nodes:	SPLITC_190
+		Net[323]: net_323
+		In nodes:	SPLITC_187
+		Out nodes:	SPLITC_188
+		Net[324]: net_324
+		In nodes:	SPLITC_187
+		Out nodes:	SPLITC_189
+		Net[325]: net_325
+		In nodes:	SPLITC_188
+		Out nodes:
+		Net[326]: net_326
+		In nodes:	SPLITC_188
+		Out nodes:
+		Net[327]: net_327
+		In nodes:	SPLITC_189
+		Out nodes:
+		Net[328]: net_328
+		In nodes:	SPLITC_189
+		Out nodes:
+		Net[329]: net_329
+		In nodes:	SPLITC_190
+		Out nodes:	SPLITC_191
+		Net[330]: net_330
+		In nodes:	SPLITC_190
+		Out nodes:	SPLITC_192
+		Net[331]: net_331
+		In nodes:	SPLITC_191
+		Out nodes:
+		Net[332]: net_332
+		In nodes:	SPLITC_191
+		Out nodes:
+		Net[333]: net_333
+		In nodes:	SPLITC_192
+		Out nodes:
+		Net[334]: net_334
+		In nodes:	SPLITC_192
+		Out nodes:
+		Net[335]: net_335
+		In nodes:	SPLITC_193
+		Out nodes:	SPLITC_194
+		Net[336]: net_336
+		In nodes:	SPLITC_193
+		Out nodes:	SPLITC_201
+		Net[337]: net_337
+		In nodes:	SPLITC_194
+		Out nodes:	SPLITC_195
+		Net[338]: net_338
+		In nodes:	SPLITC_194
+		Out nodes:	SPLITC_198
+		Net[339]: net_339
+		In nodes:	SPLITC_195
+		Out nodes:	SPLITC_196
+		Net[340]: net_340
+		In nodes:	SPLITC_195
+		Out nodes:	SPLITC_197
+		Net[341]: net_341
+		In nodes:	SPLITC_196
+		Out nodes:
+		Net[342]: net_342
+		In nodes:	SPLITC_196
+		Out nodes:
+		Net[343]: net_343
+		In nodes:	SPLITC_197
+		Out nodes:
+		Net[344]: net_344
+		In nodes:	SPLITC_197
+		Out nodes:
+		Net[345]: net_345
+		In nodes:	SPLITC_198
+		Out nodes:	SPLITC_199
+		Net[346]: net_346
+		In nodes:	SPLITC_198
+		Out nodes:	SPLITC_200
+		Net[347]: net_347
+		In nodes:	SPLITC_199
+		Out nodes:
+		Net[348]: net_348
+		In nodes:	SPLITC_199
+		Out nodes:
+		Net[349]: net_349
+		In nodes:	SPLITC_200
+		Out nodes:
+		Net[350]: net_350
+		In nodes:	SPLITC_200
+		Out nodes:
+		Net[351]: net_351
+		In nodes:	SPLITC_201
+		Out nodes:	SPLITC_202
+		Net[352]: net_352
+		In nodes:	SPLITC_201
+		Out nodes:	SPLITC_205
+		Net[353]: net_353
+		In nodes:	SPLITC_202
+		Out nodes:	SPLITC_203
+		Net[354]: net_354
+		In nodes:	SPLITC_202
+		Out nodes:	SPLITC_204
+		Net[355]: net_355
+		In nodes:	SPLITC_203
+		Out nodes:
+		Net[356]: net_356
+		In nodes:	SPLITC_203
+		Out nodes:
+		Net[357]: net_357
+		In nodes:	SPLITC_204
+		Out nodes:
+		Net[358]: net_358
+		In nodes:	SPLITC_204
+		Out nodes:
+		Net[359]: net_359
+		In nodes:	SPLITC_205
+		Out nodes:	SPLITC_206
+		Net[360]: net_360
+		In nodes:	SPLITC_205
+		Out nodes:	SPLITC_207
+		Net[361]: net_361
+		In nodes:	SPLITC_206
+		Out nodes:
+		Net[362]: net_362
+		In nodes:	SPLITC_206
+		Out nodes:
+		Net[363]: net_363
+		In nodes:	SPLITC_207
+		Out nodes:
+		Net[364]: net_364
+		In nodes:	SPLITC_207
+		Out nodes:
+		Net[365]: net_365
+		In nodes:	SPLITC_208
+		Out nodes:	SPLITC_209
+		Net[366]: net_366
+		In nodes:	SPLITC_208
+		Out nodes:	SPLITC_224
+		Net[367]: net_367
+		In nodes:	SPLITC_209
+		Out nodes:	SPLITC_210
+		Net[368]: net_368
+		In nodes:	SPLITC_209
+		Out nodes:	SPLITC_217
+		Net[369]: net_369
+		In nodes:	SPLITC_210
+		Out nodes:	SPLITC_211
+		Net[370]: net_370
+		In nodes:	SPLITC_210
+		Out nodes:	SPLITC_214
+		Net[371]: net_371
+		In nodes:	SPLITC_211
+		Out nodes:	SPLITC_212
+		Net[372]: net_372
+		In nodes:	SPLITC_211
+		Out nodes:	SPLITC_213
+		Net[373]: net_373
+		In nodes:	SPLITC_212
+		Out nodes:
+		Net[374]: net_374
+		In nodes:	SPLITC_212
+		Out nodes:
+		Net[375]: net_375
+		In nodes:	SPLITC_213
+		Out nodes:
+		Net[376]: net_376
+		In nodes:	SPLITC_213
+		Out nodes:
+		Net[377]: net_377
+		In nodes:	SPLITC_214
+		Out nodes:	SPLITC_215
+		Net[378]: net_378
+		In nodes:	SPLITC_214
+		Out nodes:	SPLITC_216
+		Net[379]: net_379
+		In nodes:	SPLITC_215
+		Out nodes:
+		Net[380]: net_380
+		In nodes:	SPLITC_215
+		Out nodes:
+		Net[381]: net_381
+		In nodes:	SPLITC_216
+		Out nodes:
+		Net[382]: net_382
+		In nodes:	SPLITC_216
+		Out nodes:
+		Net[383]: net_383
+		In nodes:	SPLITC_217
+		Out nodes:	SPLITC_218
+		Net[384]: net_384
+		In nodes:	SPLITC_217
+		Out nodes:	SPLITC_221
+		Net[385]: net_385
+		In nodes:	SPLITC_218
+		Out nodes:	SPLITC_219
+		Net[386]: net_386
+		In nodes:	SPLITC_218
+		Out nodes:	SPLITC_220
+		Net[387]: net_387
+		In nodes:	SPLITC_219
+		Out nodes:
+		Net[388]: net_388
+		In nodes:	SPLITC_219
+		Out nodes:
+		Net[389]: net_389
+		In nodes:	SPLITC_220
+		Out nodes:
+		Net[390]: net_390
+		In nodes:	SPLITC_220
+		Out nodes:
+		Net[391]: net_391
+		In nodes:	SPLITC_221
+		Out nodes:	SPLITC_222
+		Net[392]: net_392
+		In nodes:	SPLITC_221
+		Out nodes:	SPLITC_223
+		Net[393]: net_393
+		In nodes:	SPLITC_222
+		Out nodes:
+		Net[394]: net_394
+		In nodes:	SPLITC_222
+		Out nodes:
+		Net[395]: net_395
+		In nodes:	SPLITC_223
+		Out nodes:
+		Net[396]: net_396
+		In nodes:	SPLITC_223
+		Out nodes:
+		Net[397]: net_397
+		In nodes:	SPLITC_224
+		Out nodes:	SPLITC_225
+		Net[398]: net_398
+		In nodes:	SPLITC_224
+		Out nodes:	SPLITC_232
+		Net[399]: net_399
+		In nodes:	SPLITC_225
+		Out nodes:	SPLITC_226
+		Net[400]: net_400
+		In nodes:	SPLITC_225
+		Out nodes:	SPLITC_229
+		Net[401]: net_401
+		In nodes:	SPLITC_226
+		Out nodes:	SPLITC_227
+		Net[402]: net_402
+		In nodes:	SPLITC_226
+		Out nodes:	SPLITC_228
+		Net[403]: net_403
+		In nodes:	SPLITC_227
+		Out nodes:
+		Net[404]: net_404
+		In nodes:	SPLITC_227
+		Out nodes:
+		Net[405]: net_405
+		In nodes:	SPLITC_228
+		Out nodes:
+		Net[406]: net_406
+		In nodes:	SPLITC_228
+		Out nodes:
+		Net[407]: net_407
+		In nodes:	SPLITC_229
+		Out nodes:	SPLITC_230
+		Net[408]: net_408
+		In nodes:	SPLITC_229
+		Out nodes:	SPLITC_231
+		Net[409]: net_409
+		In nodes:	SPLITC_230
+		Out nodes:
+		Net[410]: net_410
+		In nodes:	SPLITC_230
+		Out nodes:
+		Net[411]: net_411
+		In nodes:	SPLITC_231
+		Out nodes:
+		Net[412]: net_412
+		In nodes:	SPLITC_231
+		Out nodes:
+		Net[413]: net_413
+		In nodes:	SPLITC_232
+		Out nodes:	SPLITC_233
+		Net[414]: net_414
+		In nodes:	SPLITC_232
+		Out nodes:	SPLITC_236
+		Net[415]: net_415
+		In nodes:	SPLITC_233
+		Out nodes:	SPLITC_234
+		Net[416]: net_416
+		In nodes:	SPLITC_233
+		Out nodes:	SPLITC_235
+		Net[417]: net_417
+		In nodes:	SPLITC_234
+		Out nodes:
+		Net[418]: net_418
+		In nodes:	SPLITC_234
+		Out nodes:
+		Net[419]: net_419
+		In nodes:	SPLITC_235
+		Out nodes:
+		Net[420]: net_420
+		In nodes:	SPLITC_235
+		Out nodes:
+		Net[421]: net_421
+		In nodes:	SPLITC_236
+		Out nodes:	SPLITC_237
+		Net[422]: net_422
+		In nodes:	SPLITC_236
+		Out nodes:	SPLITC_238
+		Net[423]: net_423
+		In nodes:	SPLITC_237
+		Out nodes:
+		Net[424]: net_424
+		In nodes:	SPLITC_237
+		Out nodes:
+		Net[425]: net_425
+		In nodes:	SPLITC_238
+		Out nodes:
+		Net[426]: net_426
+		In nodes:	SPLITC_238
+		Out nodes:
+		Net[427]: net_427
+		In nodes:	SPLITC_239
+		Out nodes:	SPLITC_240
+		Net[428]: net_428
+		In nodes:	SPLITC_239
+		Out nodes:	SPLITC_271
+		Net[429]: net_429
+		In nodes:	SPLITC_240
+		Out nodes:	SPLITC_241
+		Net[430]: net_430
+		In nodes:	SPLITC_240
+		Out nodes:	SPLITC_256
+		Net[431]: net_431
+		In nodes:	SPLITC_241
+		Out nodes:	SPLITC_242
+		Net[432]: net_432
+		In nodes:	SPLITC_241
+		Out nodes:	SPLITC_249
+		Net[433]: net_433
+		In nodes:	SPLITC_242
+		Out nodes:	SPLITC_243
+		Net[434]: net_434
+		In nodes:	SPLITC_242
+		Out nodes:	SPLITC_246
+		Net[435]: net_435
+		In nodes:	SPLITC_243
+		Out nodes:	SPLITC_244
+		Net[436]: net_436
+		In nodes:	SPLITC_243
+		Out nodes:	SPLITC_245
+		Net[437]: net_437
+		In nodes:	SPLITC_244
+		Out nodes:
+		Net[438]: net_438
+		In nodes:	SPLITC_244
+		Out nodes:
+		Net[439]: net_439
+		In nodes:	SPLITC_245
+		Out nodes:
+		Net[440]: net_440
+		In nodes:	SPLITC_245
+		Out nodes:
+		Net[441]: net_441
+		In nodes:	SPLITC_246
+		Out nodes:	SPLITC_247
+		Net[442]: net_442
+		In nodes:	SPLITC_246
+		Out nodes:	SPLITC_248
+		Net[443]: net_443
+		In nodes:	SPLITC_247
+		Out nodes:
+		Net[444]: net_444
+		In nodes:	SPLITC_247
+		Out nodes:
+		Net[445]: net_445
+		In nodes:	SPLITC_248
+		Out nodes:
+		Net[446]: net_446
+		In nodes:	SPLITC_248
+		Out nodes:
+		Net[447]: net_447
+		In nodes:	SPLITC_249
+		Out nodes:	SPLITC_250
+		Net[448]: net_448
+		In nodes:	SPLITC_249
+		Out nodes:	SPLITC_253
+		Net[449]: net_449
+		In nodes:	SPLITC_250
+		Out nodes:	SPLITC_251
+		Net[450]: net_450
+		In nodes:	SPLITC_250
+		Out nodes:	SPLITC_252
+		Net[451]: net_451
+		In nodes:	SPLITC_251
+		Out nodes:
+		Net[452]: net_452
+		In nodes:	SPLITC_251
+		Out nodes:
+		Net[453]: net_453
+		In nodes:	SPLITC_252
+		Out nodes:
+		Net[454]: net_454
+		In nodes:	SPLITC_252
+		Out nodes:
+		Net[455]: net_455
+		In nodes:	SPLITC_253
+		Out nodes:	SPLITC_254
+		Net[456]: net_456
+		In nodes:	SPLITC_253
+		Out nodes:	SPLITC_255
+		Net[457]: net_457
+		In nodes:	SPLITC_254
+		Out nodes:
+		Net[458]: net_458
+		In nodes:	SPLITC_254
+		Out nodes:
+		Net[459]: net_459
+		In nodes:	SPLITC_255
+		Out nodes:
+		Net[460]: net_460
+		In nodes:	SPLITC_255
+		Out nodes:
+		Net[461]: net_461
+		In nodes:	SPLITC_256
+		Out nodes:	SPLITC_257
+		Net[462]: net_462
+		In nodes:	SPLITC_256
+		Out nodes:	SPLITC_264
+		Net[463]: net_463
+		In nodes:	SPLITC_257
+		Out nodes:	SPLITC_258
+		Net[464]: net_464
+		In nodes:	SPLITC_257
+		Out nodes:	SPLITC_261
+		Net[465]: net_465
+		In nodes:	SPLITC_258
+		Out nodes:	SPLITC_259
+		Net[466]: net_466
+		In nodes:	SPLITC_258
+		Out nodes:	SPLITC_260
+		Net[467]: net_467
+		In nodes:	SPLITC_259
+		Out nodes:
+		Net[468]: net_468
+		In nodes:	SPLITC_259
+		Out nodes:
+		Net[469]: net_469
+		In nodes:	SPLITC_260
+		Out nodes:
+		Net[470]: net_470
+		In nodes:	SPLITC_260
+		Out nodes:
+		Net[471]: net_471
+		In nodes:	SPLITC_261
+		Out nodes:	SPLITC_262
+		Net[472]: net_472
+		In nodes:	SPLITC_261
+		Out nodes:	SPLITC_263
+		Net[473]: net_473
+		In nodes:	SPLITC_262
+		Out nodes:
+		Net[474]: net_474
+		In nodes:	SPLITC_262
+		Out nodes:
+		Net[475]: net_475
+		In nodes:	SPLITC_263
+		Out nodes:
+		Net[476]: net_476
+		In nodes:	SPLITC_263
+		Out nodes:
+		Net[477]: net_477
+		In nodes:	SPLITC_264
+		Out nodes:	SPLITC_265
+		Net[478]: net_478
+		In nodes:	SPLITC_264
+		Out nodes:	SPLITC_268
+		Net[479]: net_479
+		In nodes:	SPLITC_265
+		Out nodes:	SPLITC_266
+		Net[480]: net_480
+		In nodes:	SPLITC_265
+		Out nodes:	SPLITC_267
+		Net[481]: net_481
+		In nodes:	SPLITC_266
+		Out nodes:
+		Net[482]: net_482
+		In nodes:	SPLITC_266
+		Out nodes:
+		Net[483]: net_483
+		In nodes:	SPLITC_267
+		Out nodes:
+		Net[484]: net_484
+		In nodes:	SPLITC_267
+		Out nodes:
+		Net[485]: net_485
+		In nodes:	SPLITC_268
+		Out nodes:	SPLITC_269
+		Net[486]: net_486
+		In nodes:	SPLITC_268
+		Out nodes:	SPLITC_270
+		Net[487]: net_487
+		In nodes:	SPLITC_269
+		Out nodes:
+		Net[488]: net_488
+		In nodes:	SPLITC_269
+		Out nodes:
+		Net[489]: net_489
+		In nodes:	SPLITC_270
+		Out nodes:
+		Net[490]: net_490
+		In nodes:	SPLITC_270
+		Out nodes:
+		Net[491]: net_491
+		In nodes:	SPLITC_271
+		Out nodes:	SPLITC_272
+		Net[492]: net_492
+		In nodes:	SPLITC_271
+		Out nodes:	SPLITC_287
+		Net[493]: net_493
+		In nodes:	SPLITC_272
+		Out nodes:	SPLITC_273
+		Net[494]: net_494
+		In nodes:	SPLITC_272
+		Out nodes:	SPLITC_280
+		Net[495]: net_495
+		In nodes:	SPLITC_273
+		Out nodes:	SPLITC_274
+		Net[496]: net_496
+		In nodes:	SPLITC_273
+		Out nodes:	SPLITC_277
+		Net[497]: net_497
+		In nodes:	SPLITC_274
+		Out nodes:	SPLITC_275
+		Net[498]: net_498
+		In nodes:	SPLITC_274
+		Out nodes:	SPLITC_276
+		Net[499]: net_499
+		In nodes:	SPLITC_275
+		Out nodes:
+		Net[500]: net_500
+		In nodes:	SPLITC_275
+		Out nodes:
+		Net[501]: net_501
+		In nodes:	SPLITC_276
+		Out nodes:
+		Net[502]: net_502
+		In nodes:	SPLITC_276
+		Out nodes:
+		Net[503]: net_503
+		In nodes:	SPLITC_277
+		Out nodes:	SPLITC_278
+		Net[504]: net_504
+		In nodes:	SPLITC_277
+		Out nodes:	SPLITC_279
+		Net[505]: net_505
+		In nodes:	SPLITC_278
+		Out nodes:
+		Net[506]: net_506
+		In nodes:	SPLITC_278
+		Out nodes:
+		Net[507]: net_507
+		In nodes:	SPLITC_279
+		Out nodes:
+		Net[508]: net_508
+		In nodes:	SPLITC_279
+		Out nodes:
+		Net[509]: net_509
+		In nodes:	SPLITC_280
+		Out nodes:	SPLITC_281
+		Net[510]: net_510
+		In nodes:	SPLITC_280
+		Out nodes:	SPLITC_284
+		Net[511]: net_511
+		In nodes:	SPLITC_281
+		Out nodes:	SPLITC_282
+		Net[512]: net_512
+		In nodes:	SPLITC_281
+		Out nodes:	SPLITC_283
+		Net[513]: net_513
+		In nodes:	SPLITC_282
+		Out nodes:
+		Net[514]: net_514
+		In nodes:	SPLITC_282
+		Out nodes:
+		Net[515]: net_515
+		In nodes:	SPLITC_283
+		Out nodes:
+		Net[516]: net_516
+		In nodes:	SPLITC_283
+		Out nodes:
+		Net[517]: net_517
+		In nodes:	SPLITC_284
+		Out nodes:	SPLITC_285
+		Net[518]: net_518
+		In nodes:	SPLITC_284
+		Out nodes:	SPLITC_286
+		Net[519]: net_519
+		In nodes:	SPLITC_285
+		Out nodes:
+		Net[520]: net_520
+		In nodes:	SPLITC_285
+		Out nodes:
+		Net[521]: net_521
+		In nodes:	SPLITC_286
+		Out nodes:
+		Net[522]: net_522
+		In nodes:	SPLITC_286
+		Out nodes:
+		Net[523]: net_523
+		In nodes:	SPLITC_287
+		Out nodes:	SPLITC_288
+		Net[524]: net_524
+		In nodes:	SPLITC_287
+		Out nodes:	SPLITC_295
+		Net[525]: net_525
+		In nodes:	SPLITC_288
+		Out nodes:	SPLITC_289
+		Net[526]: net_526
+		In nodes:	SPLITC_288
+		Out nodes:	SPLITC_292
+		Net[527]: net_527
+		In nodes:	SPLITC_289
+		Out nodes:	SPLITC_290
+		Net[528]: net_528
+		In nodes:	SPLITC_289
+		Out nodes:	SPLITC_291
+		Net[529]: net_529
+		In nodes:	SPLITC_290
+		Out nodes:
+		Net[530]: net_530
+		In nodes:	SPLITC_290
+		Out nodes:
+		Net[531]: net_531
+		In nodes:	SPLITC_291
+		Out nodes:
+		Net[532]: net_532
+		In nodes:	SPLITC_291
+		Out nodes:
+		Net[533]: net_533
+		In nodes:	SPLITC_292
+		Out nodes:	SPLITC_293
+		Net[534]: net_534
+		In nodes:	SPLITC_292
+		Out nodes:	SPLITC_294
+		Net[535]: net_535
+		In nodes:	SPLITC_293
+		Out nodes:
+		Net[536]: net_536
+		In nodes:	SPLITC_293
+		Out nodes:
+		Net[537]: net_537
+		In nodes:	SPLITC_294
+		Out nodes:
+		Net[538]: net_538
+		In nodes:	SPLITC_294
+		Out nodes:
+		Net[539]: net_539
+		In nodes:	SPLITC_295
+		Out nodes:	SPLITC_296
+		Net[540]: net_540
+		In nodes:	SPLITC_295
+		Out nodes:	SPLITC_299
+		Net[541]: net_541
+		In nodes:	SPLITC_296
+		Out nodes:	SPLITC_297
+		Net[542]: net_542
+		In nodes:	SPLITC_296
+		Out nodes:	SPLITC_298
+		Net[543]: net_543
+		In nodes:	SPLITC_297
+		Out nodes:
+		Net[544]: net_544
+		In nodes:	SPLITC_297
+		Out nodes:
+		Net[545]: net_545
+		In nodes:	SPLITC_298
+		Out nodes:
+		Net[546]: net_546
+		In nodes:	SPLITC_298
+		Out nodes:
+		Net[547]: net_547
+		In nodes:	SPLITC_299
+		Out nodes:	SPLITC_300
+		Net[548]: net_548
+		In nodes:	SPLITC_299
+		Out nodes:	SPLITC_301
+		Net[549]: net_549
+		In nodes:	SPLITC_300
+		Out nodes:
+		Net[550]: net_550
+		In nodes:	SPLITC_300
+		Out nodes:
+		Net[551]: net_551
+		In nodes:	SPLITC_301
+		Out nodes:
+		Net[552]: net_552
+		In nodes:	SPLITC_301
+		Out nodes:
+Generating SFQblif file:"data/results/blif/adder3bit.blif"
+------------------ Script ended -------------------
+[H[2J[3J------------- Script to for Die2Sim ---------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lynx/myCloud/ViPeR/ViPeR/build
+[100%] Built target libabc
+Scanning dependencies of target ViPeR
+[100%] Building CXX object CMakeFiles/ViPeR.dir/src/ForgeSFQblif.cpp.o
+[100%] Linking CXX executable ViPeR
+[100%] Built target ViPeR
+  |\
+  | \
+  | |  
+  \  \  __     __  _   ____         ____
+   \  \ \ \   / / (_) |  _ \  __   |  _ \     ____ 
+   |  |  \ \ / /  | | | |_)| / _ \ | |_) |   /   ^\___ 
+   /  /   \ V /   | | |  __/ | __/ |  _ <   /       `_\
+  /  /     \_/    |_| |_|    \___| |_| \_\ /   _______/
+ /  /     _____                          _/   / 
+|  |     /     \       __              _/   _/
+\   \___/       \     /  \            /   _/
+ \         __    \___/    \__________/   /
+  \_______/  \         __               /
+              \_______/  \_____________/
+ 
+========================================================
+           Verilog to Placement and Routing
+                   for SFQ circuits.
+                 Author: JF de Villiers
+                Stellenbosch University
+              For IARPA, ColdFlux project
+========================================================
+Importing execution parameters from config.toml
+Converting CMOS .blif to SFQ .blif
+Importing "data/blif/adder3bit.blif" with Blif Parser.
+Converting CMOS circuit to SFQ.
+Inserting DFFs at the inputs.
+Determining levels.
+Determining levels done.
+Inserting 2 DFFs after: a2
+Inserting 2 DFFs after: b2
+Inserting DFFs at the throughout the circuit.
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_4
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_9
+Determining levels.
+Determining levels done.
+Inserting DFFs at the outputs.
+Inserting 4 DFFs after: XOR2T_0
+Inserting 3 DFFs after: XOR2T_3
+Inserting 1 DFFs after: XOR2T_8
+Determining levels.
+Determining levels done.
+All possible routes:
+a0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+a0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+b0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+b0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+Done inserting DFFs.
+Inserting Splitters.
+Inserting 1 SPLITs after: a0
+Inserting 1 SPLITs after: a1
+Inserting 1 SPLITs after: DFF_22
+Inserting 1 SPLITs after: b0
+Inserting 1 SPLITs after: b1
+Inserting 1 SPLITs after: DFF_24
+Inserting 1 SPLITs after: AND2T_1
+Inserting 1 SPLITs after: XOR2T_2
+Inserting 1 SPLITs after: OR2T_6
+Inserting 1 SPLITs after: XOR2T_7
+Done inserting splitters.
+Determining levels without splitters.
+Determining levels without splitters done.
+The routes are balanced.
+Determining levels without splitters.
+Determining levels without splitters done.
+Clock levels:
+0: "a0"; "a1"; "a2"; "b0"; "b1"; b2
+1: "XOR2T_0"; "AND2T_1"; "XOR2T_2"; "AND2T_4"; "DFF_23"; "DFF_25"; "SPLIT_36"; "SPLIT_37"; "SPLIT_39"; SPLIT_40
+2: "XOR2T_3"; "AND2T_5"; "DFF_22"; "DFF_24"; "DFF_26"; "DFF_31"; "SPLIT_42"; SPLIT_43
+3: "OR2T_6"; "XOR2T_7"; "AND2T_9"; "DFF_30"; "DFF_34"; "SPLIT_38"; SPLIT_41
+4: "XOR2T_8"; "AND2T_10"; "DFF_27"; "DFF_29"; "DFF_33"; "SPLIT_44"; SPLIT_45
+5: "OR2T_11"; "DFF_28"; "DFF_32"; DFF_35
+6: "s0"; "s1"; "s2"; s3
+Clocking all the gates.
+Stats:
+	GateCnt: 12
+	inputCnt: 7
+	outputCnt: 4
+	splitCnt: 10
+	DFFCnt: 14
+Clock Pins: 26
+Clock levels: 5
+Clock splitters: 16
+Clock pins max: 32
+[0]: clk
+[1]: SPLITC_47
+[2]: SPLITC_48
+[3]: SPLITC_49
+[3]: SPLITC_49
+[2]: SPLITC_48
+[3]: SPLITC_50
+[3]: SPLITC_50
+[1]: SPLITC_47
+[2]: SPLITC_51
+[3]: SPLITC_52
+[3]: SPLITC_52
+[2]: SPLITC_51
+[3]: SPLITC_53
+[3]: SPLITC_53
+Clocking all the gates done.
+SFQBlif Class:
+	Model name: ADD3
+	No. Splitters: 0
+	No. DFFs: 0
+	No. Levels: 6
+	Nodes: 54
+		Gate No: 0
+		Type: input
+		Name: a0
+		In nets:
+		Out nets:	32
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 1
+		Type: input
+		Name: a1
+		In nets:
+		Out nets:	33
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 2
+		Type: input
+		Name: a2
+		In nets:
+		Out nets:	19
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 3
+		Type: input
+		Name: b0
+		In nets:
+		Out nets:	35
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 4
+		Type: input
+		Name: b1
+		In nets:
+		Out nets:	36
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 5
+		Type: input
+		Name: b2
+		In nets:
+		Out nets:	21
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 6
+		Type: output
+		Name: s0
+		In nets:	14
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 7
+		Type: output
+		Name: s1
+		In nets:	15
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 8
+		Type: output
+		Name: s2
+		In nets:	16
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 9
+		Type: output
+		Name: s3
+		In nets:	17
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 10
+		Type: XOR2T
+		Name: XOR2T_0
+		In nets:	3	0
+		Out nets:	27
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 11
+		Type: AND2T
+		Name: AND2T_1
+		In nets:	3	0
+		Out nets:	38
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 12
+		Type: XOR2T
+		Name: XOR2T_2
+		In nets:	4	1
+		Out nets:	39
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 13
+		Type: XOR2T
+		Name: XOR2T_3
+		In nets:	7	6
+		Out nets:	30
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 14
+		Type: AND2T
+		Name: AND2T_4
+		In nets:	4	1
+		Out nets:	22
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 15
+		Type: AND2T
+		Name: AND2T_5
+		In nets:	7	6
+		Out nets:	9
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 16
+		Type: OR2T
+		Name: OR2T_6
+		In nets:	9	8
+		Out nets:	40
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 17
+		Type: XOR2T
+		Name: XOR2T_7
+		In nets:	5	2
+		Out nets:	41
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 18
+		Type: XOR2T
+		Name: XOR2T_8
+		In nets:	11	10
+		Out nets:	31
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 19
+		Type: AND2T
+		Name: AND2T_9
+		In nets:	5	2
+		Out nets:	23
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 20
+		Type: AND2T
+		Name: AND2T_10
+		In nets:	11	10
+		Out nets:	13
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 21
+		Type: OR2T
+		Name: OR2T_11
+		In nets:	13	12
+		Out nets:	17
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 22
+		Type: DFF
+		Name: DFF_22
+		In nets:	18
+		Out nets:	34
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 23
+		Type: DFF
+		Name: DFF_23
+		In nets:	19
+		Out nets:	18
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 24
+		Type: DFF
+		Name: DFF_24
+		In nets:	20
+		Out nets:	37
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 25
+		Type: DFF
+		Name: DFF_25
+		In nets:	21
+		Out nets:	20
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 26
+		Type: DFF
+		Name: DFF_26
+		In nets:	22
+		Out nets:	8
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 27
+		Type: DFF
+		Name: DFF_27
+		In nets:	23
+		Out nets:	12
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 28
+		Type: DFF
+		Name: DFF_28
+		In nets:	24
+		Out nets:	14
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 29
+		Type: DFF
+		Name: DFF_29
+		In nets:	25
+		Out nets:	24
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 30
+		Type: DFF
+		Name: DFF_30
+		In nets:	26
+		Out nets:	25
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 31
+		Type: DFF
+		Name: DFF_31
+		In nets:	27
+		Out nets:	26
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 32
+		Type: DFF
+		Name: DFF_32
+		In nets:	28
+		Out nets:	15
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 33
+		Type: DFF
+		Name: DFF_33
+		In nets:	29
+		Out nets:	28
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 34
+		Type: DFF
+		Name: DFF_34
+		In nets:	30
+		Out nets:	29
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 35
+		Type: DFF
+		Name: DFF_35
+		In nets:	31
+		Out nets:	16
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 36
+		Type: SPLIT
+		Name: SPLIT_36
+		In nets:	32
+		Out nets:	0
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 37
+		Type: SPLIT
+		Name: SPLIT_37
+		In nets:	33
+		Out nets:	1
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 38
+		Type: SPLIT
+		Name: SPLIT_38
+		In nets:	34
+		Out nets:	2
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 39
+		Type: SPLIT
+		Name: SPLIT_39
+		In nets:	35
+		Out nets:	3
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 40
+		Type: SPLIT
+		Name: SPLIT_40
+		In nets:	36
+		Out nets:	4
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 41
+		Type: SPLIT
+		Name: SPLIT_41
+		In nets:	37
+		Out nets:	5
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 42
+		Type: SPLIT
+		Name: SPLIT_42
+		In nets:	38
+		Out nets:	6
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 43
+		Type: SPLIT
+		Name: SPLIT_43
+		In nets:	39
+		Out nets:	7
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 44
+		Type: SPLIT
+		Name: SPLIT_44
+		In nets:	40
+		Out nets:	10
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 45
+		Type: SPLIT
+		Name: SPLIT_45
+		In nets:	41
+		Out nets:	11
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 46
+		Type: input
+		Name: clk
+		In nets:
+		Out nets:	42
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 47
+		Type: SPLIT
+		Name: SPLITC_47
+		In nets:	42
+		Out nets:	43	44
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 48
+		Type: SPLIT
+		Name: SPLITC_48
+		In nets:	43
+		Out nets:	45	46
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 49
+		Type: SPLIT
+		Name: SPLITC_49
+		In nets:	45
+		Out nets:	47	48
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 50
+		Type: SPLIT
+		Name: SPLITC_50
+		In nets:	46
+		Out nets:	49	50
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 51
+		Type: SPLIT
+		Name: SPLITC_51
+		In nets:	44
+		Out nets:	51	52
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 52
+		Type: SPLIT
+		Name: SPLITC_52
+		In nets:	51
+		Out nets:	53	54
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 53
+		Type: SPLIT
+		Name: SPLITC_53
+		In nets:	52
+		Out nets:	55	56
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+	Nets: 57
+		Net[0]: net_0
+		In nodes:	SPLIT_36
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[1]: net_1
+		In nodes:	SPLIT_37
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[2]: net_2
+		In nodes:	SPLIT_38
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[3]: net_3
+		In nodes:	SPLIT_39
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[4]: net_4
+		In nodes:	SPLIT_40
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[5]: net_5
+		In nodes:	SPLIT_41
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[6]: net_6
+		In nodes:	SPLIT_42
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[7]: net_7
+		In nodes:	SPLIT_43
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[8]: net_8
+		In nodes:	DFF_26
+		Out nodes:	OR2T_6
+		Net[9]: net_9
+		In nodes:	AND2T_5
+		Out nodes:	OR2T_6
+		Net[10]: net_10
+		In nodes:	SPLIT_44
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[11]: net_11
+		In nodes:	SPLIT_45
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[12]: net_12
+		In nodes:	DFF_27
+		Out nodes:	OR2T_11
+		Net[13]: net_13
+		In nodes:	AND2T_10
+		Out nodes:	OR2T_11
+		Net[14]: net_14
+		In nodes:	DFF_28
+		Out nodes:	s0
+		Net[15]: net_15
+		In nodes:	DFF_32
+		Out nodes:	s1
+		Net[16]: net_16
+		In nodes:	DFF_35
+		Out nodes:	s2
+		Net[17]: net_17
+		In nodes:	OR2T_11
+		Out nodes:	s3
+		Net[18]: net_18
+		In nodes:	DFF_23
+		Out nodes:	DFF_22
+		Net[19]: net_19
+		In nodes:	a2
+		Out nodes:	DFF_23
+		Net[20]: net_20
+		In nodes:	DFF_25
+		Out nodes:	DFF_24
+		Net[21]: net_21
+		In nodes:	b2
+		Out nodes:	DFF_25
+		Net[22]: net_22
+		In nodes:	AND2T_4
+		Out nodes:	DFF_26
+		Net[23]: net_23
+		In nodes:	AND2T_9
+		Out nodes:	DFF_27
+		Net[24]: net_24
+		In nodes:	DFF_29
+		Out nodes:	DFF_28
+		Net[25]: net_25
+		In nodes:	DFF_30
+		Out nodes:	DFF_29
+		Net[26]: net_26
+		In nodes:	DFF_31
+		Out nodes:	DFF_30
+		Net[27]: net_27
+		In nodes:	XOR2T_0
+		Out nodes:	DFF_31
+		Net[28]: net_28
+		In nodes:	DFF_33
+		Out nodes:	DFF_32
+		Net[29]: net_29
+		In nodes:	DFF_34
+		Out nodes:	DFF_33
+		Net[30]: net_30
+		In nodes:	XOR2T_3
+		Out nodes:	DFF_34
+		Net[31]: net_31
+		In nodes:	XOR2T_8
+		Out nodes:	DFF_35
+		Net[32]: net_32
+		In nodes:	a0
+		Out nodes:	SPLIT_36
+		Net[33]: net_33
+		In nodes:	a1
+		Out nodes:	SPLIT_37
+		Net[34]: net_34
+		In nodes:	DFF_22
+		Out nodes:	SPLIT_38
+		Net[35]: net_35
+		In nodes:	b0
+		Out nodes:	SPLIT_39
+		Net[36]: net_36
+		In nodes:	b1
+		Out nodes:	SPLIT_40
+		Net[37]: net_37
+		In nodes:	DFF_24
+		Out nodes:	SPLIT_41
+		Net[38]: net_38
+		In nodes:	AND2T_1
+		Out nodes:	SPLIT_42
+		Net[39]: net_39
+		In nodes:	XOR2T_2
+		Out nodes:	SPLIT_43
+		Net[40]: net_40
+		In nodes:	OR2T_6
+		Out nodes:	SPLIT_44
+		Net[41]: net_41
+		In nodes:	XOR2T_7
+		Out nodes:	SPLIT_45
+		Net[42]: net_42
+		In nodes:	clk
+		Out nodes:	SPLITC_47
+		Net[43]: net_43
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_48
+		Net[44]: net_44
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_51
+		Net[45]: net_45
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_49
+		Net[46]: net_46
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_50
+		Net[47]: net_47
+		In nodes:	SPLITC_49
+		Out nodes:
+		Net[48]: net_48
+		In nodes:	SPLITC_49
+		Out nodes:
+		Net[49]: net_49
+		In nodes:	SPLITC_50
+		Out nodes:
+		Net[50]: net_50
+		In nodes:	SPLITC_50
+		Out nodes:
+		Net[51]: net_51
+		In nodes:	SPLITC_51
+		Out nodes:	SPLITC_52
+		Net[52]: net_52
+		In nodes:	SPLITC_51
+		Out nodes:	SPLITC_53
+		Net[53]: net_53
+		In nodes:	SPLITC_52
+		Out nodes:
+		Net[54]: net_54
+		In nodes:	SPLITC_52
+		Out nodes:
+		Net[55]: net_55
+		In nodes:	SPLITC_53
+		Out nodes:
+		Net[56]: net_56
+		In nodes:	SPLITC_53
+		Out nodes:
+Generating SFQblif file:"data/results/blif/adder3bit.blif"
+------------------ Script ended -------------------
+[H[2J[3J------------- Script to for Die2Sim ---------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lynx/myCloud/ViPeR/ViPeR/build
+[100%] Built target libabc
+Scanning dependencies of target ViPeR
+[100%] Building CXX object CMakeFiles/ViPeR.dir/src/ForgeSFQABC.cpp.o
+[100%] Linking CXX executable ViPeR
+[100%] Built target ViPeR
+  |\
+  | \
+  | |  
+  \  \  __     __  _   ____         ____
+   \  \ \ \   / / (_) |  _ \  __   |  _ \     ____ 
+   |  |  \ \ / /  | | | |_)| / _ \ | |_) |   /   ^\___ 
+   /  /   \ V /   | | |  __/ | __/ |  _ <   /       `_\
+  /  /     \_/    |_| |_|    \___| |_| \_\ /   _______/
+ /  /     _____                          _/   / 
+|  |     /     \       __              _/   _/
+\   \___/       \     /  \            /   _/
+ \         __    \___/    \__________/   /
+  \_______/  \         __               /
+              \_______/  \_____________/
+ 
+========================================================
+           Verilog to Placement and Routing
+                   for SFQ circuits.
+                 Author: JF de Villiers
+                Stellenbosch University
+              For IARPA, ColdFlux project
+========================================================
+Importing execution parameters from config.toml
+Converting CMOS .blif to SFQ .blif
+Importing "data/blif/adder3bit.blif" with Blif Parser.
+Converting CMOS circuit to SFQ.
+Inserting DFFs at the inputs.
+Determining levels.
+Determining levels done.
+Inserting 2 DFFs after: a2
+Inserting 2 DFFs after: b2
+Inserting DFFs at the throughout the circuit.
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_4
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_9
+Determining levels.
+Determining levels done.
+Inserting DFFs at the outputs.
+Inserting 4 DFFs after: XOR2T_0
+Inserting 3 DFFs after: XOR2T_3
+Inserting 1 DFFs after: XOR2T_8
+Determining levels.
+Determining levels done.
+All possible routes:
+a0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+a0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+b0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+b0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+Done inserting DFFs.
+Inserting Splitters.
+Inserting 1 SPLITs after: a0
+Inserting 1 SPLITs after: a1
+Inserting 1 SPLITs after: DFF_22
+Inserting 1 SPLITs after: b0
+Inserting 1 SPLITs after: b1
+Inserting 1 SPLITs after: DFF_24
+Inserting 1 SPLITs after: AND2T_1
+Inserting 1 SPLITs after: XOR2T_2
+Inserting 1 SPLITs after: OR2T_6
+Inserting 1 SPLITs after: XOR2T_7
+Done inserting splitters.
+Determining levels without splitters.
+Determining levels without splitters done.
+The routes are balanced.
+Determining levels without splitters.
+Determining levels without splitters done.
+Clock levels:
+0: "a0"; "a1"; "a2"; "b0"; "b1"; b2
+1: "XOR2T_0"; "AND2T_1"; "XOR2T_2"; "AND2T_4"; "DFF_23"; "DFF_25"; "SPLIT_36"; "SPLIT_37"; "SPLIT_39"; SPLIT_40
+2: "XOR2T_3"; "AND2T_5"; "DFF_22"; "DFF_24"; "DFF_26"; "DFF_31"; "SPLIT_42"; SPLIT_43
+3: "OR2T_6"; "XOR2T_7"; "AND2T_9"; "DFF_30"; "DFF_34"; "SPLIT_38"; SPLIT_41
+4: "XOR2T_8"; "AND2T_10"; "DFF_27"; "DFF_29"; "DFF_33"; "SPLIT_44"; SPLIT_45
+5: "OR2T_11"; "DFF_28"; "DFF_32"; DFF_35
+6: "s0"; "s1"; "s2"; s3
+Clocking all the gates.
+Stats:
+	GateCnt: 12
+	inputCnt: 7
+	outputCnt: 4
+	splitCnt: 10
+	DFFCnt: 14
+Clock Pins: 26
+Clock levels: 5
+Clock splitters: 16
+Clock pins max: 32
+[0]: clk
+[1]: SPLITC_47
+[2]: SPLITC_48
+[3]: SPLITC_49
+[3]: SPLITC_49
+[2]: SPLITC_48
+[3]: SPLITC_50
+[3]: SPLITC_50
+[1]: SPLITC_47
+[2]: SPLITC_51
+[3]: SPLITC_52
+[3]: SPLITC_52
+[2]: SPLITC_51
+[3]: SPLITC_53
+[3]: SPLITC_53
+Clocking all the gates done.
+SFQBlif Class:
+	Model name: ADD3
+	No. Splitters: 0
+	No. DFFs: 0
+	No. Levels: 6
+	Nodes: 54
+		Gate No: 0
+		Type: input
+		Name: a0
+		In nets:
+		Out nets:	32
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 1
+		Type: input
+		Name: a1
+		In nets:
+		Out nets:	33
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 2
+		Type: input
+		Name: a2
+		In nets:
+		Out nets:	19
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 3
+		Type: input
+		Name: b0
+		In nets:
+		Out nets:	35
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 4
+		Type: input
+		Name: b1
+		In nets:
+		Out nets:	36
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 5
+		Type: input
+		Name: b2
+		In nets:
+		Out nets:	21
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 6
+		Type: output
+		Name: s0
+		In nets:	14
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 7
+		Type: output
+		Name: s1
+		In nets:	15
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 8
+		Type: output
+		Name: s2
+		In nets:	16
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 9
+		Type: output
+		Name: s3
+		In nets:	17
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 10
+		Type: XOR2T
+		Name: XOR2T_0
+		In nets:	3	0
+		Out nets:	27
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 11
+		Type: AND2T
+		Name: AND2T_1
+		In nets:	3	0
+		Out nets:	38
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 12
+		Type: XOR2T
+		Name: XOR2T_2
+		In nets:	4	1
+		Out nets:	39
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 13
+		Type: XOR2T
+		Name: XOR2T_3
+		In nets:	7	6
+		Out nets:	30
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 14
+		Type: AND2T
+		Name: AND2T_4
+		In nets:	4	1
+		Out nets:	22
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 15
+		Type: AND2T
+		Name: AND2T_5
+		In nets:	7	6
+		Out nets:	9
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 16
+		Type: OR2T
+		Name: OR2T_6
+		In nets:	9	8
+		Out nets:	40
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 17
+		Type: XOR2T
+		Name: XOR2T_7
+		In nets:	5	2
+		Out nets:	41
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 18
+		Type: XOR2T
+		Name: XOR2T_8
+		In nets:	11	10
+		Out nets:	31
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 19
+		Type: AND2T
+		Name: AND2T_9
+		In nets:	5	2
+		Out nets:	23
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 20
+		Type: AND2T
+		Name: AND2T_10
+		In nets:	11	10
+		Out nets:	13
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 21
+		Type: OR2T
+		Name: OR2T_11
+		In nets:	13	12
+		Out nets:	17
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 22
+		Type: DFF
+		Name: DFF_22
+		In nets:	18
+		Out nets:	34
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 23
+		Type: DFF
+		Name: DFF_23
+		In nets:	19
+		Out nets:	18
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 24
+		Type: DFF
+		Name: DFF_24
+		In nets:	20
+		Out nets:	37
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 25
+		Type: DFF
+		Name: DFF_25
+		In nets:	21
+		Out nets:	20
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 26
+		Type: DFF
+		Name: DFF_26
+		In nets:	22
+		Out nets:	8
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 27
+		Type: DFF
+		Name: DFF_27
+		In nets:	23
+		Out nets:	12
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 28
+		Type: DFF
+		Name: DFF_28
+		In nets:	24
+		Out nets:	14
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 29
+		Type: DFF
+		Name: DFF_29
+		In nets:	25
+		Out nets:	24
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 30
+		Type: DFF
+		Name: DFF_30
+		In nets:	26
+		Out nets:	25
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 31
+		Type: DFF
+		Name: DFF_31
+		In nets:	27
+		Out nets:	26
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 32
+		Type: DFF
+		Name: DFF_32
+		In nets:	28
+		Out nets:	15
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 33
+		Type: DFF
+		Name: DFF_33
+		In nets:	29
+		Out nets:	28
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 34
+		Type: DFF
+		Name: DFF_34
+		In nets:	30
+		Out nets:	29
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 35
+		Type: DFF
+		Name: DFF_35
+		In nets:	31
+		Out nets:	16
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 36
+		Type: SPLIT
+		Name: SPLIT_36
+		In nets:	32
+		Out nets:	0
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 37
+		Type: SPLIT
+		Name: SPLIT_37
+		In nets:	33
+		Out nets:	1
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 38
+		Type: SPLIT
+		Name: SPLIT_38
+		In nets:	34
+		Out nets:	2
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 39
+		Type: SPLIT
+		Name: SPLIT_39
+		In nets:	35
+		Out nets:	3
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 40
+		Type: SPLIT
+		Name: SPLIT_40
+		In nets:	36
+		Out nets:	4
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 41
+		Type: SPLIT
+		Name: SPLIT_41
+		In nets:	37
+		Out nets:	5
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 42
+		Type: SPLIT
+		Name: SPLIT_42
+		In nets:	38
+		Out nets:	6
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 43
+		Type: SPLIT
+		Name: SPLIT_43
+		In nets:	39
+		Out nets:	7
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 44
+		Type: SPLIT
+		Name: SPLIT_44
+		In nets:	40
+		Out nets:	10
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 45
+		Type: SPLIT
+		Name: SPLIT_45
+		In nets:	41
+		Out nets:	11
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 46
+		Type: input
+		Name: clk
+		In nets:
+		Out nets:	42
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 47
+		Type: SPLIT
+		Name: SPLITC_47
+		In nets:	42
+		Out nets:	43	44
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 48
+		Type: SPLIT
+		Name: SPLITC_48
+		In nets:	43
+		Out nets:	45	46
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 49
+		Type: SPLIT
+		Name: SPLITC_49
+		In nets:	45
+		Out nets:	47	48
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 50
+		Type: SPLIT
+		Name: SPLITC_50
+		In nets:	46
+		Out nets:	49	50
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 51
+		Type: SPLIT
+		Name: SPLITC_51
+		In nets:	44
+		Out nets:	51	52
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 52
+		Type: SPLIT
+		Name: SPLITC_52
+		In nets:	51
+		Out nets:	53	54
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 53
+		Type: SPLIT
+		Name: SPLITC_53
+		In nets:	52
+		Out nets:	55	56
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+	Nets: 57
+		Net[0]: net_0
+		In nodes:	SPLIT_36
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[1]: net_1
+		In nodes:	SPLIT_37
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[2]: net_2
+		In nodes:	SPLIT_38
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[3]: net_3
+		In nodes:	SPLIT_39
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[4]: net_4
+		In nodes:	SPLIT_40
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[5]: net_5
+		In nodes:	SPLIT_41
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[6]: net_6
+		In nodes:	SPLIT_42
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[7]: net_7
+		In nodes:	SPLIT_43
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[8]: net_8
+		In nodes:	DFF_26
+		Out nodes:	OR2T_6
+		Net[9]: net_9
+		In nodes:	AND2T_5
+		Out nodes:	OR2T_6
+		Net[10]: net_10
+		In nodes:	SPLIT_44
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[11]: net_11
+		In nodes:	SPLIT_45
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[12]: net_12
+		In nodes:	DFF_27
+		Out nodes:	OR2T_11
+		Net[13]: net_13
+		In nodes:	AND2T_10
+		Out nodes:	OR2T_11
+		Net[14]: net_14
+		In nodes:	DFF_28
+		Out nodes:	s0
+		Net[15]: net_15
+		In nodes:	DFF_32
+		Out nodes:	s1
+		Net[16]: net_16
+		In nodes:	DFF_35
+		Out nodes:	s2
+		Net[17]: net_17
+		In nodes:	OR2T_11
+		Out nodes:	s3
+		Net[18]: net_18
+		In nodes:	DFF_23
+		Out nodes:	DFF_22
+		Net[19]: net_19
+		In nodes:	a2
+		Out nodes:	DFF_23
+		Net[20]: net_20
+		In nodes:	DFF_25
+		Out nodes:	DFF_24
+		Net[21]: net_21
+		In nodes:	b2
+		Out nodes:	DFF_25
+		Net[22]: net_22
+		In nodes:	AND2T_4
+		Out nodes:	DFF_26
+		Net[23]: net_23
+		In nodes:	AND2T_9
+		Out nodes:	DFF_27
+		Net[24]: net_24
+		In nodes:	DFF_29
+		Out nodes:	DFF_28
+		Net[25]: net_25
+		In nodes:	DFF_30
+		Out nodes:	DFF_29
+		Net[26]: net_26
+		In nodes:	DFF_31
+		Out nodes:	DFF_30
+		Net[27]: net_27
+		In nodes:	XOR2T_0
+		Out nodes:	DFF_31
+		Net[28]: net_28
+		In nodes:	DFF_33
+		Out nodes:	DFF_32
+		Net[29]: net_29
+		In nodes:	DFF_34
+		Out nodes:	DFF_33
+		Net[30]: net_30
+		In nodes:	XOR2T_3
+		Out nodes:	DFF_34
+		Net[31]: net_31
+		In nodes:	XOR2T_8
+		Out nodes:	DFF_35
+		Net[32]: net_32
+		In nodes:	a0
+		Out nodes:	SPLIT_36
+		Net[33]: net_33
+		In nodes:	a1
+		Out nodes:	SPLIT_37
+		Net[34]: net_34
+		In nodes:	DFF_22
+		Out nodes:	SPLIT_38
+		Net[35]: net_35
+		In nodes:	b0
+		Out nodes:	SPLIT_39
+		Net[36]: net_36
+		In nodes:	b1
+		Out nodes:	SPLIT_40
+		Net[37]: net_37
+		In nodes:	DFF_24
+		Out nodes:	SPLIT_41
+		Net[38]: net_38
+		In nodes:	AND2T_1
+		Out nodes:	SPLIT_42
+		Net[39]: net_39
+		In nodes:	XOR2T_2
+		Out nodes:	SPLIT_43
+		Net[40]: net_40
+		In nodes:	OR2T_6
+		Out nodes:	SPLIT_44
+		Net[41]: net_41
+		In nodes:	XOR2T_7
+		Out nodes:	SPLIT_45
+		Net[42]: net_42
+		In nodes:	clk
+		Out nodes:	SPLITC_47
+		Net[43]: net_43
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_48
+		Net[44]: net_44
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_51
+		Net[45]: net_45
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_49
+		Net[46]: net_46
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_50
+		Net[47]: net_47
+		In nodes:	SPLITC_49
+		Out nodes:
+		Net[48]: net_48
+		In nodes:	SPLITC_49
+		Out nodes:
+		Net[49]: net_49
+		In nodes:	SPLITC_50
+		Out nodes:
+		Net[50]: net_50
+		In nodes:	SPLITC_50
+		Out nodes:
+		Net[51]: net_51
+		In nodes:	SPLITC_51
+		Out nodes:	SPLITC_52
+		Net[52]: net_52
+		In nodes:	SPLITC_51
+		Out nodes:	SPLITC_53
+		Net[53]: net_53
+		In nodes:	SPLITC_52
+		Out nodes:
+		Net[54]: net_54
+		In nodes:	SPLITC_52
+		Out nodes:
+		Net[55]: net_55
+		In nodes:	SPLITC_53
+		Out nodes:
+		Net[56]: net_56
+		In nodes:	SPLITC_53
+		Out nodes:
+Generating Dot file for "data/results/blif/adder3bit_sfq.jpg"
+Dot file done.
+Creating "data/results/blif/adder3bit_sfq.jpg"
+------------------ Script ended -------------------
+[H[2J[3J------------- Script to for Die2Sim ---------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lynx/myCloud/ViPeR/ViPeR/build
+[100%] Built target libabc
+Scanning dependencies of target ViPeR
+[100%] Building CXX object CMakeFiles/ViPeR.dir/src/ForgeSFQblif.cpp.o
+[100%] Linking CXX executable ViPeR
+[100%] Built target ViPeR
+  |\
+  | \
+  | |  
+  \  \  __     __  _   ____         ____
+   \  \ \ \   / / (_) |  _ \  __   |  _ \     ____ 
+   |  |  \ \ / /  | | | |_)| / _ \ | |_) |   /   ^\___ 
+   /  /   \ V /   | | |  __/ | __/ |  _ <   /       `_\
+  /  /     \_/    |_| |_|    \___| |_| \_\ /   _______/
+ /  /     _____                          _/   / 
+|  |     /     \       __              _/   _/
+\   \___/       \     /  \            /   _/
+ \         __    \___/    \__________/   /
+  \_______/  \         __               /
+              \_______/  \_____________/
+ 
+========================================================
+           Verilog to Placement and Routing
+                   for SFQ circuits.
+                 Author: JF de Villiers
+                Stellenbosch University
+              For IARPA, ColdFlux project
+========================================================
+Importing execution parameters from config.toml
+Converting CMOS .blif to SFQ .blif
+Importing "data/blif/adder3bit.blif" with Blif Parser.
+Converting CMOS circuit to SFQ.
+Inserting DFFs at the inputs.
+Determining levels.
+Determining levels done.
+Inserting 2 DFFs after: a2
+Inserting 2 DFFs after: b2
+Inserting DFFs at the throughout the circuit.
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_4
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_9
+Determining levels.
+Determining levels done.
+Inserting DFFs at the outputs.
+Inserting 4 DFFs after: XOR2T_0
+Inserting 3 DFFs after: XOR2T_3
+Inserting 1 DFFs after: XOR2T_8
+Determining levels.
+Determining levels done.
+All possible routes:
+a0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+a0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+b0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+b0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+Done inserting DFFs.
+Inserting Splitters.
+Inserting 1 SPLITs after: a0
+Inserting 1 SPLITs after: a1
+Inserting 1 SPLITs after: DFF_22
+Inserting 1 SPLITs after: b0
+Inserting 1 SPLITs after: b1
+Inserting 1 SPLITs after: DFF_24
+Inserting 1 SPLITs after: AND2T_1
+Inserting 1 SPLITs after: XOR2T_2
+Inserting 1 SPLITs after: OR2T_6
+Inserting 1 SPLITs after: XOR2T_7
+Done inserting splitters.
+Determining levels without splitters.
+Determining levels without splitters done.
+The routes are balanced.
+Determining levels without splitters.
+Determining levels without splitters done.
+Clock levels:
+0: "a0"; "a1"; "a2"; "b0"; "b1"; b2
+1: "XOR2T_0"; "AND2T_1"; "XOR2T_2"; "AND2T_4"; "DFF_23"; "DFF_25"; "SPLIT_36"; "SPLIT_37"; "SPLIT_39"; SPLIT_40
+2: "XOR2T_3"; "AND2T_5"; "DFF_22"; "DFF_24"; "DFF_26"; "DFF_31"; "SPLIT_42"; SPLIT_43
+3: "OR2T_6"; "XOR2T_7"; "AND2T_9"; "DFF_30"; "DFF_34"; "SPLIT_38"; SPLIT_41
+4: "XOR2T_8"; "AND2T_10"; "DFF_27"; "DFF_29"; "DFF_33"; "SPLIT_44"; SPLIT_45
+5: "OR2T_11"; "DFF_28"; "DFF_32"; DFF_35
+6: "s0"; "s1"; "s2"; s3
+Clocking all the gates.
+Stats:
+	GateCnt: 12
+	inputCnt: 7
+	outputCnt: 4
+	splitCnt: 10
+	DFFCnt: 14
+Clock Pins: 26
+Clock levels: 5
+Clock splitters: 16
+Clock pins max: 32
+[0]: clk
+[1]: SPLITC_47
+[2]: SPLITC_48
+[3]: SPLITC_49
+[4]: SPLITC_50
+[5]: SPLITC_51
+[5]: SPLITC_51
+[4]: SPLITC_50
+[5]: SPLITC_52
+[5]: SPLITC_52
+[3]: SPLITC_49
+[4]: SPLITC_53
+[5]: SPLITC_54
+[5]: SPLITC_54
+[4]: SPLITC_53
+[5]: SPLITC_55
+[5]: SPLITC_55
+[2]: SPLITC_48
+[3]: SPLITC_56
+[4]: SPLITC_57
+[5]: SPLITC_58
+[5]: SPLITC_58
+[4]: SPLITC_57
+[5]: SPLITC_59
+[5]: SPLITC_59
+[3]: SPLITC_56
+[4]: SPLITC_60
+[5]: SPLITC_61
+[5]: SPLITC_61
+[4]: SPLITC_60
+[5]: SPLITC_62
+[5]: SPLITC_62
+[1]: SPLITC_47
+[2]: SPLITC_63
+[3]: SPLITC_64
+[4]: SPLITC_65
+[5]: SPLITC_66
+[5]: SPLITC_66
+[4]: SPLITC_65
+[5]: SPLITC_67
+[5]: SPLITC_67
+[3]: SPLITC_64
+[4]: SPLITC_68
+[5]: SPLITC_69
+[5]: SPLITC_69
+[4]: SPLITC_68
+[5]: SPLITC_70
+[5]: SPLITC_70
+[2]: SPLITC_63
+[3]: SPLITC_71
+[4]: SPLITC_72
+[5]: SPLITC_73
+[5]: SPLITC_73
+[4]: SPLITC_72
+[5]: SPLITC_74
+[5]: SPLITC_74
+[3]: SPLITC_71
+[4]: SPLITC_75
+[5]: SPLITC_76
+[5]: SPLITC_76
+[4]: SPLITC_75
+[5]: SPLITC_77
+[5]: SPLITC_77
+Clocking all the gates done.
+SFQBlif Class:
+	Model name: ADD3
+	No. Splitters: 0
+	No. DFFs: 0
+	No. Levels: 6
+	Nodes: 78
+		Gate No: 0
+		Type: input
+		Name: a0
+		In nets:
+		Out nets:	32
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 1
+		Type: input
+		Name: a1
+		In nets:
+		Out nets:	33
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 2
+		Type: input
+		Name: a2
+		In nets:
+		Out nets:	19
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 3
+		Type: input
+		Name: b0
+		In nets:
+		Out nets:	35
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 4
+		Type: input
+		Name: b1
+		In nets:
+		Out nets:	36
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 5
+		Type: input
+		Name: b2
+		In nets:
+		Out nets:	21
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 6
+		Type: output
+		Name: s0
+		In nets:	14
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 7
+		Type: output
+		Name: s1
+		In nets:	15
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 8
+		Type: output
+		Name: s2
+		In nets:	16
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 9
+		Type: output
+		Name: s3
+		In nets:	17
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 10
+		Type: XOR2T
+		Name: XOR2T_0
+		In nets:	3	0
+		Out nets:	27
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 11
+		Type: AND2T
+		Name: AND2T_1
+		In nets:	3	0
+		Out nets:	38
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 12
+		Type: XOR2T
+		Name: XOR2T_2
+		In nets:	4	1
+		Out nets:	39
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 13
+		Type: XOR2T
+		Name: XOR2T_3
+		In nets:	7	6
+		Out nets:	30
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 14
+		Type: AND2T
+		Name: AND2T_4
+		In nets:	4	1
+		Out nets:	22
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 15
+		Type: AND2T
+		Name: AND2T_5
+		In nets:	7	6
+		Out nets:	9
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 16
+		Type: OR2T
+		Name: OR2T_6
+		In nets:	9	8
+		Out nets:	40
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 17
+		Type: XOR2T
+		Name: XOR2T_7
+		In nets:	5	2
+		Out nets:	41
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 18
+		Type: XOR2T
+		Name: XOR2T_8
+		In nets:	11	10
+		Out nets:	31
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 19
+		Type: AND2T
+		Name: AND2T_9
+		In nets:	5	2
+		Out nets:	23
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 20
+		Type: AND2T
+		Name: AND2T_10
+		In nets:	11	10
+		Out nets:	13
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 21
+		Type: OR2T
+		Name: OR2T_11
+		In nets:	13	12
+		Out nets:	17
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 22
+		Type: DFF
+		Name: DFF_22
+		In nets:	18
+		Out nets:	34
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 23
+		Type: DFF
+		Name: DFF_23
+		In nets:	19
+		Out nets:	18
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 24
+		Type: DFF
+		Name: DFF_24
+		In nets:	20
+		Out nets:	37
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 25
+		Type: DFF
+		Name: DFF_25
+		In nets:	21
+		Out nets:	20
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 26
+		Type: DFF
+		Name: DFF_26
+		In nets:	22
+		Out nets:	8
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 27
+		Type: DFF
+		Name: DFF_27
+		In nets:	23
+		Out nets:	12
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 28
+		Type: DFF
+		Name: DFF_28
+		In nets:	24
+		Out nets:	14
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 29
+		Type: DFF
+		Name: DFF_29
+		In nets:	25
+		Out nets:	24
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 30
+		Type: DFF
+		Name: DFF_30
+		In nets:	26
+		Out nets:	25
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 31
+		Type: DFF
+		Name: DFF_31
+		In nets:	27
+		Out nets:	26
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 32
+		Type: DFF
+		Name: DFF_32
+		In nets:	28
+		Out nets:	15
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 33
+		Type: DFF
+		Name: DFF_33
+		In nets:	29
+		Out nets:	28
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 34
+		Type: DFF
+		Name: DFF_34
+		In nets:	30
+		Out nets:	29
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 35
+		Type: DFF
+		Name: DFF_35
+		In nets:	31
+		Out nets:	16
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 36
+		Type: SPLIT
+		Name: SPLIT_36
+		In nets:	32
+		Out nets:	0
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 37
+		Type: SPLIT
+		Name: SPLIT_37
+		In nets:	33
+		Out nets:	1
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 38
+		Type: SPLIT
+		Name: SPLIT_38
+		In nets:	34
+		Out nets:	2
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 39
+		Type: SPLIT
+		Name: SPLIT_39
+		In nets:	35
+		Out nets:	3
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 40
+		Type: SPLIT
+		Name: SPLIT_40
+		In nets:	36
+		Out nets:	4
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 41
+		Type: SPLIT
+		Name: SPLIT_41
+		In nets:	37
+		Out nets:	5
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 42
+		Type: SPLIT
+		Name: SPLIT_42
+		In nets:	38
+		Out nets:	6
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 43
+		Type: SPLIT
+		Name: SPLIT_43
+		In nets:	39
+		Out nets:	7
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 44
+		Type: SPLIT
+		Name: SPLIT_44
+		In nets:	40
+		Out nets:	10
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 45
+		Type: SPLIT
+		Name: SPLIT_45
+		In nets:	41
+		Out nets:	11
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 46
+		Type: input
+		Name: clk
+		In nets:
+		Out nets:	42
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 47
+		Type: SPLIT
+		Name: SPLITC_47
+		In nets:	42
+		Out nets:	43	44
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 48
+		Type: SPLIT
+		Name: SPLITC_48
+		In nets:	43
+		Out nets:	45	46
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 49
+		Type: SPLIT
+		Name: SPLITC_49
+		In nets:	45
+		Out nets:	47	48
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 50
+		Type: SPLIT
+		Name: SPLITC_50
+		In nets:	47
+		Out nets:	49	50
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 51
+		Type: SPLIT
+		Name: SPLITC_51
+		In nets:	49
+		Out nets:	51	52
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 52
+		Type: SPLIT
+		Name: SPLITC_52
+		In nets:	50
+		Out nets:	53	54
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 53
+		Type: SPLIT
+		Name: SPLITC_53
+		In nets:	48
+		Out nets:	55	56
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 54
+		Type: SPLIT
+		Name: SPLITC_54
+		In nets:	55
+		Out nets:	57	58
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 55
+		Type: SPLIT
+		Name: SPLITC_55
+		In nets:	56
+		Out nets:	59	60
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 56
+		Type: SPLIT
+		Name: SPLITC_56
+		In nets:	46
+		Out nets:	61	62
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 57
+		Type: SPLIT
+		Name: SPLITC_57
+		In nets:	61
+		Out nets:	63	64
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 58
+		Type: SPLIT
+		Name: SPLITC_58
+		In nets:	63
+		Out nets:	65	66
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 59
+		Type: SPLIT
+		Name: SPLITC_59
+		In nets:	64
+		Out nets:	67	68
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 60
+		Type: SPLIT
+		Name: SPLITC_60
+		In nets:	62
+		Out nets:	69	70
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 61
+		Type: SPLIT
+		Name: SPLITC_61
+		In nets:	69
+		Out nets:	71	72
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 62
+		Type: SPLIT
+		Name: SPLITC_62
+		In nets:	70
+		Out nets:	73	74
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 63
+		Type: SPLIT
+		Name: SPLITC_63
+		In nets:	44
+		Out nets:	75	76
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 64
+		Type: SPLIT
+		Name: SPLITC_64
+		In nets:	75
+		Out nets:	77	78
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 65
+		Type: SPLIT
+		Name: SPLITC_65
+		In nets:	77
+		Out nets:	79	80
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 66
+		Type: SPLIT
+		Name: SPLITC_66
+		In nets:	79
+		Out nets:	81	82
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 67
+		Type: SPLIT
+		Name: SPLITC_67
+		In nets:	80
+		Out nets:	83	84
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 68
+		Type: SPLIT
+		Name: SPLITC_68
+		In nets:	78
+		Out nets:	85	86
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 69
+		Type: SPLIT
+		Name: SPLITC_69
+		In nets:	85
+		Out nets:	87	88
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 70
+		Type: SPLIT
+		Name: SPLITC_70
+		In nets:	86
+		Out nets:	89	90
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 71
+		Type: SPLIT
+		Name: SPLITC_71
+		In nets:	76
+		Out nets:	91	92
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 72
+		Type: SPLIT
+		Name: SPLITC_72
+		In nets:	91
+		Out nets:	93	94
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 73
+		Type: SPLIT
+		Name: SPLITC_73
+		In nets:	93
+		Out nets:	95	96
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 74
+		Type: SPLIT
+		Name: SPLITC_74
+		In nets:	94
+		Out nets:	97	98
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 75
+		Type: SPLIT
+		Name: SPLITC_75
+		In nets:	92
+		Out nets:	99	100
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 76
+		Type: SPLIT
+		Name: SPLITC_76
+		In nets:	99
+		Out nets:	101	102
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 77
+		Type: SPLIT
+		Name: SPLITC_77
+		In nets:	100
+		Out nets:	103	104
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+	Nets: 105
+		Net[0]: net_0
+		In nodes:	SPLIT_36
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[1]: net_1
+		In nodes:	SPLIT_37
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[2]: net_2
+		In nodes:	SPLIT_38
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[3]: net_3
+		In nodes:	SPLIT_39
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[4]: net_4
+		In nodes:	SPLIT_40
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[5]: net_5
+		In nodes:	SPLIT_41
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[6]: net_6
+		In nodes:	SPLIT_42
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[7]: net_7
+		In nodes:	SPLIT_43
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[8]: net_8
+		In nodes:	DFF_26
+		Out nodes:	OR2T_6
+		Net[9]: net_9
+		In nodes:	AND2T_5
+		Out nodes:	OR2T_6
+		Net[10]: net_10
+		In nodes:	SPLIT_44
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[11]: net_11
+		In nodes:	SPLIT_45
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[12]: net_12
+		In nodes:	DFF_27
+		Out nodes:	OR2T_11
+		Net[13]: net_13
+		In nodes:	AND2T_10
+		Out nodes:	OR2T_11
+		Net[14]: net_14
+		In nodes:	DFF_28
+		Out nodes:	s0
+		Net[15]: net_15
+		In nodes:	DFF_32
+		Out nodes:	s1
+		Net[16]: net_16
+		In nodes:	DFF_35
+		Out nodes:	s2
+		Net[17]: net_17
+		In nodes:	OR2T_11
+		Out nodes:	s3
+		Net[18]: net_18
+		In nodes:	DFF_23
+		Out nodes:	DFF_22
+		Net[19]: net_19
+		In nodes:	a2
+		Out nodes:	DFF_23
+		Net[20]: net_20
+		In nodes:	DFF_25
+		Out nodes:	DFF_24
+		Net[21]: net_21
+		In nodes:	b2
+		Out nodes:	DFF_25
+		Net[22]: net_22
+		In nodes:	AND2T_4
+		Out nodes:	DFF_26
+		Net[23]: net_23
+		In nodes:	AND2T_9
+		Out nodes:	DFF_27
+		Net[24]: net_24
+		In nodes:	DFF_29
+		Out nodes:	DFF_28
+		Net[25]: net_25
+		In nodes:	DFF_30
+		Out nodes:	DFF_29
+		Net[26]: net_26
+		In nodes:	DFF_31
+		Out nodes:	DFF_30
+		Net[27]: net_27
+		In nodes:	XOR2T_0
+		Out nodes:	DFF_31
+		Net[28]: net_28
+		In nodes:	DFF_33
+		Out nodes:	DFF_32
+		Net[29]: net_29
+		In nodes:	DFF_34
+		Out nodes:	DFF_33
+		Net[30]: net_30
+		In nodes:	XOR2T_3
+		Out nodes:	DFF_34
+		Net[31]: net_31
+		In nodes:	XOR2T_8
+		Out nodes:	DFF_35
+		Net[32]: net_32
+		In nodes:	a0
+		Out nodes:	SPLIT_36
+		Net[33]: net_33
+		In nodes:	a1
+		Out nodes:	SPLIT_37
+		Net[34]: net_34
+		In nodes:	DFF_22
+		Out nodes:	SPLIT_38
+		Net[35]: net_35
+		In nodes:	b0
+		Out nodes:	SPLIT_39
+		Net[36]: net_36
+		In nodes:	b1
+		Out nodes:	SPLIT_40
+		Net[37]: net_37
+		In nodes:	DFF_24
+		Out nodes:	SPLIT_41
+		Net[38]: net_38
+		In nodes:	AND2T_1
+		Out nodes:	SPLIT_42
+		Net[39]: net_39
+		In nodes:	XOR2T_2
+		Out nodes:	SPLIT_43
+		Net[40]: net_40
+		In nodes:	OR2T_6
+		Out nodes:	SPLIT_44
+		Net[41]: net_41
+		In nodes:	XOR2T_7
+		Out nodes:	SPLIT_45
+		Net[42]: net_42
+		In nodes:	clk
+		Out nodes:	SPLITC_47
+		Net[43]: net_43
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_48
+		Net[44]: net_44
+		In nodes:	SPLITC_47
+		Out nodes:	SPLITC_63
+		Net[45]: net_45
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_49
+		Net[46]: net_46
+		In nodes:	SPLITC_48
+		Out nodes:	SPLITC_56
+		Net[47]: net_47
+		In nodes:	SPLITC_49
+		Out nodes:	SPLITC_50
+		Net[48]: net_48
+		In nodes:	SPLITC_49
+		Out nodes:	SPLITC_53
+		Net[49]: net_49
+		In nodes:	SPLITC_50
+		Out nodes:	SPLITC_51
+		Net[50]: net_50
+		In nodes:	SPLITC_50
+		Out nodes:	SPLITC_52
+		Net[51]: net_51
+		In nodes:	SPLITC_51
+		Out nodes:
+		Net[52]: net_52
+		In nodes:	SPLITC_51
+		Out nodes:
+		Net[53]: net_53
+		In nodes:	SPLITC_52
+		Out nodes:
+		Net[54]: net_54
+		In nodes:	SPLITC_52
+		Out nodes:
+		Net[55]: net_55
+		In nodes:	SPLITC_53
+		Out nodes:	SPLITC_54
+		Net[56]: net_56
+		In nodes:	SPLITC_53
+		Out nodes:	SPLITC_55
+		Net[57]: net_57
+		In nodes:	SPLITC_54
+		Out nodes:
+		Net[58]: net_58
+		In nodes:	SPLITC_54
+		Out nodes:
+		Net[59]: net_59
+		In nodes:	SPLITC_55
+		Out nodes:
+		Net[60]: net_60
+		In nodes:	SPLITC_55
+		Out nodes:
+		Net[61]: net_61
+		In nodes:	SPLITC_56
+		Out nodes:	SPLITC_57
+		Net[62]: net_62
+		In nodes:	SPLITC_56
+		Out nodes:	SPLITC_60
+		Net[63]: net_63
+		In nodes:	SPLITC_57
+		Out nodes:	SPLITC_58
+		Net[64]: net_64
+		In nodes:	SPLITC_57
+		Out nodes:	SPLITC_59
+		Net[65]: net_65
+		In nodes:	SPLITC_58
+		Out nodes:
+		Net[66]: net_66
+		In nodes:	SPLITC_58
+		Out nodes:
+		Net[67]: net_67
+		In nodes:	SPLITC_59
+		Out nodes:
+		Net[68]: net_68
+		In nodes:	SPLITC_59
+		Out nodes:
+		Net[69]: net_69
+		In nodes:	SPLITC_60
+		Out nodes:	SPLITC_61
+		Net[70]: net_70
+		In nodes:	SPLITC_60
+		Out nodes:	SPLITC_62
+		Net[71]: net_71
+		In nodes:	SPLITC_61
+		Out nodes:
+		Net[72]: net_72
+		In nodes:	SPLITC_61
+		Out nodes:
+		Net[73]: net_73
+		In nodes:	SPLITC_62
+		Out nodes:
+		Net[74]: net_74
+		In nodes:	SPLITC_62
+		Out nodes:
+		Net[75]: net_75
+		In nodes:	SPLITC_63
+		Out nodes:	SPLITC_64
+		Net[76]: net_76
+		In nodes:	SPLITC_63
+		Out nodes:	SPLITC_71
+		Net[77]: net_77
+		In nodes:	SPLITC_64
+		Out nodes:	SPLITC_65
+		Net[78]: net_78
+		In nodes:	SPLITC_64
+		Out nodes:	SPLITC_68
+		Net[79]: net_79
+		In nodes:	SPLITC_65
+		Out nodes:	SPLITC_66
+		Net[80]: net_80
+		In nodes:	SPLITC_65
+		Out nodes:	SPLITC_67
+		Net[81]: net_81
+		In nodes:	SPLITC_66
+		Out nodes:
+		Net[82]: net_82
+		In nodes:	SPLITC_66
+		Out nodes:
+		Net[83]: net_83
+		In nodes:	SPLITC_67
+		Out nodes:
+		Net[84]: net_84
+		In nodes:	SPLITC_67
+		Out nodes:
+		Net[85]: net_85
+		In nodes:	SPLITC_68
+		Out nodes:	SPLITC_69
+		Net[86]: net_86
+		In nodes:	SPLITC_68
+		Out nodes:	SPLITC_70
+		Net[87]: net_87
+		In nodes:	SPLITC_69
+		Out nodes:
+		Net[88]: net_88
+		In nodes:	SPLITC_69
+		Out nodes:
+		Net[89]: net_89
+		In nodes:	SPLITC_70
+		Out nodes:
+		Net[90]: net_90
+		In nodes:	SPLITC_70
+		Out nodes:
+		Net[91]: net_91
+		In nodes:	SPLITC_71
+		Out nodes:	SPLITC_72
+		Net[92]: net_92
+		In nodes:	SPLITC_71
+		Out nodes:	SPLITC_75
+		Net[93]: net_93
+		In nodes:	SPLITC_72
+		Out nodes:	SPLITC_73
+		Net[94]: net_94
+		In nodes:	SPLITC_72
+		Out nodes:	SPLITC_74
+		Net[95]: net_95
+		In nodes:	SPLITC_73
+		Out nodes:
+		Net[96]: net_96
+		In nodes:	SPLITC_73
+		Out nodes:
+		Net[97]: net_97
+		In nodes:	SPLITC_74
+		Out nodes:
+		Net[98]: net_98
+		In nodes:	SPLITC_74
+		Out nodes:
+		Net[99]: net_99
+		In nodes:	SPLITC_75
+		Out nodes:	SPLITC_76
+		Net[100]: net_100
+		In nodes:	SPLITC_75
+		Out nodes:	SPLITC_77
+		Net[101]: net_101
+		In nodes:	SPLITC_76
+		Out nodes:
+		Net[102]: net_102
+		In nodes:	SPLITC_76
+		Out nodes:
+		Net[103]: net_103
+		In nodes:	SPLITC_77
+		Out nodes:
+		Net[104]: net_104
+		In nodes:	SPLITC_77
+		Out nodes:
+Generating Dot file for "data/results/blif/adder3bit_sfq.jpg"
+Dot file done.
+Creating "data/results/blif/adder3bit_sfq.jpg"
+------------------ Script ended -------------------
+[H[2J[3J------------- Script to for Die2Sim ---------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/lynx/myCloud/ViPeR/ViPeR/build
+[100%] Built target libabc
+Scanning dependencies of target ViPeR
+[100%] Building CXX object CMakeFiles/ViPeR.dir/src/ForgeSFQblif.cpp.o
+[100%] Linking CXX executable ViPeR
+[100%] Built target ViPeR
+  |\
+  | \
+  | |  
+  \  \  __     __  _   ____         ____
+   \  \ \ \   / / (_) |  _ \  __   |  _ \     ____ 
+   |  |  \ \ / /  | | | |_)| / _ \ | |_) |   /   ^\___ 
+   /  /   \ V /   | | |  __/ | __/ |  _ <   /       `_\
+  /  /     \_/    |_| |_|    \___| |_| \_\ /   _______/
+ /  /     _____                          _/   / 
+|  |     /     \       __              _/   _/
+\   \___/       \     /  \            /   _/
+ \         __    \___/    \__________/   /
+  \_______/  \         __               /
+              \_______/  \_____________/
+ 
+========================================================
+           Verilog to Placement and Routing
+                   for SFQ circuits.
+                 Author: JF de Villiers
+                Stellenbosch University
+              For IARPA, ColdFlux project
+========================================================
+Importing execution parameters from config.toml
+Converting CMOS .blif to SFQ .blif
+Importing "data/blif/adder3bit.blif" with Blif Parser.
+Converting CMOS circuit to SFQ.
+Inserting DFFs at the inputs.
+Determining levels.
+Determining levels done.
+Inserting 2 DFFs after: a2
+Inserting 2 DFFs after: b2
+Inserting DFFs at the throughout the circuit.
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_4
+Determining levels.
+Determining levels done.
+Inserting 1 DFFs after: AND2T_9
+Determining levels.
+Determining levels done.
+Inserting DFFs at the outputs.
+Inserting 4 DFFs after: XOR2T_0
+Inserting 3 DFFs after: XOR2T_3
+Inserting 1 DFFs after: XOR2T_8
+Determining levels.
+Determining levels done.
+All possible routes:
+a0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+a0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+a1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+a2 -> DFF_23 -> DFF_22 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+a2 -> DFF_23 -> DFF_22 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+b0 -> XOR2T_0 -> DFF_31 -> DFF_30 -> DFF_29 -> DFF_28 -> s0
+b0 -> AND2T_1 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b0 -> AND2T_1 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> XOR2T_2 -> XOR2T_3 -> DFF_34 -> DFF_33 -> DFF_32 -> s1
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> XOR2T_2 -> AND2T_5 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> XOR2T_8 -> DFF_35 -> s2
+b1 -> AND2T_4 -> DFF_26 -> OR2T_6 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> XOR2T_8 -> DFF_35 -> s2
+b2 -> DFF_25 -> DFF_24 -> XOR2T_7 -> AND2T_10 -> OR2T_11 -> s3
+b2 -> DFF_25 -> DFF_24 -> AND2T_9 -> DFF_27 -> OR2T_11 -> s3
+Done inserting DFFs.
+Inserting Splitters.
+Inserting 1 SPLITs after: a0
+Inserting 1 SPLITs after: a1
+Inserting 1 SPLITs after: DFF_22
+Inserting 1 SPLITs after: b0
+Inserting 1 SPLITs after: b1
+Inserting 1 SPLITs after: DFF_24
+Inserting 1 SPLITs after: AND2T_1
+Inserting 1 SPLITs after: XOR2T_2
+Inserting 1 SPLITs after: OR2T_6
+Inserting 1 SPLITs after: XOR2T_7
+Done inserting splitters.
+Determining levels without splitters.
+Determining levels without splitters done.
+The routes are balanced.
+Determining levels without splitters.
+Determining levels without splitters done.
+Clock levels:
+0: "a0"; "a1"; "a2"; "b0"; "b1"; b2
+1: "XOR2T_0"; "AND2T_1"; "XOR2T_2"; "AND2T_4"; "DFF_23"; "DFF_25"; "SPLIT_36"; "SPLIT_37"; "SPLIT_39"; SPLIT_40
+2: "XOR2T_3"; "AND2T_5"; "DFF_22"; "DFF_24"; "DFF_26"; "DFF_31"; "SPLIT_42"; SPLIT_43
+3: "OR2T_6"; "XOR2T_7"; "AND2T_9"; "DFF_30"; "DFF_34"; "SPLIT_38"; SPLIT_41
+4: "XOR2T_8"; "AND2T_10"; "DFF_27"; "DFF_29"; "DFF_33"; "SPLIT_44"; SPLIT_45
+5: "OR2T_11"; "DFF_28"; "DFF_32"; DFF_35
+6: "s0"; "s1"; "s2"; s3
+Clocking all the gates.
+Stats:
+	GateCnt: 12
+	inputCnt: 7
+	outputCnt: 4
+	splitCnt: 10
+	DFFCnt: 14
+Clock Pins: 26
+Clock levels: 5
+Clock splitters: 16
+Clock pins max: 32
+[0]: clk
+[1]: SC_47
+[2]: SC_48
+[3]: SC_49
+[4]: SC_50
+[5]: SC_51
+[5]: SC_51
+[4]: SC_50
+[5]: SC_52
+[5]: SC_52
+[3]: SC_49
+[4]: SC_53
+[5]: SC_54
+[5]: SC_54
+[4]: SC_53
+[5]: SC_55
+[5]: SC_55
+[2]: SC_48
+[3]: SC_56
+[4]: SC_57
+[5]: SC_58
+[5]: SC_58
+[4]: SC_57
+[5]: SC_59
+[5]: SC_59
+[3]: SC_56
+[4]: SC_60
+[5]: SC_61
+[5]: SC_61
+[4]: SC_60
+[5]: SC_62
+[5]: SC_62
+[1]: SC_47
+[2]: SC_63
+[3]: SC_64
+[4]: SC_65
+[5]: SC_66
+[5]: SC_66
+[4]: SC_65
+[5]: SC_67
+[5]: SC_67
+[3]: SC_64
+[4]: SC_68
+[5]: SC_69
+[5]: SC_69
+[4]: SC_68
+[5]: SC_70
+[5]: SC_70
+[2]: SC_63
+[3]: SC_71
+[4]: SC_72
+[5]: SC_73
+[5]: SC_73
+[4]: SC_72
+[5]: SC_74
+[5]: SC_74
+[3]: SC_71
+[4]: SC_75
+[5]: SC_76
+[5]: SC_76
+[4]: SC_75
+[5]: SC_77
+[5]: SC_77
+Clocking all the gates done.
+SFQBlif Class:
+	Model name: ADD3
+	No. Splitters: 0
+	No. DFFs: 0
+	No. Levels: 6
+	Nodes: 78
+		Gate No: 0
+		Type: input
+		Name: a0
+		In nets:
+		Out nets:	32
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 1
+		Type: input
+		Name: a1
+		In nets:
+		Out nets:	33
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 2
+		Type: input
+		Name: a2
+		In nets:
+		Out nets:	19
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 3
+		Type: input
+		Name: b0
+		In nets:
+		Out nets:	35
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 4
+		Type: input
+		Name: b1
+		In nets:
+		Out nets:	36
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 5
+		Type: input
+		Name: b2
+		In nets:
+		Out nets:	21
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 0
+
+		Gate No: 6
+		Type: output
+		Name: s0
+		In nets:	14
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 7
+		Type: output
+		Name: s1
+		In nets:	15
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 8
+		Type: output
+		Name: s2
+		In nets:	16
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 9
+		Type: output
+		Name: s3
+		In nets:	17
+		Out nets:
+		Levels:			Clock: 6
+			Maximum: 6
+			Minimum: 6
+
+		Gate No: 10
+		Type: XOR2T
+		Name: XOR2T_0
+		In nets:	3	0
+		Out nets:	27
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 11
+		Type: AND2T
+		Name: AND2T_1
+		In nets:	3	0
+		Out nets:	38
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 12
+		Type: XOR2T
+		Name: XOR2T_2
+		In nets:	4	1
+		Out nets:	39
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 13
+		Type: XOR2T
+		Name: XOR2T_3
+		In nets:	7	6
+		Out nets:	30
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 14
+		Type: AND2T
+		Name: AND2T_4
+		In nets:	4	1
+		Out nets:	22
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 15
+		Type: AND2T
+		Name: AND2T_5
+		In nets:	7	6
+		Out nets:	9
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 16
+		Type: OR2T
+		Name: OR2T_6
+		In nets:	9	8
+		Out nets:	40
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 17
+		Type: XOR2T
+		Name: XOR2T_7
+		In nets:	5	2
+		Out nets:	41
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 18
+		Type: XOR2T
+		Name: XOR2T_8
+		In nets:	11	10
+		Out nets:	31
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 19
+		Type: AND2T
+		Name: AND2T_9
+		In nets:	5	2
+		Out nets:	23
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 20
+		Type: AND2T
+		Name: AND2T_10
+		In nets:	11	10
+		Out nets:	13
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 21
+		Type: OR2T
+		Name: OR2T_11
+		In nets:	13	12
+		Out nets:	17
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 22
+		Type: DFF
+		Name: DFF_22
+		In nets:	18
+		Out nets:	34
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 23
+		Type: DFF
+		Name: DFF_23
+		In nets:	19
+		Out nets:	18
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 24
+		Type: DFF
+		Name: DFF_24
+		In nets:	20
+		Out nets:	37
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 25
+		Type: DFF
+		Name: DFF_25
+		In nets:	21
+		Out nets:	20
+		Levels:			Clock: 1
+			Maximum: 1
+			Minimum: 1
+
+		Gate No: 26
+		Type: DFF
+		Name: DFF_26
+		In nets:	22
+		Out nets:	8
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 27
+		Type: DFF
+		Name: DFF_27
+		In nets:	23
+		Out nets:	12
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 28
+		Type: DFF
+		Name: DFF_28
+		In nets:	24
+		Out nets:	14
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 29
+		Type: DFF
+		Name: DFF_29
+		In nets:	25
+		Out nets:	24
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 30
+		Type: DFF
+		Name: DFF_30
+		In nets:	26
+		Out nets:	25
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 31
+		Type: DFF
+		Name: DFF_31
+		In nets:	27
+		Out nets:	26
+		Levels:			Clock: 2
+			Maximum: 2
+			Minimum: 2
+
+		Gate No: 32
+		Type: DFF
+		Name: DFF_32
+		In nets:	28
+		Out nets:	15
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 33
+		Type: DFF
+		Name: DFF_33
+		In nets:	29
+		Out nets:	28
+		Levels:			Clock: 4
+			Maximum: 4
+			Minimum: 4
+
+		Gate No: 34
+		Type: DFF
+		Name: DFF_34
+		In nets:	30
+		Out nets:	29
+		Levels:			Clock: 3
+			Maximum: 3
+			Minimum: 3
+
+		Gate No: 35
+		Type: DFF
+		Name: DFF_35
+		In nets:	31
+		Out nets:	16
+		Levels:			Clock: 5
+			Maximum: 5
+			Minimum: 5
+
+		Gate No: 36
+		Type: SPLIT
+		Name: SPLIT_36
+		In nets:	32
+		Out nets:	0
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 37
+		Type: SPLIT
+		Name: SPLIT_37
+		In nets:	33
+		Out nets:	1
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 38
+		Type: SPLIT
+		Name: SPLIT_38
+		In nets:	34
+		Out nets:	2
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 39
+		Type: SPLIT
+		Name: SPLIT_39
+		In nets:	35
+		Out nets:	3
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 40
+		Type: SPLIT
+		Name: SPLIT_40
+		In nets:	36
+		Out nets:	4
+		Levels:			Clock: 1
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 41
+		Type: SPLIT
+		Name: SPLIT_41
+		In nets:	37
+		Out nets:	5
+		Levels:			Clock: 3
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 42
+		Type: SPLIT
+		Name: SPLIT_42
+		In nets:	38
+		Out nets:	6
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 43
+		Type: SPLIT
+		Name: SPLIT_43
+		In nets:	39
+		Out nets:	7
+		Levels:			Clock: 2
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 44
+		Type: SPLIT
+		Name: SPLIT_44
+		In nets:	40
+		Out nets:	10
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 45
+		Type: SPLIT
+		Name: SPLIT_45
+		In nets:	41
+		Out nets:	11
+		Levels:			Clock: 4
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 46
+		Type: input
+		Name: clk
+		In nets:
+		Out nets:	42
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 47
+		Type: SPLIT
+		Name: SC_47
+		In nets:	42
+		Out nets:	43	44
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 48
+		Type: SPLIT
+		Name: SC_48
+		In nets:	43
+		Out nets:	45	46
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 49
+		Type: SPLIT
+		Name: SC_49
+		In nets:	45
+		Out nets:	47	48
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 50
+		Type: SPLIT
+		Name: SC_50
+		In nets:	47
+		Out nets:	49	50
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 51
+		Type: SPLIT
+		Name: SC_51
+		In nets:	49
+		Out nets:	51	52
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 52
+		Type: SPLIT
+		Name: SC_52
+		In nets:	50
+		Out nets:	53	54
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 53
+		Type: SPLIT
+		Name: SC_53
+		In nets:	48
+		Out nets:	55	56
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 54
+		Type: SPLIT
+		Name: SC_54
+		In nets:	55
+		Out nets:	57	58
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 55
+		Type: SPLIT
+		Name: SC_55
+		In nets:	56
+		Out nets:	59	60
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 56
+		Type: SPLIT
+		Name: SC_56
+		In nets:	46
+		Out nets:	61	62
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 57
+		Type: SPLIT
+		Name: SC_57
+		In nets:	61
+		Out nets:	63	64
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 58
+		Type: SPLIT
+		Name: SC_58
+		In nets:	63
+		Out nets:	65	66
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 59
+		Type: SPLIT
+		Name: SC_59
+		In nets:	64
+		Out nets:	67	68
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 60
+		Type: SPLIT
+		Name: SC_60
+		In nets:	62
+		Out nets:	69	70
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 61
+		Type: SPLIT
+		Name: SC_61
+		In nets:	69
+		Out nets:	71	72
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 62
+		Type: SPLIT
+		Name: SC_62
+		In nets:	70
+		Out nets:	73	74
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 63
+		Type: SPLIT
+		Name: SC_63
+		In nets:	44
+		Out nets:	75	76
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 64
+		Type: SPLIT
+		Name: SC_64
+		In nets:	75
+		Out nets:	77	78
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 65
+		Type: SPLIT
+		Name: SC_65
+		In nets:	77
+		Out nets:	79	80
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 66
+		Type: SPLIT
+		Name: SC_66
+		In nets:	79
+		Out nets:	81	82
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 67
+		Type: SPLIT
+		Name: SC_67
+		In nets:	80
+		Out nets:	83	84
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 68
+		Type: SPLIT
+		Name: SC_68
+		In nets:	78
+		Out nets:	85	86
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 69
+		Type: SPLIT
+		Name: SC_69
+		In nets:	85
+		Out nets:	87	88
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 70
+		Type: SPLIT
+		Name: SC_70
+		In nets:	86
+		Out nets:	89	90
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 71
+		Type: SPLIT
+		Name: SC_71
+		In nets:	76
+		Out nets:	91	92
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 72
+		Type: SPLIT
+		Name: SC_72
+		In nets:	91
+		Out nets:	93	94
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 73
+		Type: SPLIT
+		Name: SC_73
+		In nets:	93
+		Out nets:	95	96
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 74
+		Type: SPLIT
+		Name: SC_74
+		In nets:	94
+		Out nets:	97	98
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 75
+		Type: SPLIT
+		Name: SC_75
+		In nets:	92
+		Out nets:	99	100
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 76
+		Type: SPLIT
+		Name: SC_76
+		In nets:	99
+		Out nets:	101	102
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+		Gate No: 77
+		Type: SPLIT
+		Name: SC_77
+		In nets:	100
+		Out nets:	103	104
+		Levels:			Clock: 0
+			Maximum: 0
+			Minimum: 124
+
+	Nets: 105
+		Net[0]: net_0
+		In nodes:	SPLIT_36
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[1]: net_1
+		In nodes:	SPLIT_37
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[2]: net_2
+		In nodes:	SPLIT_38
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[3]: net_3
+		In nodes:	SPLIT_39
+		Out nodes:	XOR2T_0	AND2T_1
+		Net[4]: net_4
+		In nodes:	SPLIT_40
+		Out nodes:	XOR2T_2	AND2T_4
+		Net[5]: net_5
+		In nodes:	SPLIT_41
+		Out nodes:	XOR2T_7	AND2T_9
+		Net[6]: net_6
+		In nodes:	SPLIT_42
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[7]: net_7
+		In nodes:	SPLIT_43
+		Out nodes:	XOR2T_3	AND2T_5
+		Net[8]: net_8
+		In nodes:	DFF_26
+		Out nodes:	OR2T_6
+		Net[9]: net_9
+		In nodes:	AND2T_5
+		Out nodes:	OR2T_6
+		Net[10]: net_10
+		In nodes:	SPLIT_44
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[11]: net_11
+		In nodes:	SPLIT_45
+		Out nodes:	XOR2T_8	AND2T_10
+		Net[12]: net_12
+		In nodes:	DFF_27
+		Out nodes:	OR2T_11
+		Net[13]: net_13
+		In nodes:	AND2T_10
+		Out nodes:	OR2T_11
+		Net[14]: net_14
+		In nodes:	DFF_28
+		Out nodes:	s0
+		Net[15]: net_15
+		In nodes:	DFF_32
+		Out nodes:	s1
+		Net[16]: net_16
+		In nodes:	DFF_35
+		Out nodes:	s2
+		Net[17]: net_17
+		In nodes:	OR2T_11
+		Out nodes:	s3
+		Net[18]: net_18
+		In nodes:	DFF_23
+		Out nodes:	DFF_22
+		Net[19]: net_19
+		In nodes:	a2
+		Out nodes:	DFF_23
+		Net[20]: net_20
+		In nodes:	DFF_25
+		Out nodes:	DFF_24
+		Net[21]: net_21
+		In nodes:	b2
+		Out nodes:	DFF_25
+		Net[22]: net_22
+		In nodes:	AND2T_4
+		Out nodes:	DFF_26
+		Net[23]: net_23
+		In nodes:	AND2T_9
+		Out nodes:	DFF_27
+		Net[24]: net_24
+		In nodes:	DFF_29
+		Out nodes:	DFF_28
+		Net[25]: net_25
+		In nodes:	DFF_30
+		Out nodes:	DFF_29
+		Net[26]: net_26
+		In nodes:	DFF_31
+		Out nodes:	DFF_30
+		Net[27]: net_27
+		In nodes:	XOR2T_0
+		Out nodes:	DFF_31
+		Net[28]: net_28
+		In nodes:	DFF_33
+		Out nodes:	DFF_32
+		Net[29]: net_29
+		In nodes:	DFF_34
+		Out nodes:	DFF_33
+		Net[30]: net_30
+		In nodes:	XOR2T_3
+		Out nodes:	DFF_34
+		Net[31]: net_31
+		In nodes:	XOR2T_8
+		Out nodes:	DFF_35
+		Net[32]: net_32
+		In nodes:	a0
+		Out nodes:	SPLIT_36
+		Net[33]: net_33
+		In nodes:	a1
+		Out nodes:	SPLIT_37
+		Net[34]: net_34
+		In nodes:	DFF_22
+		Out nodes:	SPLIT_38
+		Net[35]: net_35
+		In nodes:	b0
+		Out nodes:	SPLIT_39
+		Net[36]: net_36
+		In nodes:	b1
+		Out nodes:	SPLIT_40
+		Net[37]: net_37
+		In nodes:	DFF_24
+		Out nodes:	SPLIT_41
+		Net[38]: net_38
+		In nodes:	AND2T_1
+		Out nodes:	SPLIT_42
+		Net[39]: net_39
+		In nodes:	XOR2T_2
+		Out nodes:	SPLIT_43
+		Net[40]: net_40
+		In nodes:	OR2T_6
+		Out nodes:	SPLIT_44
+		Net[41]: net_41
+		In nodes:	XOR2T_7
+		Out nodes:	SPLIT_45
+		Net[42]: net_42
+		In nodes:	clk
+		Out nodes:	SC_47
+		Net[43]: net_43
+		In nodes:	SC_47
+		Out nodes:	SC_48
+		Net[44]: net_44
+		In nodes:	SC_47
+		Out nodes:	SC_63
+		Net[45]: net_45
+		In nodes:	SC_48
+		Out nodes:	SC_49
+		Net[46]: net_46
+		In nodes:	SC_48
+		Out nodes:	SC_56
+		Net[47]: net_47
+		In nodes:	SC_49
+		Out nodes:	SC_50
+		Net[48]: net_48
+		In nodes:	SC_49
+		Out nodes:	SC_53
+		Net[49]: net_49
+		In nodes:	SC_50
+		Out nodes:	SC_51
+		Net[50]: net_50
+		In nodes:	SC_50
+		Out nodes:	SC_52
+		Net[51]: net_51
+		In nodes:	SC_51
+		Out nodes:
+		Net[52]: net_52
+		In nodes:	SC_51
+		Out nodes:
+		Net[53]: net_53
+		In nodes:	SC_52
+		Out nodes:
+		Net[54]: net_54
+		In nodes:	SC_52
+		Out nodes:
+		Net[55]: net_55
+		In nodes:	SC_53
+		Out nodes:	SC_54
+		Net[56]: net_56
+		In nodes:	SC_53
+		Out nodes:	SC_55
+		Net[57]: net_57
+		In nodes:	SC_54
+		Out nodes:
+		Net[58]: net_58
+		In nodes:	SC_54
+		Out nodes:
+		Net[59]: net_59
+		In nodes:	SC_55
+		Out nodes:
+		Net[60]: net_60
+		In nodes:	SC_55
+		Out nodes:
+		Net[61]: net_61
+		In nodes:	SC_56
+		Out nodes:	SC_57
+		Net[62]: net_62
+		In nodes:	SC_56
+		Out nodes:	SC_60
+		Net[63]: net_63
+		In nodes:	SC_57
+		Out nodes:	SC_58
+		Net[64]: net_64
+		In nodes:	SC_57
+		Out nodes:	SC_59
+		Net[65]: net_65
+		In nodes:	SC_58
+		Out nodes:
+		Net[66]: net_66
+		In nodes:	SC_58
+		Out nodes:
+		Net[67]: net_67
+		In nodes:	SC_59
+		Out nodes:
+		Net[68]: net_68
+		In nodes:	SC_59
+		Out nodes:
+		Net[69]: net_69
+		In nodes:	SC_60
+		Out nodes:	SC_61
+		Net[70]: net_70
+		In nodes:	SC_60
+		Out nodes:	SC_62
+		Net[71]: net_71
+		In nodes:	SC_61
+		Out nodes:
+		Net[72]: net_72
+		In nodes:	SC_61
+		Out nodes:
+		Net[73]: net_73
+		In nodes:	SC_62
+		Out nodes:
+		Net[74]: net_74
+		In nodes:	SC_62
+		Out nodes:
+		Net[75]: net_75
+		In nodes:	SC_63
+		Out nodes:	SC_64
+		Net[76]: net_76
+		In nodes:	SC_63
+		Out nodes:	SC_71
+		Net[77]: net_77
+		In nodes:	SC_64
+		Out nodes:	SC_65
+		Net[78]: net_78
+		In nodes:	SC_64
+		Out nodes:	SC_68
+		Net[79]: net_79
+		In nodes:	SC_65
+		Out nodes:	SC_66
+		Net[80]: net_80
+		In nodes:	SC_65
+		Out nodes:	SC_67
+		Net[81]: net_81
+		In nodes:	SC_66
+		Out nodes:
+		Net[82]: net_82
+		In nodes:	SC_66
+		Out nodes:
+		Net[83]: net_83
+		In nodes:	SC_67
+		Out nodes:
+		Net[84]: net_84
+		In nodes:	SC_67
+		Out nodes:
+		Net[85]: net_85
+		In nodes:	SC_68
+		Out nodes:	SC_69
+		Net[86]: net_86
+		In nodes:	SC_68
+		Out nodes:	SC_70
+		Net[87]: net_87
+		In nodes:	SC_69
+		Out nodes:
+		Net[88]: net_88
+		In nodes:	SC_69
+		Out nodes:
+		Net[89]: net_89
+		In nodes:	SC_70
+		Out nodes:
+		Net[90]: net_90
+		In nodes:	SC_70
+		Out nodes:
+		Net[91]: net_91
+		In nodes:	SC_71
+		Out nodes:	SC_72
+		Net[92]: net_92
+		In nodes:	SC_71
+		Out nodes:	SC_75
+		Net[93]: net_93
+		In nodes:	SC_72
+		Out nodes:	SC_73
+		Net[94]: net_94
+		In nodes:	SC_72
+		Out nodes:	SC_74
+		Net[95]: net_95
+		In nodes:	SC_73
+		Out nodes:
+		Net[96]: net_96
+		In nodes:	SC_73
+		Out nodes:
+		Net[97]: net_97
+		In nodes:	SC_74
+		Out nodes:
+		Net[98]: net_98
+		In nodes:	SC_74
+		Out nodes:
+		Net[99]: net_99
+		In nodes:	SC_75
+		Out nodes:	SC_76
+		Net[100]: net_100
+		In nodes:	SC_75
+		Out nodes:	SC_77
+		Net[101]: net_101
+		In nodes:	SC_76
+		Out nodes:
+		Net[102]: net_102
+		In nodes:	SC_76
+		Out nodes:
+		Net[103]: net_103
+		In nodes:	SC_77
+		Out nodes:
+		Net[104]: net_104
+		In nodes:	SC_77
+		Out nodes:
+Generating Dot file for "data/results/blif/adder3bit_sfq.jpg"
+Dot file done.
+Creating "data/results/blif/adder3bit_sfq.jpg"
+------------------ Script ended -------------------

@@ -4,7 +4,7 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-07-3
  * Modified:
- * license: 
+ * license:
  * Description: Parser/class for BLIF (The Berkeley Logic Interchange Format).
  * File:				ParserBlif.hpp
  */
@@ -19,7 +19,7 @@
 #include <vector>
 #include <fstream>
 
-#include "die2sim/genFunc.hpp"
+#include "viper/genFunc.hpp"
 
 #define binGVfile "data/bin/raw.gv"
 
@@ -27,7 +27,7 @@ using namespace std;
 
 /* ----------------------------------------------------------------------------------------
    ---------------------------------- Refined blif Parser ---------------------------------
-   ---------------------------------------------------------------------------------------- */ 
+   ---------------------------------------------------------------------------------------- */
 
 #define MaxNumberLevels 124
 
@@ -37,6 +37,7 @@ struct BlifNode{ 			// includes input and outputs
 
 	vector<unsigned int> inNets;
 	vector<unsigned int> outNets;
+	unsigned int clkNet = 0;
 
 	// Levels
 	unsigned int CLKlevel = 0;
@@ -70,7 +71,7 @@ class SFQBlif{
 		unsigned int gateCnt = 0;
 		unsigned int inputCnt = 0;
 		unsigned int outputCnt = 0;
-		
+
 
 		// functions
 		int FindLevels();
@@ -102,7 +103,7 @@ class SFQBlif{
 		unsigned int get_gateCnt(){return this->gateCnt;};
 		string get_modelName(){return this->modelName;};
 		// unsigned int get_(){return this->;};
-		
+
 
 		void receiveNodesNets(vector<BlifNode> &exVec0, vector<BlifNet> &exVec1){
 			nodes = exVec0;
@@ -116,7 +117,7 @@ class SFQBlif{
 
 /* ----------------------------------------------------------------------------------------
    ------------------------------------- RAW blif Parser ----------------------------------
-   ---------------------------------------------------------------------------------------- */ 
+   ---------------------------------------------------------------------------------------- */
 
 struct BlifGate
 {
@@ -126,7 +127,7 @@ struct BlifGate
 	// net name
 	vector<string> inputs;
 	vector<string> outputs;
-	
+
 };
 
 class BlifFile{

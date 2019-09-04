@@ -51,7 +51,8 @@ Completed:
 		✔	Remove extra/redundant DFFs @done (19-08-07 13:53)
 		✔	Created a dot parser in blifPaser @done (19-08-07 13:54)
 		✔	Die2Sim clean up, split from ViPeR @done (19-08-14 10:53)
-		□	
+		✔	Clocked created @done (19-08-19 09:20)
+		✔	fix/improved blif parser @done (19-08-20 09:20)
 
 Notes:
 	

@@ -17,8 +17,8 @@
 	Command     = "SFQblif"
 
 	# SFQblif
-	blifFileName = "data/blif/rca2.blif"
-	# blifFileName = "data/blif/adder3bit.blif"
+	# blifFileName = "data/blif/rca2.blif"
+	blifFileName = "data/blif/adder3bit.blif"
 	# blifFileName = "data/blif/adder6bit.blif"
 
 	# ABC

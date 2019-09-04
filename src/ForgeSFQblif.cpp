@@ -4,12 +4,12 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-07-1
  * Modified:
- * license: 
+ * license:
  * Description: Created a SFQ blif blif from a standard SFQ blif file
  * File:				ForgeSFQblif.cpp
  */
 
-#include "die2sim/ForgeSFQblif.hpp"
+#include "viper/ForgeSFQblif.hpp"
 
 /**
  * Constructor
@@ -26,10 +26,14 @@ ForgeSFQBlif::ForgeSFQBlif(){
  */
 
 int ForgeSFQBlif::importBlif(string fileName){
-	blifFile.importStdBlif(fileName);
+	this->blifFile.importStdBlif(fileName);
 
-	blifFile.get_Nodes(nodes);
-	blifFile.get_Nets(nets);
+	this->blifFile.get_Nodes(nodes);
+	this->blifFile.get_Nets(nets);
+
+	this->inputCnt = this->blifFile.get_inputCnt();
+	this->outputCnt = this->blifFile.get_outputCnt();;
+	this->gateCnt = this->nodes.size() - this->inputCnt - this->outputCnt;
 
 	return 1;
 }
@@ -41,29 +45,18 @@ int ForgeSFQBlif::importBlif(string fileName){
 
 int ForgeSFQBlif::toSFQ(){
 	cout << "Converting CMOS circuit to SFQ." << endl;
-	
-	// Old
-	// this->insertSplitters();
-	// this->insertDFFs();
-	// this->cleanLevels();
-	// this->insertDFFsPost();
-
-	// this->calcCLKlevels();
-	// this->printCLKlevels();
-	
 
 	// improved
 	this->insertDFFs();
 	this->insertSplitters();
-	
+
 	this->calcCLKlevels();
 	this->printCLKlevels();
 
-
+	this->clockIt();
 
 	return 1;
 }
-
 
 /**
  * [ForgeSFQBlif::FindLevels - Determines the levels of all the gates in the circuit]
@@ -80,7 +73,7 @@ int ForgeSFQBlif::findLevels(){
 		this->nodes[i].MinLevel = MaxNumberLevels;
 	}
 
-	vector<int> fooRoute;
+	vector<unsigned int> fooRoute;
 	this->routes.clear();
 
 	for(unsigned int i = 0; i < this->blifFile.get_inputCnt(); i++){
@@ -103,13 +96,7 @@ int ForgeSFQBlif::findLevels(){
 int ForgeSFQBlif::findLevelsES(){
 	cout << "Determining levels without splitters." << endl;
 
-	// for(unsigned int i = 0; i < this->nodes.size(); i++){
-	// 	// this->nodes[i].LevelOcc.clear();
-	// 	this->nodes[i].MaxLevel = 0;
-	// 	this->nodes[i].MinLevel = MaxNumberLevels;
-	// }
-
-	vector<int> fooRoute;
+	vector<unsigned int> fooRoute;
 	this->routes.clear();
 
 	for(unsigned int i = 0; i < this->blifFile.get_inputCnt(); i++){
@@ -130,7 +117,7 @@ int ForgeSFQBlif::findLevelsES(){
  * @return         [1 - all good; 0 - error]
  */
 
-int ForgeSFQBlif::recurLevels(unsigned int curNode, unsigned int curLev, vector<int> fooRoute){
+int ForgeSFQBlif::recurLevels(unsigned int curNode, unsigned int curLev, vector<unsigned int> fooRoute){
 	fooRoute.push_back(curNode);
 	// Checking for the end.
 	if(!this->nodes[curNode].GateType.compare("output")){
@@ -151,7 +138,7 @@ int ForgeSFQBlif::recurLevels(unsigned int curNode, unsigned int curLev, vector<
 	return 0;
 }
 
-int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vector<int> fooRoute){
+int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vector<unsigned int> fooRoute){
 	if(this->nodes[curNode].GateType.compare("SPLIT")){
 		// cout << "Gate: " << this->nodes[curNode].GateType << endl;
 		fooRoute.push_back(curNode);
@@ -169,7 +156,7 @@ int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vecto
 		for(unsigned int j = 0; j < this->nets[this->nodes[curNode].outNets[i]].outNodes.size(); j++){
 			// this->setLevel(curNode, curLev);
 			this->nodes[curNode].CLKlevel = curLev;
-			
+
 			if(this->nodes[curNode].GateType.compare("SPLIT")){
 				this->recurLevelsES(this->nets[this->nodes[curNode].outNets[i]].outNodes[j], curLev+1, fooRoute);
 			}
@@ -184,6 +171,108 @@ int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vecto
 }
 
 /**
+ * [ForgeSFQBlif::clockIt Clocks all the gates]
+ * @return [1 - All good; 0 - error]
+ */
+
+int ForgeSFQBlif::clockIt(){
+	cout << "Clocking all the gates." << endl;
+
+	// Creating a clock(clk) pin to the input of the circuit
+	BlifNode fooNode;
+	fooNode.name = "clk";
+	fooNode.GateType = "input";
+	fooNode.outNets.push_back(this->nets.size());
+
+	BlifNet fooNet;
+	fooNet.name = "net_" + to_string(this->nets.size());
+	fooNet.inNodes.push_back(this->nodes.size());
+
+	this->nodes.push_back(fooNode);
+	this->nets.push_back(fooNet);
+
+	// Recalculate the counts of the gates.
+	this->calcStats();
+
+	// Creating the h-tree clock
+	unsigned int clkPins = this->gateCnt + this->DFFCnt;
+	unsigned int clkLev = log(clkPins)/log(2) + 1;
+	unsigned int clkSplit = pow(2, clkLev -1);
+
+	cout << "Clock stats:" << endl;
+	cout << "\tPins required: " << clkPins << endl;
+	cout << "\tPins max: " << pow(2, clkLev) << endl;
+	cout << "\tSplit levels: " << clkLev << endl;
+	cout << "\tOutput splitters: " << clkSplit << endl;
+	cout << "\tTotal splitters: " << clkSplit*2-1 << endl;
+
+	this->recurCreateCLK(this->nets.size()-1, 0, clkLev);
+
+	// for(unsigned int i = 0; i < this->finCLKsplit.size(); i++){
+	// 	cout << this->nodes[this->finCLKsplit[i]].name << ", ";
+	// }
+	// cout << endl;
+
+	cout << "Clocking all the gates done." << endl;
+	return 1;
+}
+
+/**
+ * [ForgeSFQBlif::recurCreateCLK - creates the h-tree clock using depth first recursion]
+ * @param  net      [The previous splitter's index]
+ * @param  curLev   [The current level]
+ * @param  maxLev   [The final level the function must stop at]
+ * @return          [1 - All good; 0 - error]
+ */
+
+int ForgeSFQBlif::recurCreateCLK(unsigned int net, unsigned int curLev, unsigned int maxLev){
+
+	if(curLev == maxLev){
+		this->finCLKsplit.push_back(this->nets[net].inNodes[0]);
+		return 1;
+	}
+
+	this->createSplitC(net);
+
+	for(unsigned int i = 0; i < this->nodes[this->nets[net].outNodes[0]].outNets.size(); i++){
+		if(this->recurCreateCLK(this->nodes[this->nets[net].outNodes[0]].outNets[i] , curLev+1, maxLev)){
+			break;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * [ForgeSFQBlif::createSplitC - creates a clock splitter]
+ * @param  netNo [the net the splitter must split]
+ * @return       [1 - All good; 0 - error]
+ */
+
+int ForgeSFQBlif::createSplitC(unsigned int netNo){
+	BlifNode fooNode;
+	BlifNet fooNet;
+
+	fooNode.name = "SC_" + to_string(this->nodes.size());
+	fooNode.GateType = "SPLIT";
+	fooNode.inNets.push_back(netNo);
+	fooNode.outNets.push_back(this->nets.size());
+	fooNode.outNets.push_back(this->nets.size()+1);
+
+	for(unsigned int i = 0; i < 2; i++){
+		fooNet.name = "net_" + to_string(this->nets.size());
+		fooNet.inNodes.clear();
+		fooNet.inNodes.push_back(this->nodes.size());
+		this->nets.push_back(fooNet);
+	}
+
+	this->nets[netNo].outNodes.push_back(this->nodes.size());
+	this->nodes.push_back(fooNode);
+
+	return 1;
+}
+
+/**
  * [ForgeSFQBlif::calcCLKlevels - Calculates the clock levels of the gates]
  * @return [1 - All good; 0 - error]
  */
@@ -195,10 +284,9 @@ int ForgeSFQBlif::calcCLKlevels(){
 	}
 
 	this->findLevelsES();
-	this->printRoutes();
+	// this->printRoutes();
 	this->CLKlevel.clear();
 	this->CLKlevel.resize(this->nodes[this->routes[0].back()].CLKlevel+1);
-	// this->CLKlevel.resize(this->routes[0].size());
 
 	for(unsigned int i = 0; i < this->nodes.size(); i++){
 		this->CLKlevel[this->nodes[i].CLKlevel].push_back(i);
@@ -274,17 +362,17 @@ int ForgeSFQBlif::insertDFFs(){
 
 	unsigned int inputLongestRouteLen[this->blifFile.get_inputCnt()] = {0};
 	unsigned int inputLongestRoute = 0;
-	
+
 	for(unsigned int i = 0; i < this->routes.size(); i++){
 		if(this->routes[i].size() > inputLongestRouteLen[this->routes[i][0]]){
 			inputLongestRouteLen[this->routes[i][0]] = this->routes[i].size();
-			
+
 			if(inputLongestRoute < inputLongestRouteLen[this->routes[i][0]]){
 				inputLongestRoute = inputLongestRouteLen[this->routes[i][0]];
 			}
 		}
 	}
-	
+
 	for(int i = 0; i < this->blifFile.get_inputCnt() ; i++){
 		if(inputLongestRoute > inputLongestRouteLen[i]){
 			this->insertGate("DFF", this->nodes[i].outNets[0], inputLongestRoute - inputLongestRouteLen[i]);
@@ -313,7 +401,7 @@ int ForgeSFQBlif::insertDFFs(){
 				// assuming that upper nodes are balanced
 
 				// cout << "Checking: " << this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].name << endl;
-					
+
 				if(this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].MaxLevel < fooNetLevel){
 					fooNetLevel = this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].MaxLevel;
 					fooNet = this->nodes[i].inNets[j];
@@ -324,7 +412,7 @@ int ForgeSFQBlif::insertDFFs(){
 
 			this->insertGate("DFF", fooNet, this->nodes[i].MaxLevel - this->nodes[i].MinLevel);
 			this->findLevels();
-			
+
 		}
 		else if(this->nodes[i].MaxLevel - this->nodes[i].MinLevel == 0){
 			// just do nothing
@@ -334,11 +422,11 @@ int ForgeSFQBlif::insertDFFs(){
 			return 0;
 		}
 	}
-	
+
 	// insert DFFs for the outputs
 	cout << "Inserting DFFs at the outputs." << endl;
 
-	unsigned int maxLev = 0;	
+	unsigned int maxLev = 0;
 
 	for(int i = this->blifFile.get_inputCnt(); i < this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i++){
 		// cout << "Checking: " << this->nodes[i].name << endl;
@@ -358,103 +446,6 @@ int ForgeSFQBlif::insertDFFs(){
 
 
 	cout << "Done inserting DFFs." << endl;
-	return 1;
-}
-
-/**
- * [ForgeSFQBlif::insertDFFsPost - Inserts DFFs in order for the levels to be balanced]
- * @return [1 - all good; 0 - error]
- */
-
-int ForgeSFQBlif::insertDFFsPost(){
-	cout << "Inserting POST DFFs." << endl;
-
-	// insert DFFs for the inputs
-	// finding the longed route per input
-	this->findLevelsES();
-
-	unsigned int inputLongestRouteLen[this->blifFile.get_inputCnt()] = {0};
-	unsigned int inputLongestRoute = 0;
-	
-	for(unsigned int i = 0; i < this->routes.size(); i++){
-		if(this->routes[i].size() > inputLongestRouteLen[this->routes[i][0]]){
-			inputLongestRouteLen[this->routes[i][0]] = this->routes[i].size();
-			
-			if(inputLongestRoute < inputLongestRouteLen[this->routes[i][0]]){
-				inputLongestRoute = inputLongestRouteLen[this->routes[i][0]];
-			}
-		}
-	}
-	
-	for(int i = 0; i < this->blifFile.get_inputCnt() ; i++){
-		if(inputLongestRoute > inputLongestRouteLen[i]){
-			this->insertGate("DFF", this->nodes[i].outNets[0], inputLongestRoute - inputLongestRouteLen[i]);
-		}
-		else if(inputLongestRoute == inputLongestRouteLen[i]){
-			// the same length, do nothing
-		}
-		else{
-			cout << "Smoke detected" << endl;
-			return 0;
-		}
-	}
-
-	cout << "Done inserting DFFs" << endl;
-	return 1;
-}
-
-/**
- * [ForgeSFQBlif::cleanLevels - Removes DFFs on levels that have SPLITTERs and DFFs only]
- * @return [1 - all good; 0 - error]
- */
-
-int ForgeSFQBlif::cleanLevels(){
-	cout << "Removing excessive DFFs." << endl;
-	string DFFstr = "DFF";
-	string SplitterStr = "SPLIT";
-
-	// if(!this->isLevelsBalanced()){
-	// 	cout << "Could not clean the levels" << endl;
-	// 	return 0;
-	// }
-
-	bool levelDelete[this->LevelCnt];
-
-
-	levelDelete[0] = false;
-	levelDelete[this->LevelCnt-1] = false;
-
-	for(unsigned int i = 1; i < this->LevelCnt-1; i++){
-		levelDelete[i] = true;
-	}
-
-	for(unsigned int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
-		if(!(!this->nodes[i].GateType.compare(DFFstr) || !this->nodes[i].GateType.compare(SplitterStr))){
-			levelDelete[this->nodes[i].MaxLevel] = false;
-		}
-	}
-
-	// cout << "Levels to be cleared:" << endl;
-	// for(unsigned int i = 0; i < this->LevelCnt; i++){
-	// 	cout << "L[" << i << "]: ";
-	// 	if(levelDelete[i]){
-	// 		cout << "to be CLEARED" << endl;
-	// 	}
-	// 	else{
-	// 		cout << "good" << endl;
-	// 	}
-	// }
-
-	for(unsigned int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
-		if(!this->nodes[i].GateType.compare(DFFstr)){
-			if(levelDelete[this->nodes[i].MaxLevel] == true){
-				this->deleteGate(i);
-			}
-		}
-	}
-
-	cout << "Removing excessive DFFs done." << endl;
-
 	return 1;
 }
 
@@ -488,7 +479,7 @@ int ForgeSFQBlif::insertGate(string GateType, unsigned int netNo, unsigned int n
 		fooNet.outNodes.push_back(this->nodes.size());
 
 		this->nodes[this->nets[netNo].inNodes[0]].outNets[0] = this->nets.size();
-		this->nets[netNo].inNodes[0] = this->nodes.size();	
+		this->nets[netNo].inNodes[0] = this->nodes.size();
 
 		this->nodes.push_back(fooNode);
 		this->nets.push_back(fooNet);
@@ -511,7 +502,7 @@ int ForgeSFQBlif::deleteGate(unsigned GateIndex){
 
 	cout << "Nulling/deleting node[" << GateIndex << "]: " << this->nodes[GateIndex].name << endl;
 
-	
+
 	// Reassigning output node's input
 	this->nets[this->nodes[GateIndex].outNets[0]].inNodes[0] = this->nets[this->nodes[GateIndex].inNets[0]].inNodes[0];
 
@@ -528,6 +519,40 @@ int ForgeSFQBlif::deleteGate(unsigned GateIndex){
 	this->nodes[GateIndex].GateType = "NULL";
 	this->nodes[GateIndex].inNets.clear();
 	this->nodes[GateIndex].outNets.clear();
+
+	return 1;
+}
+
+
+/**
+ * [ForgeSFQBlif::calcStats - Calculates stats from the circuit]
+ * @return [1 - all good; 0 - error]
+ */
+
+int ForgeSFQBlif::calcStats(){
+	this->inputCnt = 0;
+	this->outputCnt = 0;
+	this->gateCnt = 0;
+	this->splitCnt = 0;
+	this->DFFCnt = 0;
+
+	for(unsigned int i = 0; i < this->nodes.size(); i++){
+		if(!this->nodes[i].GateType.compare("input")){
+			this->inputCnt++;
+		}
+		else if(!this->nodes[i].GateType.compare("output")){
+			this->outputCnt++;
+		}
+		else if(!this->nodes[i].GateType.compare("DFF")){
+			this->DFFCnt++;
+		}
+		else if(!this->nodes[i].GateType.compare("SPLIT")){
+			this->splitCnt++;
+		}
+		else{
+			this->gateCnt++;
+		}
+	}
 
 	return 1;
 }
@@ -576,21 +601,25 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
 
 
   // Define the different shapes and colours for inputs, outputs, DFFs and splitters
-  for(unsigned int i = 0; i < this->blifFile.get_inputCnt(); i++){
-	  lineStr = "\t" + this->nodes[i].name + " [shape=box, color=red]; \n";
-	  fputs(lineStr.c_str(), dotFile);
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
+  	if(!this->nodes[i].GateType.compare("input")){
+		  lineStr = "\t" + this->nodes[i].name + " [shape=box, color=red]; \n";
+		  fputs(lineStr.c_str(), dotFile);
+		}
   }
-	for(unsigned int i = this->blifFile.get_inputCnt(); i < this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i++){
-	  lineStr = "\t" + this->nodes[i].name + " [shape=box, color=blue]; \n";
-	  fputs(lineStr.c_str(), dotFile);
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
+  	if(!this->nodes[i].GateType.compare("outputs")){
+		  lineStr = "\t" + this->nodes[i].name + " [shape=box, color=blue]; \n";
+		  fputs(lineStr.c_str(), dotFile);
+		}
   }
-  for(unsigned int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
   	if(!this->nodes[i].GateType.compare("DFF")){
 		  lineStr = "\t" + this->nodes[i].name + " [color=blue]; \n";
 		  fputs(lineStr.c_str(), dotFile);
   	}
   }
-  for(unsigned int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
   	if(!this->nodes[i].GateType.compare("SPLIT")){
 		  lineStr = "\t" + this->nodes[i].name + " [color=red]; \n";
 		  fputs(lineStr.c_str(), dotFile);
@@ -629,7 +658,7 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
 
   lineStr = "}";
   fputs(lineStr.c_str(), dotFile);
-  
+
   fclose(dotFile);
   cout << "Dot file done." << endl;
 
@@ -680,6 +709,21 @@ void ForgeSFQBlif::to_str(){
 }
 
 /**
+ * [ForgeSFQBlif::printStats - prints the stats of the circuit]
+ */
+
+void ForgeSFQBlif::printStats(){
+	this->calcStats();
+
+	cout << "Stats:" << endl;
+	cout << "\tGateCnt: " << this->gateCnt << endl;
+	cout << "\tInputCnt: " << this->inputCnt << endl;
+	cout << "\tOutputCnt: " << this->outputCnt << endl;
+	cout << "\tSplitCnt: " << this->splitCnt << endl;
+	cout << "\tDFFCnt: " << this->DFFCnt << endl;
+}
+
+/**
  * [ForgeSFQBlif::printRoutes - Displays the routes]
  */
 
@@ -706,8 +750,9 @@ void ForgeSFQBlif::printCLKlevels(){
 	unsigned int j;
 
 	for(unsigned int i = 0; i < this->CLKlevel.size(); i++){
+		cout << i << ": ";
 		for(j = 0; j < this->CLKlevel[i].size()-1; j++){
-				cout << "\"" << this->nodes[this->CLKlevel[i][j]].name << "\"; ";
+			cout << "\"" << this->nodes[this->CLKlevel[i][j]].name << "\"; ";
 		}
 		cout << this->nodes[this->CLKlevel[i][j]].name << endl;
 	}

@@ -4,7 +4,7 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-06-19
  * Modified:
- * license: 
+ * license:
  * Description: Parser for blif to Dot.
  * File:				Parserdot.hpp
  */
@@ -17,8 +17,8 @@
 #include <vector>
 #include <fstream>
 // #include <iomanip>
-#include "die2sim/ParserBlif.hpp"
-// #include "die2sim/genFunc.hpp"
+#include "viper/ParserBlif.hpp"
+// #include "viper/genFunc.hpp"
 
 using namespace std;
 
@@ -39,16 +39,16 @@ class DotFile{
 	public:
 		DotFile();
 		~DotFile(){};
-		
+
 		int importBlif(string fileName);
 
 		void setFileName(string fileName);
-		
+
 		void setInputNodes(vector<string> &exVec){inputs = exVec;};
 		void setOutputNodes(vector<string> &exVec){outputs = exVec;};
 		void createNet(string fromN, string toN);
 		int genDot();
-		
+
 
 		void to_str();
 };
