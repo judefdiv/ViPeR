@@ -33,8 +33,8 @@ class gdsBOX;                                  // ''
 #include <map>
 #include <fstream>
 #include <bitset>
-#include "gdsParser.hpp"
-#include "gdsForge.hpp"
+#include "gdscpp/gdsParser.hpp"
+#include "gdscpp/gdsForge.hpp"
 
 // ===================== Class Definitions ====================
 /*

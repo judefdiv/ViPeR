@@ -9,7 +9,7 @@
  * File:				gdsCpp.hpp
  */
 
-#include "gdsCpp.hpp"
+#include "gdscpp/gdsCpp.hpp"
 
 /**
  * [gdscpp::read description]

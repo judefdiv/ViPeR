@@ -203,3 +203,18 @@ string fileRenamer(string inName, string preFix, string suffix){
 	foo = inName.insert(inName.length(), suffix);
 	return foo;
 }
+
+/**
+ * [fileRenamer - Cleans up file name and able to prepend or append a string]
+ * @param  inName [Input file name]
+ * @param  suffix [The string to be added to the end]
+ * @return        [The modified string]
+ */
+
+string fileExtensionRenamer(string inName, string suffix){
+	string foo;
+
+	inName.erase(inName.find_last_of("."), inName.length());
+	foo = inName.insert(inName.length(), suffix);
+	return foo;
+}

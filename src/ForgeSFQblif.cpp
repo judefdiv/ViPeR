@@ -55,6 +55,9 @@ int ForgeSFQBlif::toSFQ(){
 
 	this->clockIt();
 
+	this->findLevelsWS();
+	this->printRoutesWS();
+
 	return 1;
 }
 
@@ -111,6 +114,29 @@ int ForgeSFQBlif::findLevelsES(){
 }
 
 /**
+ * [ForgeSFQBlif::findLevelsWS - Determines the levels of all the gates in the circuit]
+ * @return [1 - All good; 0 - Error]
+ */
+
+int ForgeSFQBlif::findLevelsWS(){
+	cout << "Determining all possible routes." << endl;
+
+	vector<unsigned int> fooRoute;
+	this->routesWS.clear();
+
+	for(unsigned int i = 0; i < this->blifFile.get_inputCnt(); i++){
+		// recursive; start with every inputs
+		recurLevelsWS(i, 0, fooRoute);
+		// recurLevelsES(i, 0, fooRoute);
+	}
+
+	// this->LevelCnt = this->routes[0].size();
+	// this->printRoutes();
+	cout << "Determining all possible routes done." << endl;
+	return 1;
+}
+
+/**
  * [ForgeSFQBlif::recurLevels - A recursive function that is used to determine the levels]
  * @param  curNode [The name of the output net(looking for) that one is looking for in the input nets of all the gates]
  * @param  curLev  [The current/level the flow is at]
@@ -163,6 +189,27 @@ int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vecto
 			else{
 				this->recurLevelsES(this->nets[this->nodes[curNode].outNets[i]].outNodes[j], curLev, fooRoute);
 			}
+		}
+	}
+
+	// cout << "These aren't the droids you are looking for." << endl;
+	return 0;
+}
+
+int ForgeSFQBlif::recurLevelsWS(unsigned int curNode, unsigned int curLev, vector<unsigned int> fooRoute){
+	fooRoute.push_back(curNode);
+	// Checking for the end.
+	if(!this->nodes[curNode].GateType.compare("output")){
+		this->routesWS.push_back(fooRoute);
+		fooRoute.clear();
+		// this->setLevel(curNode, curLev);
+		return 1;
+	}
+
+	for(unsigned int i = 0; i < this->nodes[curNode].outNets.size(); i++){
+		for(unsigned int j = 0; j < this->nets[this->nodes[curNode].outNets[i]].outNodes.size(); j++){
+			// this->setLevel(curNode, curLev);
+			this->recurLevelsWS(this->nets[this->nodes[curNode].outNets[i]].outNodes[j], curLev+1, fooRoute);
 		}
 	}
 
@@ -254,7 +301,7 @@ int ForgeSFQBlif::createSplitC(unsigned int netNo){
 	BlifNet fooNet;
 
 	fooNode.name = "SC_" + to_string(this->nodes.size());
-	fooNode.GateType = "SPLIT";
+	fooNode.GateType = "SC";
 	fooNode.inNets.push_back(netNo);
 	fooNode.outNets.push_back(this->nets.size());
 	fooNode.outNets.push_back(this->nets.size()+1);
@@ -591,7 +638,9 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
 	cout << "Generating Dot file for \"" << fileName << "\"" << endl;
 	FILE *dotFile;
 
-  dotFile = fopen(binGVfile, "w");
+	string gvFile = fileExtensionRenamer(fileName, ".dot");
+
+  dotFile = fopen(gvFile.c_str(), "w");
 
   string lineStr;
 
@@ -651,6 +700,10 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
   // Still assuming that each net can only have 1 input node
   for(unsigned int i = 0; i < this->nets.size(); i++){
   	for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
+  		// skipping the split clock
+	  	if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
+	  		continue;
+	  	}
 	  	lineStr = "\t" + this->nodes[this->nets[i].inNodes[0]].name + " -> " + this->nodes[this->nets[i].outNodes[j]].name + ";\n";
 		  fputs(lineStr.c_str(), dotFile);
   	}
@@ -665,7 +718,7 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
   cout << "Creating \"" << fileName << "\"" << endl;
 
 	stringstream sstr;
-	sstr << "dot -Tjpg " << binGVfile << " -o " << fileName;
+	sstr << "dot -Tjpg " << gvFile << " -o " << fileName;
 	string bashCmd = sstr.str();
 
 	if(system(bashCmd.c_str()) == -1){
@@ -740,6 +793,22 @@ void ForgeSFQBlif::printRoutes(){
 	}
 }
 
+/**
+ * [ForgeSFQBlif::printRoutesWS - Displays the routes with splitters]
+ */
+
+void ForgeSFQBlif::printRoutesWS(){
+	cout << "All possible routes:" << endl;
+
+	unsigned int j;
+
+	for(unsigned int i = 0; i < this->routesWS.size(); i++){
+		for(j = 0; j < this->routesWS[i].size()-1; j++){
+				cout << this->nodes[this->routesWS[i][j]].name << " -> ";
+		}
+		cout << this->nodes[this->routesWS[i][j]].name << endl;
+	}
+}
 /**
  * [ForgeSFQBlif::printCLKlevels - Displays the clock levels]
  */

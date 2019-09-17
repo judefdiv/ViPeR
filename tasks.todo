@@ -1,13 +1,14 @@
 Current tasks:
 	□	Routing
+	□	Placement interface
 	□	Documentation
-	□	CMOStoSFQ leveling cleaner
 
 Must get DONE:
-	□	Allow the splitters to have more than 2 outputs?
+	□
 
-Not now: 
+Distant future:
 	□	Improve progress bar
+	□	store gate/cell description in the blifClass instead to improve performances
 
 ColdFlux Main Taks:
 	□	P2-A1-M1: Extend logic/RTL synthesis tool capability to handle the established SuperTools Library Format
@@ -25,7 +26,7 @@ ColdFlux Main Taks:
 
 	□	P2-A3-M4: Develop advanced (integrated) place-and-rout tool
 	□	Implement advanced placement and routing techniques
-	
+
 Completed:
 	June:
 		✔	implemented cmake @done (19-06-03 11:50)
@@ -53,6 +54,9 @@ Completed:
 		✔	Die2Sim clean up, split from ViPeR @done (19-08-14 10:53)
 		✔	Clocked created @done (19-08-19 09:20)
 		✔	fix/improved blif parser @done (19-08-20 09:20)
+	September:
+		✔	Cell row placement in sequence, optimiser @done (19-09-05 10:30)
+		✔ Improved tool work flow @done (19-09-11 11:46)
+		✔ Basic cell placement done @done (19-09-16 14:21)
 
 Notes:
-	

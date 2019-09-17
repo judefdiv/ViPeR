@@ -9,7 +9,7 @@
  * File:				gdsForge.cpp
  */
 
-#include "gdsForge.hpp"
+#include "gdscpp/gdsForge.hpp"
 
 /**
  * Constructor

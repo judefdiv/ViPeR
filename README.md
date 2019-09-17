@@ -1,9 +1,54 @@
-# Die2Sim
+# ViPeR
+Verilog to Placement and Routing
+
 Die2Sim is a tool used to aid simulations of large scale superconducting circuits. The main usage of the tool is to create GDSII and JoSIM files from LEF/DEF files using an existing cell library.
 
 Version: 0.9
 
+## Tool Flow
+
+All the possible tools flows:
+
+### verilog2gds
+
+Requirements: .genlib, .v
+
+Outputs: .jpg (cmos & SFQ), GDS
+
+Verilog (.v) -> std blif (.blif) -> SFQ blif (.blif) -> GDS
+
+
+
+### blif2gds
+
+Requirements: .blif
+
+Outputs: .jpg (cmos & SFQ), GDS
+
+cmos blif (.blif) -> SFQ blif (.blif) -> GDS
+
+
+
+### runABC
+
+Requirements: .genlib, .v
+
+Outputs: .blif
+
+Verilog (.v) -> std blif (.blif)
+
+
+
+### CMOSblif2SFQblif
+
+Requirements: .blif
+
+Outputs: .jpg (cmos & SFQ), .blif(SFQ)
+
+std blif (.blif) -> SFQ blif (.blif)
+
 ## Features
+
 * LEF/DEF interpretation
 * GDS to ASCII
 * Easily create GDS file
@@ -14,7 +59,7 @@ Version: 0.9
 * Convert LEF/DEF to JoSIM
 
 ## Examples
-Examples of how to execute Die2Sim:
+Examples of how to execute ViPeR:
 
 ### Interpret Files
 ``` bash
@@ -61,6 +106,7 @@ extern int 		shiftFunc(int ci);
 
 ## Notes
 Author - JF de Villiers (Stellenbosch University)
+
 For IARPA contract SuperTools
 
 LEF: Library Exchange Format

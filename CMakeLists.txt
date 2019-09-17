@@ -12,11 +12,12 @@ set(SOURCES
   src/ParserABC.cpp
   src/ParserBlif.cpp
   src/ForgeSFQblif.cpp
-  src/ForgeSFQABC.cpp
   src/ParserDot.cpp
   src/gdsCpp.cpp
   src/gdsParser.cpp
   src/gdsForge.cpp
+  src/placement.cpp
+  src/toolFlow.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

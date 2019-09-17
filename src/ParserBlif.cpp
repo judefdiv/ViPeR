@@ -156,7 +156,7 @@ int SFQBlif::importStdBlif(string fileName){
 
 int SFQBlif::to_blif(string FileName){
 
-	cout << "Generating SFQblif file:\"" << FileName << "\"" << endl;
+	cout << "Generating Blif file:\"" << FileName << "\"" << endl;
 	FILE *SFQblif;
   SFQblif = fopen(FileName.c_str(), "w");
 
@@ -193,6 +193,11 @@ int SFQBlif::to_blif(string FileName){
   	if(!this->nodes[i].GateType.compare("input") || !this->nodes[i].GateType.compare("output")){
 		  continue;
 		}
+
+  	if(!this->nodes[i].GateType.compare("SC")){
+		  continue;
+		}
+
 		// cout << this->nodes[i].name << endl;
 
 		lineStr = ".gate " + this->nodes[i].GateType;
@@ -221,9 +226,6 @@ int SFQBlif::to_blif(string FileName){
 	  fputs(lineStr.c_str(), SFQblif);
   }
 
-
-
-
 	lineStr = ".end";
   fputs(lineStr.c_str(), SFQblif);
 
@@ -232,79 +234,6 @@ int SFQBlif::to_blif(string FileName){
 
 	return 1;
 }
-
-// int SFQBlif::to_blif(string FileName){
-
-// 	cout << "Generating SFQblif file:\"" << FileName << "\"" << endl;
-// 	FILE *SFQblif;
-//   SFQblif = fopen(FileName.c_str(), "w");
-
-//   string lineStr;
-
-// 	lineStr = "# Created \"" + FileName + "\" using ABC and ViPeR.\n";
-// 	fputs(lineStr.c_str(), SFQblif);
-
-// 	lineStr = ".model " + this->modelName + "\n";
-//   fputs(lineStr.c_str(), SFQblif);
-
-// 	lineStr = ".inputs";
-// 	for(unsigned int i = 0; i < this->inputCnt; i++){
-// 		lineStr = lineStr + " " + this->nodes[i].name;
-// 	}
-// 	lineStr = lineStr + "\n";
-//   fputs(lineStr.c_str(), SFQblif);
-
-// 	lineStr = ".outputs";
-// 	for(unsigned int i = this->inputCnt; i < this->inputCnt + this->outputCnt; i++){
-// 		lineStr = lineStr + " " + this->nodes[i].name;
-// 	}
-// 	lineStr = lineStr + "\n";
-//   fputs(lineStr.c_str(), SFQblif);
-
-//   // --------------- Gates -------------------
-
-//   for(unsigned int i = this->inputCnt + this->outputCnt; i < this->nodes.size(); i++){
-
-//   	if(!this->nodes[i].GateType.compare("NULL")){
-//   		continue;
-//   	}
-
-// 		lineStr = ".gate " + this->nodes[i].GateType;
-
-// 		for(unsigned int j = 0; j < this->nodes[i].inNets.size(); j++){
-// 			if(this->nets[this->nodes[i].inNets[j]].inNodes[0] < this->inputCnt){
-// 				lineStr = lineStr + " in" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].name;
-// 			}
-// 			else{
-// 				lineStr = lineStr + " in" + to_string(j) + "=" + this->nets[this->nodes[i].inNets[j]].name;
-// 			}
-// 		}
-
-// 		// Assuming that the output of the circuit can only be connected to a net with 1 output being it
-// 		for(unsigned int j = 0; j < this->nodes[i].outNets.size(); j++){
-// 			if(this->nets[this->nodes[i].outNets[j]].outNodes[0] < this->inputCnt + this->outputCnt){
-// 				lineStr = lineStr + " out" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].outNets[j]].outNodes[0]].name;
-// 			}
-// 			else{
-// 				lineStr = lineStr + " out" + to_string(j) + "=" + this->nets[this->nodes[i].outNets[j]].name;
-// 			}
-// 		}
-
-// 		lineStr = lineStr + "\n";
-// 	  fputs(lineStr.c_str(), SFQblif);
-//   }
-
-
-
-
-// 	lineStr = ".end";
-//   fputs(lineStr.c_str(), SFQblif);
-
-//   fclose(SFQblif);
-//   cout << ".blif file done." << endl;
-
-// 	return 1;
-// }
 
 /**
  * [SFQBlif::to_jpg - Creates a .jpg file using .gv(dot) file]
@@ -316,7 +245,10 @@ int SFQBlif::to_jpg(string fileName){
 	cout << "Generating Dot file for \"" << fileName << "\"" << endl;
 	FILE *dotFile;
 
-  dotFile = fopen(binGVfile, "w");
+	string gvFile = fileExtensionRenamer(fileName, ".gv");
+
+
+  dotFile = fopen(gvFile.c_str(), "w");
 
   string lineStr;
 
@@ -368,7 +300,7 @@ int SFQBlif::to_jpg(string fileName){
   cout << "Creating \"" << fileName << "\"" << endl;
 
 	stringstream sstr;
-	sstr << "dot -Tjpg " << binGVfile << " -o " << fileName;
+	sstr << "dot -Tjpg " << gvFile << " -o " << fileName;
 	string bashCmd = sstr.str();
 
 	if(system(bashCmd.c_str()) == -1){

@@ -9,7 +9,7 @@
  * File:				gdsParser.cpp
  */
 
-#include "gdsParser.hpp"
+#include "gdscpp/gdsParser.hpp"
 
 ifstream gdsFileRead;
 string gdsFileNameRead = "\0";

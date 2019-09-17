@@ -15,14 +15,12 @@
 #include <map>
 
 #include "viper/genFunc.hpp"
-#include "viper/ForgeSFQABC.hpp"
+#include "viper/toolFlow.hpp"
 #include "toml/toml.hpp"
 
-#define versionNo 0.92
+#define versionNo 0.1
 #define configFile "config.toml"
-#define outFolder "data/results/"
-#define outFolderABC "data/results/abc/"
-#define outFolderBlif "data/results/blif/"
+
 using namespace std;
 
 /**
@@ -31,9 +29,8 @@ using namespace std;
 
 void welcomeScreen();
 void helpScreen();
-string fileRenamer(string inName, string preFix, string suffix);
 int RunTool(int argCount, char** argValues);
-int RunToolFromConfig();
+int RunToolFromConfig(string fileName);
 
 /**
  * Main loop
@@ -60,12 +57,9 @@ int RunTool(int argCount, char** argValues){
 		return 0;
 	}
 
-	set<string> validCommands = {"-v", "-h", "-c", "-a", "-b", "-s"};
+	set<string> validCommands = {"-v", "-h", "-c"};
 
-	string outFName = "\0";			// The output file, which is follow by the -o parameter
-	string bliFName = "\0";			// The non SFQ blif file
-	string verFName = "\0";			// verilog
-	string glbFName = "\0";			// .genlib
+	string tomlFName = "\0";			// .toml
 	string command  = "\0";			// The command to be executed
 
 	string foo;
@@ -82,84 +76,22 @@ int RunTool(int argCount, char** argValues){
 		return 0;
 	}
 
-	// search for .v
+	// search for .toml
 	for(int i = 0; i < argCount; i++){
 		foo = string(argValues[i]);
-	  if(foo.find(".v")!=string::npos){
-	  	verFName = foo;
+	  if(foo.find(".toml")!=string::npos){
+	  	tomlFName = foo;
 	  }
 	}
 
-	// search for .genlib
-	for(int i = 0; i < argCount; i++){
-		foo = string(argValues[i]);
-	  if(foo.find(".genlib")!=string::npos){
-	  	glbFName = foo;
-	  }
-	}
-
-	// search for .blif
-	for(int i = 1; i < argCount; i++){
-		foo = string(argValues[i]);
-	  if(foo.find(".blif")!=string::npos && string(argValues[i-1]).compare("-o")){
-	  	bliFName = foo;
-	  }
-	}
-
-	// search for output filename
-	for(int i = 0; i < argCount-1; i++){
-	  if(!string(argValues[i]).compare("-o")){
-	  	outFName = string(argValues[i+1]);
-	  }
-	}
-
-	if(!outFName.compare("\0") && verFName.compare("\0")){
-		if(!command.compare("-a")){
-			outFName = fileRenamer(verFName, outFolderABC, ".blif");
-		}
-	}
-	else if(!outFName.compare("\0") && bliFName.compare("\0")){
-		if(!command.compare("-b")){
-			outFName = fileRenamer(bliFName, outFolderBlif, ".blif");
-		}
-		else if(!command.compare("-s")){
-			outFName = fileRenamer(bliFName, outFolderBlif, ".blif");
-		}
-	}
-
-	if(!command.compare("-a")){
-		if(verFName.compare("\0") && outFName.compare("\0") && glbFName.compare("\0")){
-			return runForgeABC(outFName, verFName, glbFName);
+	if(!command.compare("-c")){
+		if(tomlFName.compare("\0")){
+			return RunToolFromConfig(tomlFName);
 		}
 		else {
 			cout << "Input argument error." << endl;
 			return 0;
 		}
-	}
-	else if(!command.compare("-b")){
-		if(bliFName.compare("\0") && outFName.compare("\0")){
-			return runForgeSFQ(bliFName, outFName);;
-		}
-		else {
-			cout << "Input argument error." << endl;
-			return 0;
-		}
-	}
-	else if(!command.compare("-s")){
-		if(verFName.compare("\0") && outFName.compare("\0") && glbFName.compare("\0")){
-			return runForgeSFQABC(outFName, verFName, glbFName);
-		}
-		else {
-			cout << "Input argument error." << endl;
-			return 0;
-		}
-	}
-	else if(!command.compare("-c")){
-		if(argCount == 1 + 1){
-			return RunToolFromConfig();
-		}
-		cout << "Input argument error." << endl;
-		return 0;
 	}
 	else if(!command.compare("-v")){
 		if(argCount == 1 + 1){
@@ -167,8 +99,10 @@ int RunTool(int argCount, char** argValues){
 			cout << "Version: " << versionNo << endl;
 			return 1;
 		}
-		cout << "Input argument error." << endl;
-		return 0;
+		else{
+			cout << "Input argument error." << endl;
+			return 0;
+		}
 	}
 	else if(!command.compare("-h")){
 		helpScreen();
@@ -183,28 +117,27 @@ int RunTool(int argCount, char** argValues){
 	return 0;
 }
 
-
 /**
  * [RunToolFromConfig - Runs the tools using parameters from config.toml]
- * @return [1 - all good; 0 - error]
+ * @param  fileName [The config toml file]
+ * @return          [1 - all good; 0 - error]
  */
 
-int RunToolFromConfig(){
+int RunToolFromConfig(string fileName){
 	cout << "Importing execution parameters from config.toml" << endl;
 
-	const auto mainConfig  = toml::parse(configFile);
+	const auto mainConfig  = toml::parse(fileName);
 	map<string, string> run_para = toml::get<map<string, string>>(mainConfig.at("run_parameters"));
 
 	map<string, string>::iterator it_run_para;
 
-	string outFName = "\0";
-	string lefFName = "\0";
-	string defFName = "\0";
-	string decFName = "\0";
 	string command  = "\0";
-	string bliFName = "\0";			// The non SFQ blif file
+	string gdsFName = "\0";
+	string bliFName = "\0";			// The standard blif file
 	string verFName = "\0";			// verilog
 	string glbFName = "\0";			// .genlib
+	string clbFName = "\0";			// .toml
+	string workDir  = "";			//
 
 	it_run_para = run_para.find("Command");
 	if(it_run_para != run_para.end()){
@@ -215,63 +148,64 @@ int RunToolFromConfig(){
 		return 0;
 	}
 
-	it_run_para = run_para.find("outFileName");
+	it_run_para = run_para.find("work_dir");
 	if(it_run_para != run_para.end()){
-		outFName = it_run_para->second;
+		workDir = it_run_para->second;
 	}
 
-	it_run_para = run_para.find("blifFileName");
+	it_run_para = run_para.find("gds_file");
+	if(it_run_para != run_para.end()){
+		gdsFName = it_run_para->second;
+		gdsFName = gdsFName.insert(0, workDir);
+	}
+
+	it_run_para = run_para.find("blif_file");
 	if(it_run_para != run_para.end()){
 		bliFName = it_run_para->second;
+		bliFName = bliFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("veriFileName");
+	it_run_para = run_para.find("veri_file");
 	if(it_run_para != run_para.end()){
 		verFName = it_run_para->second;
+		verFName = verFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("glibFileName");
+	it_run_para = run_para.find("cell_dis");
 	if(it_run_para != run_para.end()){
 		glbFName = it_run_para->second;
+		glbFName = glbFName.insert(0, workDir);
 	}
 
-	if(!outFName.compare("\0") && verFName.compare("\0")){
-		if(!command.compare("ABC")){
-			outFName = fileRenamer(verFName, outFolderABC, ".blif");
-		}
-	}
-	else if(!outFName.compare("\0") && bliFName.compare("\0")){
-		if(!command.compare("SFQblif")){
-			outFName = fileRenamer(bliFName, outFolderBlif, ".blif");
-		}
-		else if(!command.compare("SFQABC")){
-			outFName = fileRenamer(bliFName, outFolderBlif, ".blif");
-		}
+	it_run_para = run_para.find("cell_dis_gds");
+	if(it_run_para != run_para.end()){
+		clbFName = it_run_para->second;
+		clbFName = clbFName.insert(0, workDir);
 	}
 
-	if(!command.compare("ABC")){
-		if(verFName.compare("\0") && outFName.compare("\0") && glbFName.compare("\0")){
-			return runForgeABC(outFName, verFName, glbFName);
+	if(!command.compare("verilog2gds")){
+		if(verFName.compare("\0") && gdsFName.compare("\0") && glbFName.compare("\0")){
+			return verilog2gds(gdsFName, verFName, glbFName, fileName);
 		}
-		else {
+		else{
 			cout << "Input argument error." << endl;
 			return 0;
 		}
 	}
-	else if(!command.compare("SFQblif")){
-		if(bliFName.compare("\0") && outFName.compare("\0")){
-			return runForgeSFQ(bliFName, outFName);;
+	else if(!command.compare("blif2gds")){
+		if(bliFName.compare("\0") && gdsFName.compare("\0")){
+			return blif2gds(gdsFName, bliFName, fileName);
 		}
-		else {
+		else{
 			cout << "Input argument error." << endl;
 			return 0;
 		}
 	}
-	else if(!command.compare("SFQABC")){
-		if(verFName.compare("\0") && outFName.compare("\0") && glbFName.compare("\0")){
-			return runForgeSFQABC(outFName, verFName, glbFName);
+	else if(!command.compare("runABC")){
+		if(verFName.compare("\0") && bliFName.compare("\0") && glbFName.compare("\0")){
+			return runABC(bliFName, verFName, glbFName);
 		}
-		else {
+		else{
 			cout << "Input argument error." << endl;
 			return 0;
 		}
@@ -286,18 +220,13 @@ int RunToolFromConfig(){
 
 
 void helpScreen(){
-	cout << "===============================================================================" << endl;
+	cout << "=====================================================================" << endl;
 	cout << "Usage: Die2Sim [ OPTION ] [ filenames ]" << endl;
-	cout << "-a(BC)        Creates a CMOS circuit from a verilog." << endl;
-	cout << "                [.v file] [.genlib] -o [.blif]" << endl;
-	cout << "-b(lif)       Creates a SFQ blif circuit from a standard blif file." << endl;
-	cout << "                [.blif file] -o [.blif]" << endl;
-	cout << "-s(FQABC)     Creates a SFQ circuit from a verilog." << endl;
-	cout << "                [.v file] [.genlib] -o [.blif]" << endl;
-	cout << "-c(onfig)     Runs the tools using the parameters in the config.toml file." << endl;
+	cout << "-c(onfig)     Runs the tools using the parameters in the toml file." << endl;
+	cout << "                [.toml file]" << endl;
 	cout << "-v(ersion)    Displays the version number." << endl;
 	cout << "-h(elp)       Help screen." << endl;
-	cout << "===============================================================================" << endl;
+	cout << "=====================================================================" << endl;
 }
 
 /**

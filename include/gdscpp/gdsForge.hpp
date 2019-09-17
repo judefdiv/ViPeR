@@ -23,8 +23,8 @@
 #include <cstring>
 #include <bitset>
 
-#include "gdsCpp.hpp"
-#include "gdsParser.hpp"
+#include "gdscpp/gdsCpp.hpp"
+#include "gdscpp/gdsParser.hpp"
 
 using namespace std;
 

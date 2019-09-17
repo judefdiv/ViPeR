@@ -21,7 +21,7 @@
 
 #include "viper/genFunc.hpp"
 
-#define binGVfile "data/bin/raw.gv"
+// #define binGVfile "data/bin/raw.gv"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ using namespace std;
 
 struct BlifNode{ 			// includes input and outputs
 	string name = "\0";										// Must be a unique ID
-	string GateType = "\0";
+	string GateType = "\0";								// Must be GDS structure name
 
 	vector<unsigned int> inNets;
 	vector<unsigned int> outNets;
@@ -43,6 +43,11 @@ struct BlifNode{ 			// includes input and outputs
 	unsigned int CLKlevel = 0;
 	unsigned int MaxLevel = 0;
 	unsigned int MinLevel = MaxNumberLevels;
+
+	// Chip layout parameters, used in placement.hpp
+  int corX = 0;
+  int corY = 0;
+  int strRef = -1;
 
 };
 
