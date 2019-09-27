@@ -2,5 +2,7 @@ data/
 build/
 include/abc/
 bin/
+.*
+!.gitignore
 /projectFile.sublime-project
 /projectFile.sublime-workspace

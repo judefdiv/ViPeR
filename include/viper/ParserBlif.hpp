@@ -49,6 +49,17 @@ struct BlifNode{ 			// includes input and outputs
   int corY = 0;
   int strRef = -1;
 
+  void to_str(){
+  	cout << "Node struct:" << endl;
+    cout << "\tName: " << name << endl;
+    cout << "\tType: " << GateType << endl;
+    cout << "\tCLKlevel: " << CLKlevel << endl;
+    cout << "\tStrRef: " << strRef << endl;
+    cout << "\tCorX: " << corX << endl;
+    cout << "\tCorY: " << corY << endl;
+    cout << endl;
+  }
+
 };
 
 struct BlifNet{

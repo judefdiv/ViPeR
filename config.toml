@@ -17,53 +17,26 @@
 	# work_dir = "data/adder6bit/"
 	# work_dir = "data/rca2/"
 
-	gds_file  = "outGDS.gds" # GDS file to be created
+	gds_file  = "outGDS.gds"     # GDS file to be created
 	blif_file = "adder3bit.blif" # Standard blif that will be converted to SFQblif
-	# sfqblif_file = "" # The SFQblif file that will be converted to GDS
-	# veri_file = ""	# Verilog file for ABC to convert to a standard blif
+	# blif_file = "rca2.blif" # Standard blif that will be converted to SFQblif
+	# sfqblif_file = ""            # The SFQblif file that will be converted to GDS
+	# veri_file = ""	              # Verilog file for ABC to convert to a standard blif
 	# cell_dis  = "LSmitll.genlib" # cell/gate description for ABC
 	cell_dis_gds = "LSmitll_cell_lib.toml"
 	# NOTE: all directories are relative to the current directory
 
 [wafer_parameters]
-	vertical_gap = 50 # Spacing between cells
-	horizontal_gap = 50 # Spacing between cells
-	row_align = "left" # Row alignment {left, centre, right, justify}
+	vertical_gap = 0   # Spacing between cells
+	horizontal_gap = 0  # Spacing between cells
+	cell_height = 50    # The height of the cells
+	row_align = "justify"  # Row alignment {left, centre, justify}
 
-[gate_parameters]
-	port_size   = [4.5, 4.5] 				# port(pin) size [x, y]
-	ptl_width   = 4.5								# The width of the PLT track/route
-	via_size    = [4.5, 4.5]				# PTL via size [x, y]
-	bias_p_size = [2, 2]						# Baising pillar size [x, y]
-
-# The arrays shows the pins of the cells for the SPICE sub-circuits.
-# The order of the pins/ports are important due to mapping
-[LSmitll_netlist]
-	LSMITLL_AND2T   = ["IN_CLK", "IN_1", "IN_2", "OUT"]
-	LSmitll_DCSFQ   = ["IN", "OUT"]
-	LSMITLL_DFFT    = ["IN", "IN_CLK", "OUT"]
-	LSMITLL_JTLT    = ["IN", "OUT"]
-	LSmitll_MERGET  = ["IN_1", "IN_2", "OUT"]
-	LSMITLL_NDROT   = ["IN_SET", "IN_RESET", "IN_CLK", "OUT"]
-	LSMITLL_NOTT    = ["IN", "IN_CLK", "OUT"]
-	LSMITLL_OR2T    = ["IN_CLK", "IN_1", "IN_2", "OUT"]
-	LSmitll_SFQDC1  = ["IN", "OUT"]
-	MITLL_SPLITT    = ["IN", "OUT_1", "OUT_2"]
-	LSMITLL_XORT    = ["IN_CLK", "IN_1", "IN_2", "OUT"]
-	PAD             = ["P1"]																		# does NOT EXIST, used for mapping in/out pins
-
-# GDS file location of the cell library
-[LSmitll_GDS_File_Location]
-	# NETLIST = "data/cell_lib/LSmitll/LSmitll_all.cir"
-	DFFT    = "data/cell_lib/LSmitll/LSmitll_DFFT.gds"
-	JTLT    = "data/cell_lib/LSmitll/LSmitll_jtlt.gds"
-	MERGET  = "data/cell_lib/LSmitll/LSmitll_MERGET.gds"
-	NOTT    = "data/cell_lib/LSmitll/LSmitll_NOTT.gds"
-	SPLITT  = "data/cell_lib/LSmitll/LSmitll_SPLITT.gds"
-	AND2T   = "data/cell_lib/LSmitll/LSmitll_AND2T.gds"
-	OR2T    = "data/cell_lib/LSmitll/LSmitll_OR2T.gds"
-	XOR2T   = "data/cell_lib/LSmitll/LSmitll_XORT.gds"
-	NDROT   = "data/cell_lib/LSmitll/LSmitll_NDROT.gds"
+# [gate_parameters]
+# 	port_size   = [4.5, 4.5] 				# port(pin) size [x, y] per gate
+# 	ptl_width   = 4.5								# The width of the PLT track/route
+# 	via_size    = [4.5, 4.5]				# PTL via size [x, y]
+# 	bias_p_size = [2, 2]						# Baising pillar size [x, y]
 
 # [NOTES]
 # ALL MEASUREMENTS are in um.

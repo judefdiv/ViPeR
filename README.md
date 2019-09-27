@@ -104,6 +104,9 @@ extern void		Abc_TtVerifySmallTruth(word * pTruth, int nVars);
 extern int 		shiftFunc(int ci);
 ```
 
+## Assumption Made
+All cells are of the same height due to the algorithm are using row cell placement
+
 ## Notes
 Author - JF de Villiers (Stellenbosch University)
 

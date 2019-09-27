@@ -67,11 +67,11 @@
         "valarray": "cpp",
         "string": "cpp"
     },
-    "cmake.configureOnOpen": false,
-        "cmake.debugConfig": {
-            "args": [
-                "-c"
-            ]
-        }
-    
+    "cmake.debugConfig": {
+        "args": [
+            "-c",
+            "config.toml"
+        ]
+    }
+
 }

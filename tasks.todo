@@ -4,7 +4,7 @@ Current tasks:
 	□	Documentation
 
 Must get DONE:
-	□
+	□ Pads
 
 Distant future:
 	□	Improve progress bar
@@ -26,6 +26,7 @@ ColdFlux Main Taks:
 
 	□	P2-A3-M4: Develop advanced (integrated) place-and-rout tool
 	□	Implement advanced placement and routing techniques
+	□	 safasdf
 
 Completed:
 	June:
@@ -58,5 +59,13 @@ Completed:
 		✔	Cell row placement in sequence, optimiser @done (19-09-05 10:30)
 		✔ Improved tool work flow @done (19-09-11 11:46)
 		✔ Basic cell placement done @done (19-09-16 14:21)
+		✔	Allow for different row configuration @done (19-09-18 13:18)
+		✔	Improve config file integration @done (19-09-18 13:39)
+		✔	Only import used cells @done (19-09-19 11:57)
+		✔	Importing complete cell description @done (19-09-27 09:12)
+		✔	Placed pins and pillars @done (19-09-27 10:21)
+		✔	Direct routing @done (19-09-27 16:30)
+		□
+
 
 Notes:

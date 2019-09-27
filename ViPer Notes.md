@@ -36,3 +36,29 @@ Levels help with the clocking and DFF placement as well. Levels use a recursive 
 3. Calculate clock levels
 
 If splitters are inserted first, its a huge mess. The circuit has to be cleaned of excess DFFs which is a pain.
+
+## Placement
+
+### Opitmiser
+
+Stacking all possible routes including splitters.
+
+Must investigate the order of the stacking
+
+### Layout
+
+#### Centre
+
+Looks for longest/widest row
+
+#### Left align
+
+
+
+#### Right Align
+
+
+
+#### Justify
+
+Look for widest row, calculate each row length. divide by the number of gaps, add the gap size.
