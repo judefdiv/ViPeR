@@ -27,16 +27,13 @@
 	# NOTE: all directories are relative to the current directory
 
 [wafer_parameters]
-	vertical_gap = 0   # Spacing between cells
-	horizontal_gap = 0  # Spacing between cells
-	cell_height = 50    # The height of the cells
-	row_align = "justify"  # Row alignment {left, centre, justify}
+	vertical_gap = 0      # Spacing between cells
+	horizontal_gap = 0    # Spacing between cells
+	cell_height = 50      # The height of the cells
+	row_align = "justify" # Row alignment {left, centre, justify}
+	pad_ver_gap = 30      # The vertical distance between the pads and the gates/circuit
+	pad_hor_gap = 0      # the horizontal gap between the pins/pads
 
-# [gate_parameters]
-# 	port_size   = [4.5, 4.5] 				# port(pin) size [x, y] per gate
-# 	ptl_width   = 4.5								# The width of the PLT track/route
-# 	via_size    = [4.5, 4.5]				# PTL via size [x, y]
-# 	bias_p_size = [2, 2]						# Baising pillar size [x, y]
 
 # [NOTES]
 # ALL MEASUREMENTS are in um.

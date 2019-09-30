@@ -43,6 +43,8 @@ class plek{
     vector<vector<unsigned int>> CLKlevel;
 
     vector<vector<unsigned int>> layout; // [row][columns]
+    vector<unsigned int> layoutInputs; // [row][columns]
+    vector<unsigned int> layoutOutputs; // [row][columns]
     set<string> used_gates;
 
     vector<cellDis> gateList;
@@ -74,6 +76,12 @@ class plek{
     int vGap = 0;
     int hGap = 0;
     int cellHeight = 0;
+    int padVerGap = 0;
+    int padHorHap = 0;
+
+
+    // Others
+    unsigned int pad_index; // the index in gateList of the PAD
 
     int optiLayout();
     int importCellDef(string configFName);

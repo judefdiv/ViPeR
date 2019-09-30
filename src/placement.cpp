@@ -43,7 +43,7 @@ int plek::populate(string configFName){
   this->optiLayout();
   this->printLayout();
   this->importCellDef(configFName);
-  this->to_str();
+  // this->to_str();
 
   return 1;
 }
@@ -67,6 +67,8 @@ int plek::importCellDef(string configFName){
   this->vGap       = toml::find<int>(w_para, "vertical_gap") * GDSunitScale;
   this->hGap       = toml::find<int>(w_para, "horizontal_gap")  * GDSunitScale;
   this->cellHeight = toml::find<int>(w_para, "cell_height") * GDSunitScale;
+  this->padVerGap  = toml::find<int>(w_para, "pad_ver_gap") * GDSunitScale;
+  this->padHorHap  = toml::find<int>(w_para, "pad_hor_gap") * GDSunitScale;
 
   // -----------------------------------------------------------------
 
@@ -123,6 +125,13 @@ int plek::importCellDef(string configFName){
     auto cellTbl = toml::find(cellLibFile, cellList[i]);
 
     this->gateList[index].name = cellList[i];
+
+    //finding the PAD in the gateList
+    if(!this->gateList[index].name.compare("PAD")){
+      this->pad_index = index;
+
+    }
+
 
     fooElement = toml::find(cellTbl, "size");
     // fltVec = toml::get<vector<float>>(fooElement);
@@ -197,6 +206,10 @@ int plek::importCellDef(string configFName){
         this->nodes[i].strRef = k;
         break;
       }
+      if(!this->nodes[i].GateType.compare("output") || !this->nodes[i].GateType.compare("input")){
+        this->nodes[i].strRef = this->pad_index;
+        break;
+      }
     }
   }
 
@@ -241,12 +254,46 @@ int plek::optiLayout(){
     }
   }
 
-  set<string>::iterator it;
-    cout << "Gates used: ";
-    for (it = this->used_gates.begin(); it != this->used_gates.end(); it++){
-        cout << *it << "; ";
+  // adding the PAD to the list of used cells/gates
+  this->used_gates.insert("PAD");
+  for(unsigned int i = 0; i < this->routesWS.size(); i++){
+    found = false;
+    for(unsigned int j = 0; j < this->layoutInputs.size(); j++){
+      if(this->layoutInputs[j] == this->routesWS[i][0]){
+        found = true;
+        break;
+      }
     }
-    cout << endl;
+    if(!found){
+      this->layoutInputs.push_back(this->routesWS[i][0]);
+    }
+
+    found = false;
+    for(unsigned int j = 0; j < this->layoutOutputs.size(); j++){
+      if(this->layoutOutputs[j] == this->routesWS[i].back()){
+        found = true;
+        break;
+      }
+    }
+    if(!found){
+      this->layoutOutputs.push_back(this->routesWS[i].back());
+    }
+  }
+
+  // inserting clk clock in to input list
+  for(unsigned int i = 0; i < this->nodes.size(); i++){
+    if(!this->nodes[i].name.compare("clk")){
+      this->layoutInputs.push_back(i);
+      break;
+    }
+  }
+
+  set<string>::iterator it;
+  cout << "Gates used: ";
+  for (it = this->used_gates.begin(); it != this->used_gates.end(); it++){
+      cout << *it << "; ";
+  }
+  cout << endl;
 
   cout << "Optimizing the layouts of the gates done." << endl;
 
@@ -260,6 +307,7 @@ int plek::optiLayout(){
 
 int plek::defSTR(){
   // Defining pin
+  cout << "Defining GDS structures." << endl;
 
   this->arrSTR.resize(this->gateList.size());
   for(unsigned int i = 0; i < this->gateList.size(); i++){
@@ -304,52 +352,12 @@ int plek::defSTR(){
     // }
 
   }
-
+  cout << "Defining GDS structures done." << endl;
   return 1;
 }
 
-/**
- * [plek::straightRoute - Creates straight routes between all the pins]
- * @return [1 - Good; 0 - Error]
- */
-
-// int plek::straightRoute(){
-//   unsigned int toNode, fromNode;
-//   vector<int> corX;
-//   vector<int> corY;
-
-//   corX.resize(2);
-//   corY.resize(2);
-
-//   this->arrSTR.resize(this->arrSTR.size()+1);
-//   this->arrSTR.back().name = "routes";
-
-//   for(unsigned int i = 0; i < this->nodes.size(); i++){
-//     if(!this->nodes[i].GateType.compare("SC") ||
-//       !this->nodes[i].GateType.compare("input") ||
-//       !this->nodes[i].GateType.compare("output")){
-//       continue;
-//     }
-
-//     for(unsigned int j = 0; j < this->nodes[i].outNets.size(); j++){
-//       cout << "here " << this->nodes[i].name << endl;
-//       toNode = this->nets[this->nodes[i].outNets[j]].inNodes[0];
-//       fromNode = this->nets[this->nodes[i].outNets[j]].outNodes[0];
-
-//       corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[0];
-//       corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[0];
-
-//       corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[0];
-//       corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[0];
-
-//       this->arrSTR.back().PATH.push_back(drawPath(4, this->ptl_width, corX, corY));
-//     }
-//   }
-
-//   return 1;
-// }
-
 int plek::straightRoute(){
+  cout << "Routing nets, straight." << endl;
   unsigned int toNode, fromNode;
   vector<int> corX;
   vector<int> corY;
@@ -369,39 +377,72 @@ int plek::straightRoute(){
   }
 
   this->arrSTR.resize(this->arrSTR.size()+1);
-  this->arrSTR.back().name = "routes";
+  this->arrSTR.back().name = "NETs";
 
   for(unsigned int i = 0; i < this->nets.size(); i++){
     for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
       // if(this->nets[i].outNodes.size() > 0){
-      if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("output") ||
-          !this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
-        continue;
-        }
+      //   if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("output") ||
+      //     !this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
+      //   continue;
+      //   }
       // }
+      // if(this->nets[i].inNodes.size() > 0){
+      //   if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("input") ||
+      //       !this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
+      //     continue;
+      //   }
+      // }
+      if(this->nets[i].outNodes.size() > 0){
+        if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
+          continue;
+        }
+      }
       if(this->nets[i].inNodes.size() > 0){
-        if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("input") ||
-            !this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
+        if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
           continue;
         }
       }
 
+
       fromNode = this->nets[i].inNodes[0];
       toNode = this->nets[i].outNodes[j];
 
-      cout << this->nodes[fromNode].name << " -> " << this->nodes[toNode].name << endl;
+      // cout << this->nodes[fromNode].name << " -> " << this->nodes[toNode].name << endl;
 
-      corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
-      corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
-      nodesOutputCnt[fromNode]++;
+      if(this->nodes[fromNode].strRef == this->pad_index){
+        corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_in_out_x[0];
+        corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_in_out_y[0];
+      }
+      else{
+        corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
+        corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
+        nodesOutputCnt[fromNode]++;
+      }
 
-      corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
-      corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
-      nodesInputCnt[toNode]++;
+      if(this->nodes[toNode].strRef == this->pad_index){
+        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_out_x[0];
+        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_out_y[0];
+      }
+      else{
+        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
+        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
+        nodesInputCnt[toNode]++;
+      }
+
+      // without pads
+      // corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
+      // corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
+      // nodesOutputCnt[fromNode]++;
+
+      // corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
+      // corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
+      // nodesInputCnt[toNode]++;
 
       this->arrSTR.back().PATH.push_back(drawPath(4, this->ptl_width, corX, corY));
     }
   }
+  cout << "Routing nets, straight. Done." << endl;
   return 1;
 }
 
@@ -412,10 +453,19 @@ int plek::straightRoute(){
  */
 
 int plek::alignLeft(){
-  int cPtX; // current point on the X-axis
+  int cPtX = 0; // current point on the X-axis
   int cPtY = 0; // current point on the Y-axis
   unsigned int index;
 
+  // inserting output pads
+  for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
+    this->nodes[this->layoutOutputs[i]].corX = cPtX;
+    this->nodes[this->layoutOutputs[i]].corY = cPtY;
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
+  }
+  cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
+
+  // the layout of the gates
   for(int i = this->layout.size()-1; i >= 0; i--){
     cPtX = 0;
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
@@ -430,6 +480,16 @@ int plek::alignLeft(){
     }
     cPtY += this->cellHeight + this->vGap;
   }
+
+  // inserting input pads
+  cPtY += this->padVerGap;
+  cPtX = 0;
+  for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
+    this->nodes[this->layoutInputs[i]].corX = cPtX;
+    this->nodes[this->layoutInputs[i]].corY = cPtY;
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
+  }
+
   return 1;
 }
 
@@ -443,8 +503,9 @@ int plek::alignCentre(){
   int cPtY = 0; // current point on the Y-axis
   unsigned int index;
   vector<unsigned int> rowWidth; // bottom to top
-  unsigned int rowWidthMax = 0;;
+  unsigned int rowWidthMax = 0;
 
+  // ---------------------------------------------------------------------
   // calculating the width of each row.
   unsigned int fooWdith;
   rowWidth.resize(this->layout.size());
@@ -460,6 +521,20 @@ int plek::alignCentre(){
       rowWidthMax = rowWidth[i];
   }
 
+  // ---------------------------------------------------------------------
+  // inserting output pads
+  unsigned int ioWidth = 0;
+  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
+  cPtX = (rowWidthMax - ioWidth)/2;
+  for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
+    this->nodes[this->layoutOutputs[i]].corX = cPtX;
+    this->nodes[this->layoutOutputs[i]].corY = cPtY;
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
+  }
+  cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
+
+
+  // ---------------------------------------------------------------------
   // The actual layout part
   for(int i = this->layout.size()-1; i >= 0; i--){
     cPtX = (rowWidthMax - rowWidth[i])/2;
@@ -473,6 +548,18 @@ int plek::alignCentre(){
     }
     cPtY += this->cellHeight + this->vGap;
   }
+
+  // ---------------------------------------------------------------------
+  // inserting input pads
+  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutInputs.size();
+  cPtX = (rowWidthMax - ioWidth)/2;
+  cPtY += this->padVerGap;
+  for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
+    this->nodes[this->layoutInputs[i]].corX = cPtX;
+    this->nodes[this->layoutInputs[i]].corY = cPtY;
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
+  }
+
   return 1;
 }
 
@@ -486,8 +573,10 @@ int plek::alignJustify(){
   int cPtY = 0; // current point on the Y-axis
   unsigned int index;
   vector<unsigned int> rowWidth; // bottom to top
-  unsigned int rowWidthMax = 0;;
+  unsigned int rowWidthMax = 0;
+  unsigned int rowGapSize;
 
+  // ---------------------------------------------------------------------
   // calculating the width of each row.
   unsigned int fooWdith;
   rowWidth.resize(this->layout.size());
@@ -503,8 +592,21 @@ int plek::alignJustify(){
       rowWidthMax = rowWidth[i];
   }
 
+  // ---------------------------------------------------------------------
+  // inserting output pads
+  unsigned int ioWidth = 0;
+  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
+  rowGapSize = (rowWidthMax - ioWidth)/(this->layoutOutputs.size()+1);
+  cPtX = rowGapSize;
+  for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
+    this->nodes[this->layoutOutputs[i]].corX = cPtX;
+    this->nodes[this->layoutOutputs[i]].corY = cPtY;
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
+  }
+  cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
+
+  // ---------------------------------------------------------------------
   // The actual layout part
-  unsigned int rowGapSize;
   for(int i = this->layout.size()-1; i >= 0; i--){
     rowGapSize = (rowWidthMax - rowWidth[i])/(this->layout[i].size()+1);
     cPtX = rowGapSize;
@@ -518,6 +620,20 @@ int plek::alignJustify(){
     }
     cPtY += this->cellHeight + this->vGap;
   }
+
+  // ---------------------------------------------------------------------
+  // inserting input pads
+  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutInputs.size();
+  rowGapSize = (rowWidthMax - ioWidth)/(this->layoutInputs.size()+1);
+  cPtX = rowGapSize;
+  cPtY += this->padVerGap;
+
+  for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
+    this->nodes[this->layoutInputs[i]].corX = cPtX;
+    this->nodes[this->layoutInputs[i]].corY = cPtY;
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
+  }
+
   return 1;
 }
 
@@ -551,14 +667,20 @@ int plek::to_gds(string fileName){
 
   this->arrSTR.resize(this->arrSTR.size()+1);
   this->arrSTR.back().name = "MyIC";
-  this->arrSTR.back().SREF.push_back(drawSREF("routes", 0, 0));
+  this->arrSTR.back().SREF.push_back(drawSREF("NETs", 0, 0));
   for(unsigned int i = 0; i < this->nodes.size(); i++){
-    if(!this->nodes[i].GateType.compare("SC") ||
-        !this->nodes[i].GateType.compare("input") ||
-        !this->nodes[i].GateType.compare("output")){
+    if(!this->nodes[i].GateType.compare("SC")){
+        // !this->nodes[i].GateType.compare("input") ||
+        // !this->nodes[i].GateType.compare("output")){
       continue;
     }
-    this->arrSTR.back().SREF.push_back(drawSREF(this->nodes[i].GateType, this->nodes[i].corX, this->nodes[i].corY));
+    if(!this->nodes[i].GateType.compare("input") ||
+        !this->nodes[i].GateType.compare("output")){
+      this->arrSTR.back().SREF.push_back(drawSREF("PAD", this->nodes[i].corX, this->nodes[i].corY));
+    }
+    else{
+      this->arrSTR.back().SREF.push_back(drawSREF(this->nodes[i].GateType, this->nodes[i].corX, this->nodes[i].corY));
+    }
   }
 
 

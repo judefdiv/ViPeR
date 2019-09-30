@@ -26,7 +26,6 @@ ColdFlux Main Taks:
 
 	□	P2-A3-M4: Develop advanced (integrated) place-and-rout tool
 	□	Implement advanced placement and routing techniques
-	□	 safasdf
 
 Completed:
 	June:
@@ -65,7 +64,7 @@ Completed:
 		✔	Importing complete cell description @done (19-09-27 09:12)
 		✔	Placed pins and pillars @done (19-09-27 10:21)
 		✔	Direct routing @done (19-09-27 16:30)
-		□
+		□ Pin placement
 
 
 Notes:
