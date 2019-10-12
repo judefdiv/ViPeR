@@ -18,6 +18,9 @@ set(SOURCES
   src/gdsForge.cpp
   src/placement.cpp
   src/toolFlow.cpp
+  src/chipForge.cpp
+  src/routing.cpp
+  src/clkPlacement.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

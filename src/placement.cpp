@@ -129,7 +129,6 @@ int plek::importCellDef(string configFName){
     //finding the PAD in the gateList
     if(!this->gateList[index].name.compare("PAD")){
       this->pad_index = index;
-
     }
 
 
@@ -305,39 +304,41 @@ int plek::optiLayout(){
  * @return [1 - Good; 0 - Error]
  */
 
-int plek::defSTR(){
+vector<gdsSTR> plek::defSTR(){
   // Defining pin
   cout << "Defining GDS structures." << endl;
 
-  this->arrSTR.resize(this->gateList.size());
+  vector<gdsSTR> resultSTR;
+
+  resultSTR.resize(this->gateList.size());
   for(unsigned int i = 0; i < this->gateList.size(); i++){
     // Gate name
-    this->arrSTR[i].name = this->gateList[i].name;
+    resultSTR[i].name = this->gateList[i].name;
 
     // Cell outline
-    this->arrSTR[i].BOUNDARY.push_back(draw2ptBox(1, 0, 0, this->gateList[i].sizeX, this->gateList[i].sizeY));
+    resultSTR[i].BOUNDARY.push_back(draw2ptBox(1, 0, 0, this->gateList[i].sizeX, this->gateList[i].sizeY));
 
     // Pins
     for(unsigned int j = 0; j < this->gateList[i].pins_in_x.size(); j++){
-      this->arrSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].pins_in_x[j] - (this->port_size_x/2),
+      resultSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].pins_in_x[j] - (this->port_size_x/2),
                                                         this->gateList[i].pins_in_y[j] - (this->port_size_y/2),
                                                         this->gateList[i].pins_in_x[j] + (this->port_size_x/2),
                                                         this->gateList[i].pins_in_y[j] + (this->port_size_y/2)));
     }
     for(unsigned int j = 0; j < this->gateList[i].pins_out_x.size(); j++){
-      this->arrSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].pins_out_x[j] - (this->port_size_x/2),
+      resultSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].pins_out_x[j] - (this->port_size_x/2),
                                                        this->gateList[i].pins_out_y[j] - (this->port_size_y/2),
                                                        this->gateList[i].pins_out_x[j] + (this->port_size_x/2),
                                                        this->gateList[i].pins_out_y[j] + (this->port_size_y/2)));
     }
     for(unsigned int j = 0; j < this->gateList[i].pins_in_out_x.size(); j++){
-      this->arrSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].pins_in_out_x[j] - (this->port_size_x/2),
+      resultSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].pins_in_out_x[j] - (this->port_size_x/2),
                                                         this->gateList[i].pins_in_out_y[j] - (this->port_size_y/2),
                                                         this->gateList[i].pins_in_out_x[j] + (this->port_size_x/2),
                                                         this->gateList[i].pins_in_out_y[j] + (this->port_size_y/2)));
     }
     for(unsigned int j = 0; j < this->gateList[i].clk_x.size(); j++){
-      this->arrSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].clk_x[j] - (this->port_size_x/2),
+      resultSTR[i].BOUNDARY.push_back(draw2ptBox(2, this->gateList[i].clk_x[j] - (this->port_size_x/2),
                                                         this->gateList[i].clk_y[j] - (this->port_size_y/2),
                                                         this->gateList[i].clk_x[j] + (this->port_size_x/2),
                                                         this->gateList[i].clk_y[j] + (this->port_size_y/2)));
@@ -353,99 +354,8 @@ int plek::defSTR(){
 
   }
   cout << "Defining GDS structures done." << endl;
-  return 1;
+  return resultSTR;
 }
-
-int plek::straightRoute(){
-  cout << "Routing nets, straight." << endl;
-  unsigned int toNode, fromNode;
-  vector<int> corX;
-  vector<int> corY;
-
-  vector<int> nodesInputCnt;
-  vector<int> nodesOutputCnt;
-
-  corX.resize(2);
-  corY.resize(2);
-
-  nodesInputCnt.resize(this->nodes.size());
-  nodesOutputCnt.resize(this->nodes.size());
-
-  for(unsigned int i = 0; i < nodesInputCnt.size(); i++){
-    nodesInputCnt[i] = 0;
-    nodesOutputCnt[i] = 0;
-  }
-
-  this->arrSTR.resize(this->arrSTR.size()+1);
-  this->arrSTR.back().name = "NETs";
-
-  for(unsigned int i = 0; i < this->nets.size(); i++){
-    for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
-      // if(this->nets[i].outNodes.size() > 0){
-      //   if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("output") ||
-      //     !this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
-      //   continue;
-      //   }
-      // }
-      // if(this->nets[i].inNodes.size() > 0){
-      //   if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("input") ||
-      //       !this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
-      //     continue;
-      //   }
-      // }
-      if(this->nets[i].outNodes.size() > 0){
-        if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
-          continue;
-        }
-      }
-      if(this->nets[i].inNodes.size() > 0){
-        if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
-          continue;
-        }
-      }
-
-
-      fromNode = this->nets[i].inNodes[0];
-      toNode = this->nets[i].outNodes[j];
-
-      // cout << this->nodes[fromNode].name << " -> " << this->nodes[toNode].name << endl;
-
-      if(this->nodes[fromNode].strRef == this->pad_index){
-        corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_in_out_x[0];
-        corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_in_out_y[0];
-      }
-      else{
-        corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
-        corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
-        nodesOutputCnt[fromNode]++;
-      }
-
-      if(this->nodes[toNode].strRef == this->pad_index){
-        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_out_x[0];
-        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_out_y[0];
-      }
-      else{
-        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
-        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
-        nodesInputCnt[toNode]++;
-      }
-
-      // without pads
-      // corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
-      // corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
-      // nodesOutputCnt[fromNode]++;
-
-      // corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
-      // corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
-      // nodesInputCnt[toNode]++;
-
-      this->arrSTR.back().PATH.push_back(drawPath(4, this->ptl_width, corX, corY));
-    }
-  }
-  cout << "Routing nets, straight. Done." << endl;
-  return 1;
-}
-
 
 /**
  * [plek::alignLeft - Aligns all the gates to the left]
@@ -638,16 +548,11 @@ int plek::alignJustify(){
 }
 
 /**
- * [plek::to_gds - Creates an GDS file of the class]
- * @return [1 - Good; 0 - Error]
+ * [plek::gsdLayout description]
+ * @return   [description]
  */
 
-int plek::to_gds(string fileName){
-  cout << "Creating the GDS file \"" << fileName << "\"" << endl;
-  gdscpp gdsFile;
-
-  // defining the gates
-  this->defSTR();
+gdsSTR plek::gsdLayout(){
 
   // layout of the cells
   if(!this->rAlign.compare("left")){
@@ -663,11 +568,9 @@ int plek::to_gds(string fileName){
     this->alignJustify();
   }
 
-  this->straightRoute();
+  gdsSTR resultLayout;
+  resultLayout.name = "layout";
 
-  this->arrSTR.resize(this->arrSTR.size()+1);
-  this->arrSTR.back().name = "MyIC";
-  this->arrSTR.back().SREF.push_back(drawSREF("NETs", 0, 0));
   for(unsigned int i = 0; i < this->nodes.size(); i++){
     if(!this->nodes[i].GateType.compare("SC")){
         // !this->nodes[i].GateType.compare("input") ||
@@ -676,19 +579,14 @@ int plek::to_gds(string fileName){
     }
     if(!this->nodes[i].GateType.compare("input") ||
         !this->nodes[i].GateType.compare("output")){
-      this->arrSTR.back().SREF.push_back(drawSREF("PAD", this->nodes[i].corX, this->nodes[i].corY));
+      resultLayout.SREF.push_back(drawSREF("PAD", this->nodes[i].corX, this->nodes[i].corY));
     }
     else{
-      this->arrSTR.back().SREF.push_back(drawSREF(this->nodes[i].GateType, this->nodes[i].corX, this->nodes[i].corY));
+      resultLayout.SREF.push_back(drawSREF(this->nodes[i].GateType, this->nodes[i].corX, this->nodes[i].corY));
     }
   }
 
-
-
-  gdsFile.setSTR(arrSTR);
-  gdsFile.write(fileName);
-
-  return 1;
+  return resultLayout;
 }
 
 

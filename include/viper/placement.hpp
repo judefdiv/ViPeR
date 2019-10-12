@@ -18,7 +18,7 @@
 #include <vector>
 #include <fstream>
 #include <map>
-#include <cstddef>                          // string copy
+// #include <cstddef>                          // string copy
 
 #include "toml/toml.hpp"
 #include "viper/ParserBlif.hpp"
@@ -51,10 +51,11 @@ class plek{
     map<string, int> gateListMap; // GDS structure name, index of gateList
 
     // GDS goodies
-    int defSTR();
+    // int defSTR();
 
     // Routing
-    int straightRoute();
+    // int straightRoute();
+    // vector<gdsPATH> route2gds();
 
     // placement of gates (layout)
     int alignLeft();
@@ -93,6 +94,14 @@ class plek{
     int populate(string configFName);
     int to_gds(string fileName);
 
+
+    vector<gdsSTR> defSTR();
+    gdsSTR gsdLayout();
+
+    vector<BlifNode> get_nodes(){return this->nodes;};
+    vector<BlifNet> get_nets(){return this->nets;};
+    vector<cellDis> get_GateList(){return gateList;};
+
     void fetchSFQblif(vector<BlifNode> inNodes,
                        vector<BlifNet> inNets,
                        vector<vector<unsigned int>> inRoutes,
@@ -102,6 +111,8 @@ class plek{
     void printRoutes();
     void printLayout();
     void printCLKlevels();
+
+    vector<cellDis> get_gateList(){return gateList;};
 
     void to_str();
 };

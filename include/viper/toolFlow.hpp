@@ -18,10 +18,14 @@
 #include "viper/genFunc.hpp"
 #include "viper/ForgeSFQblif.hpp"
 #include "viper/placement.hpp"
+#include "viper/routing.hpp"
+#include "viper/placement.hpp"
+#include "viper/chipForge.hpp"
+#include "viper/clkPlacement.hpp"
+
 
 using namespace std;
 
 int verilog2gds(string gdsFile, string veriFile, string cellFile, string configFName);
 int blif2gds(string gdsFile, string blifFile, string configFName);
 int runABC(string blifFile, string veriFile, string cellFile);
-// int CMOSblif2SFQblif(string blifInFileName, string blifOutFileName);

@@ -53,7 +53,24 @@ int ForgeSFQBlif::toSFQ(){
 	this->calcCLKlevels();
 	this->printCLKlevels();
 
-	this->clockIt();
+	// --------------------------------------------------------------
+
+	// this->clockIt();
+	// Creating a clock(clk) pin to the input of the circuit
+  BlifNode fooNode;
+  fooNode.name = "clk";
+  fooNode.GateType = "input";
+  fooNode.outNets.push_back(this->nets.size());
+
+  BlifNet fooNet;
+  fooNet.name = "net_" + to_string(this->nets.size());
+  fooNet.inNodes.push_back(this->nodes.size());
+
+  this->nodes.push_back(fooNode);
+  this->nets.push_back(fooNet);
+
+  // --------------------------------------------------------------
+
 
 	this->findLevelsWS();
 	this->printRoutesWS();
@@ -217,78 +234,78 @@ int ForgeSFQBlif::recurLevelsWS(unsigned int curNode, unsigned int curLev, vecto
 	return 0;
 }
 
-/**
- * [ForgeSFQBlif::clockIt Clocks all the gates]
- * @return [1 - All good; 0 - error]
- */
+// /**
+//  * [ForgeSFQBlif::clockIt Clocks all the gates]
+//  * @return [1 - All good; 0 - error]
+//  */
 
-int ForgeSFQBlif::clockIt(){
-	cout << "Clocking all the gates." << endl;
+// int ForgeSFQBlif::clockIt(){
+// 	cout << "Clocking all the gates." << endl;
 
-	// Creating a clock(clk) pin to the input of the circuit
-	BlifNode fooNode;
-	fooNode.name = "clk";
-	fooNode.GateType = "input";
-	fooNode.outNets.push_back(this->nets.size());
+// 	// Creating a clock(clk) pin to the input of the circuit
+// 	BlifNode fooNode;
+// 	fooNode.name = "clk";
+// 	fooNode.GateType = "input";
+// 	fooNode.outNets.push_back(this->nets.size());
 
-	BlifNet fooNet;
-	fooNet.name = "net_" + to_string(this->nets.size());
-	fooNet.inNodes.push_back(this->nodes.size());
+// 	BlifNet fooNet;
+// 	fooNet.name = "net_" + to_string(this->nets.size());
+// 	fooNet.inNodes.push_back(this->nodes.size());
 
-	this->nodes.push_back(fooNode);
-	this->nets.push_back(fooNet);
+// 	this->nodes.push_back(fooNode);
+// 	this->nets.push_back(fooNet);
 
-	// Recalculate the counts of the gates.
-	this->calcStats();
+// 	// Recalculate the counts of the gates.
+// 	this->calcStats();
 
-	// Creating the h-tree clock
-	unsigned int clkPins = this->gateCnt + this->DFFCnt;
-	unsigned int clkLev = log(clkPins)/log(2) + 1;
-	unsigned int clkSplit = pow(2, clkLev -1);
+// 	// Creating the h-tree clock
+// 	unsigned int clkPins = this->gateCnt + this->DFFCnt;
+// 	unsigned int clkLev = log(clkPins)/log(2) + 1;
+// 	unsigned int clkSplit = pow(2, clkLev -1);
 
-	cout << "Clock stats:" << endl;
-	cout << "\tPins required: " << clkPins << endl;
-	cout << "\tPins max: " << pow(2, clkLev) << endl;
-	cout << "\tSplit levels: " << clkLev << endl;
-	cout << "\tOutput splitters: " << clkSplit << endl;
-	cout << "\tTotal splitters: " << clkSplit*2-1 << endl;
+// 	cout << "Clock stats:" << endl;
+// 	cout << "\tPins required: " << clkPins << endl;
+// 	cout << "\tPins max: " << pow(2, clkLev) << endl;
+// 	cout << "\tSplit levels: " << clkLev << endl;
+// 	cout << "\tOutput splitters: " << clkSplit << endl;
+// 	cout << "\tTotal splitters: " << clkSplit*2-1 << endl;
 
-	this->recurCreateCLK(this->nets.size()-1, 0, clkLev);
+// 	this->recurCreateCLK(this->nets.size()-1, 0, clkLev);
 
-	// for(unsigned int i = 0; i < this->finCLKsplit.size(); i++){
-	// 	cout << this->nodes[this->finCLKsplit[i]].name << ", ";
-	// }
-	// cout << endl;
+// 	// for(unsigned int i = 0; i < this->finCLKsplit.size(); i++){
+// 	// 	cout << this->nodes[this->finCLKsplit[i]].name << ", ";
+// 	// }
+// 	// cout << endl;
 
-	cout << "Clocking all the gates done." << endl;
-	return 1;
-}
+// 	cout << "Clocking all the gates done." << endl;
+// 	return 1;
+// }
 
-/**
- * [ForgeSFQBlif::recurCreateCLK - creates the h-tree clock using depth first recursion]
- * @param  net      [The previous splitter's index]
- * @param  curLev   [The current level]
- * @param  maxLev   [The final level the function must stop at]
- * @return          [1 - All good; 0 - error]
- */
+// /**
+//  * [ForgeSFQBlif::recurCreateCLK - creates the h-tree clock using depth first recursion]
+//  * @param  net      [The previous splitter's index]
+//  * @param  curLev   [The current level]
+//  * @param  maxLev   [The final level the function must stop at]
+//  * @return          [1 - All good; 0 - error]
+//  */
 
-int ForgeSFQBlif::recurCreateCLK(unsigned int net, unsigned int curLev, unsigned int maxLev){
+// int ForgeSFQBlif::recurCreateCLK(unsigned int net, unsigned int curLev, unsigned int maxLev){
 
-	if(curLev == maxLev){
-		this->finCLKsplit.push_back(this->nets[net].inNodes[0]);
-		return 1;
-	}
+// 	if(curLev == maxLev){
+// 		this->finCLKsplit.push_back(this->nets[net].inNodes[0]);
+// 		return 1;
+// 	}
 
-	this->createSplitC(net);
+// 	this->createSplitC(net);
 
-	for(unsigned int i = 0; i < this->nodes[this->nets[net].outNodes[0]].outNets.size(); i++){
-		if(this->recurCreateCLK(this->nodes[this->nets[net].outNodes[0]].outNets[i] , curLev+1, maxLev)){
-			break;
-		}
-	}
+// 	for(unsigned int i = 0; i < this->nodes[this->nets[net].outNodes[0]].outNets.size(); i++){
+// 		if(this->recurCreateCLK(this->nodes[this->nets[net].outNodes[0]].outNets[i] , curLev+1, maxLev)){
+// 			break;
+// 		}
+// 	}
 
-	return 0;
-}
+// 	return 0;
+// }
 
 /**
  * [ForgeSFQBlif::createSplitC - creates a clock splitter]
@@ -296,28 +313,28 @@ int ForgeSFQBlif::recurCreateCLK(unsigned int net, unsigned int curLev, unsigned
  * @return       [1 - All good; 0 - error]
  */
 
-int ForgeSFQBlif::createSplitC(unsigned int netNo){
-	BlifNode fooNode;
-	BlifNet fooNet;
+// int ForgeSFQBlif::createSplitC(unsigned int netNo){
+// 	BlifNode fooNode;
+// 	BlifNet fooNet;
 
-	fooNode.name = "SC_" + to_string(this->nodes.size());
-	fooNode.GateType = "SC";
-	fooNode.inNets.push_back(netNo);
-	fooNode.outNets.push_back(this->nets.size());
-	fooNode.outNets.push_back(this->nets.size()+1);
+// 	fooNode.name = "SC_" + to_string(this->nodes.size());
+// 	fooNode.GateType = "SC";
+// 	fooNode.inNets.push_back(netNo);
+// 	fooNode.outNets.push_back(this->nets.size());
+// 	fooNode.outNets.push_back(this->nets.size()+1);
 
-	for(unsigned int i = 0; i < 2; i++){
-		fooNet.name = "net_" + to_string(this->nets.size());
-		fooNet.inNodes.clear();
-		fooNet.inNodes.push_back(this->nodes.size());
-		this->nets.push_back(fooNet);
-	}
+// 	for(unsigned int i = 0; i < 2; i++){
+// 		fooNet.name = "net_" + to_string(this->nets.size());
+// 		fooNet.inNodes.clear();
+// 		fooNet.inNodes.push_back(this->nodes.size());
+// 		this->nets.push_back(fooNet);
+// 	}
 
-	this->nets[netNo].outNodes.push_back(this->nodes.size());
-	this->nodes.push_back(fooNode);
+// 	this->nets[netNo].outNodes.push_back(this->nodes.size());
+// 	this->nodes.push_back(fooNode);
 
-	return 1;
-}
+// 	return 1;
+// }
 
 /**
  * [ForgeSFQBlif::calcCLKlevels - Calculates the clock levels of the gates]

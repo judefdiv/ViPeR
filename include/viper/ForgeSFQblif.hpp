@@ -35,7 +35,7 @@ class ForgeSFQBlif{
 		vector<vector<unsigned int>> routesWS;
 		vector<vector<unsigned int>> CLKlevel;					// [levels][nodes]
 		unsigned int LevelCnt = 0;
-		vector<unsigned int> finCLKsplit;
+		// vector<unsigned int> finCLKsplit;
 
 		SFQBlif blifFile;
 
@@ -59,9 +59,9 @@ class ForgeSFQBlif{
 		int findLevelsWS(); // <----- use
 		int recurLevelsWS(unsigned int curNode, unsigned int curLev, vector<unsigned int> fooRoute);
 
-		int clockIt();	// <---- use
-		int recurCreateCLK(unsigned int net, unsigned int curLev, unsigned int maxLev);
-		int createSplitC(unsigned int netNo);
+		// int clockIt();	// <---- use
+		// int recurCreateCLK(unsigned int net, unsigned int curLev, unsigned int maxLev);
+		// int createSplitC(unsigned int netNo);
 
 		int calcStats();
 
@@ -88,6 +88,15 @@ class ForgeSFQBlif{
 		vector<vector<unsigned int>> get_routes(){return this->routes;};
 		vector<vector<unsigned int>> get_routesWS(){return this->routesWS;};
 		vector<vector<unsigned int>> get_CLKlevels(){return this->CLKlevel;};
+
+		void set_stuffs(vector<BlifNode> inNodes, vector<BlifNet> inNets){
+			this->nodes = inNodes;
+			this->nets = inNets;};
+
+		unsigned int getGateCnt(){
+			this->calcStats();
+			return this->gateCnt + this->DFFCnt;
+		}
 
 		void printRoutes();
 		void printRoutesWS();

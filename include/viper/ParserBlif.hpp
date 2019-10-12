@@ -62,11 +62,21 @@ struct BlifNode{ 			// includes input and outputs
 
 };
 
+struct netRoute{
+	unsigned int layerNo = 0;
+	unsigned int viaNo = 0;					// zero implies no via
+
+	vector<int> corX;
+	vector<int> corY;
+};
+
 struct BlifNet{
 	string name = "\0";										// Must be a unique ID
 
 	vector<unsigned int> inNodes;
 	vector<unsigned int> outNodes;
+
+	vector<netRoute> route;
 };
 
 class SFQBlif{

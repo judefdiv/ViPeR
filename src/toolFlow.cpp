@@ -35,6 +35,7 @@ int verilog2gds(string gdsFile, string veriFile, string cellFile, string configF
  */
 
 int blif2gds(string gdsFile, string blifFile, string configFName){
+  // Logic conversion
   ForgeSFQBlif SFQcir;
   SFQcir.importBlif(blifFile);
   SFQcir.to_jpg(fileExtensionRenamer(blifFile, "_cmos.jpg"));
@@ -43,10 +44,44 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
   SFQcir.to_blif(fileExtensionRenamer(blifFile, "_sfq.blif"));
   SFQcir.to_jpgAdv(fileExtensionRenamer(blifFile, "_sfq.jpg"));
 
+  // GDS file creation
+  chipForge SFQchip;
+
+  // Cell placement
   plek placedCir;
-  placedCir.fetchSFQblif(SFQcir.get_nodes(), SFQcir.get_nets(), SFQcir.get_routes(), SFQcir.get_routesWS(), SFQcir.get_CLKlevels());
+  placedCir.fetchSFQblif(SFQcir.get_nodes(),
+                          SFQcir.get_nets(),
+                          SFQcir.get_routes(),
+                          SFQcir.get_routesWS(),
+                          SFQcir.get_CLKlevels());
   placedCir.populate(configFName);
-  placedCir.to_gds(gdsFile);
+  SFQchip.appendSTR(placedCir.defSTR());
+  SFQchip.addSTR(placedCir.gsdLayout());
+
+
+  // clk placement
+  clkChip clockIt;
+  clockIt.fetchData(placedCir.get_nodes(),
+                    placedCir.get_nets(),
+                    placedCir.get_GateList(),
+                    configFName,
+                    SFQcir.getGateCnt());
+  clockIt.hitIt();
+  SFQchip.addSTR(clockIt.to_gds());
+
+  // SFQcir.set_stuffs(clockIt.get_nodes(), clockIt.get_nets());
+  // SFQcir.to_str();
+
+  // Routing
+  roete route;
+  route.fetchData(clockIt.get_nodes(),
+                  clockIt.get_nets(),
+                  clockIt.get_GateList(),
+                  configFName);
+  route.straightRoute();
+  SFQchip.addSTR(route.route2gds());
+
+  SFQchip.forgeChip(gdsFile);
 
   return 1;
 }
@@ -66,24 +101,3 @@ int runABC(string blifFile, string veriFile, string cellFile){
 
   return 1;
 }
-
-/**
- * [CMOSblif2SFQblif - Converts a generic CMOS .blif file to SFQ .blif file]
- * @param  blifInFile  [The input CMOS .blif file]
- * @param  blifOutFile [The output SFQ .blif file]
- * @return             [1 - All good; 0 - Error]
- */
-
-// int CMOSblif2SFQblif(string blifInFile, string blifOutFile){
-//   cout << "Converting CMOS .blif to SFQ .blif" << endl;
-
-//   ForgeSFQBlif SFQcir;
-//   SFQcir.importBlif(blifInFile);
-//   SFQcir.to_jpg(fileRenamer(blifInFile, "", "_cmos.jpg"));
-//   SFQcir.toSFQ();
-//   // SFQcir.to_str();
-//   SFQcir.to_blif(blifOutFile);
-//   SFQcir.to_jpgAdv(fileRenamer(blifOutFile, "", "_sfq.jpg"));
-
-//   return 1;
-// }
