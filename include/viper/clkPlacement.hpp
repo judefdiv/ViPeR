@@ -31,12 +31,19 @@ class clkChip{
     vector<BlifNode> nodes;
     vector<BlifNet> nets;
     vector<cellDis> gateList;
+    vector<vector<unsigned int>> cellLayout;
 
     unsigned int splitIndex = 0; // index of the splitter in gateList
     unsigned int clkSplitIndex = 0; // index of the start of the clock splitters in the nodes class
 
     unsigned int clkPinCnt = 0;
     vector<unsigned int> finCLKsplit;
+
+    unsigned int padHeightGap = 0;
+    unsigned int cellHeight = 0;
+    unsigned int veriticalHeightGap = 0;
+
+    // --------------------------- Method 1 ---------------------------
 
     int recurCreateCLK(unsigned int curLev,
                         unsigned int maxLev,
@@ -50,6 +57,17 @@ class clkChip{
 
     int drawCLKnode(int corX, int corY, unsigned int netNo);
 
+    // --------------------------- Method 2 ---------------------------
+
+    vector<unsigned int> rowSplitInsert;
+    vector<vector<unsigned int>> clkLayout;
+
+
+    int bottomUp();
+    int mergeLayouts();
+    int mapNets();
+    int drawCLKnodeBasic();
+
   public:
     clkChip(){};
     ~clkChip(){};
@@ -58,13 +76,15 @@ class clkChip{
                     vector<BlifNet> inNets,
                     vector<cellDis> inGateList,
                     string configFile,
-                    unsigned int gateCnt);
+                    unsigned int gateCnt,
+                    vector<vector<unsigned int>> layout);
 
-    int hitIt();
+    int execute();
 
     vector<BlifNode> get_nodes(){return this->nodes;};
     vector<BlifNet> get_nets(){return this->nets;};
     vector<cellDis> get_GateList(){return gateList;};
+    vector<vector<unsigned int>> getCellLayout(){return this->cellLayout;};
 
     void to_str();
     gdsSTR to_gds();

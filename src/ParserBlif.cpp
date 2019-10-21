@@ -328,6 +328,9 @@ void SFQBlif::to_str(){
 		cout << "\t\tGate No: " << i << endl;
 		cout << "\t\tType: " << this->nodes[i].GateType << endl;
 		cout << "\t\tName: " << this->nodes[i].name << endl;
+		cout << "\t\tStrRef: " << this->nodes[i].strRef << endl;
+		cout << "\t\tCorX: " << this->nodes[i].corX << endl;
+		cout << "\t\tCorY: " << this->nodes[i].corY << endl;
 
 		cout << "\t\tIn nets:";
 		for(unsigned int j = 0; j < this->nodes[i].inNets.size(); j++){
@@ -341,13 +344,12 @@ void SFQBlif::to_str(){
 		}
 		cout << endl;
 
-		// cout << "\t\tInfluenced by: " << this->nodes[i].influeByCnt << endl;
-		// cout << "\t\tInfluencing: " << this->nodes[i].influeIngCnt << endl;
+		cout << "\t\tclkNet nets: " << this->nodes[i].clkNet;
+
+		cout << endl;
+
 
 		cout << "\t\tLevels:";
-		// for(unsigned int j = 0; j < this->nodes[i].LevelOcc.size(); j++){
-		// 	cout << "\t" << this->nodes[i].LevelOcc[j];
-		// }
 		cout << "\t\t\tClock: " << this->nodes[i].CLKlevel << endl;
 		cout << "\t\t\tMaximum: " << this->nodes[i].MaxLevel << endl;
 		cout << "\t\t\tMinimum: " << this->nodes[i].MinLevel << endl;

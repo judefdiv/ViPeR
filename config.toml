@@ -27,7 +27,7 @@
 	# NOTE: all directories are relative to the current directory
 
 [wafer_parameters]
-	vertical_gap = 0      # Spacing between cells
+	vertical_gap = 0     # Spacing between cells
 	horizontal_gap = 0    # Spacing between cells
 	cell_height = 50      # The height of the cells
 	row_align = "justify" # Row alignment {left, centre, justify}

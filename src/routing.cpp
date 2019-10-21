@@ -74,16 +74,16 @@ int roete::straightRoute(){
 
   for(unsigned int i = 0; i < this->nets.size(); i++){
     for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
-      if(this->nets[i].outNodes.size() > 0){
-        if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
-          continue;
-        }
-      }
-      if(this->nets[i].inNodes.size() > 0){
-        if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
-          continue;
-        }
-      }
+      // if(this->nets[i].outNodes.size() > 0){
+      //   if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
+      //     continue;
+      //   }
+      // }
+      // if(this->nets[i].inNodes.size() > 0){
+      //   if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
+      //     continue;
+      //   }
+      // }
 
 
       fromNode = this->nets[i].inNodes[0];
@@ -99,7 +99,12 @@ int roete::straightRoute(){
         nodesOutputCnt[fromNode]++;
       }
 
-      if(this->nodes[toNode].strRef == this->pad_index){
+      // check if toNode is connecting with CLK
+      if(this->nodes[toNode].clkNet == i){        // check if toNode is connecting with CLK
+        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].clk_x[0];
+        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].clk_y[0];
+      }
+      else if(this->nodes[toNode].strRef == this->pad_index){
         corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_out_x[0];
         corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_out_y[0];
       }

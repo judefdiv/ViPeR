@@ -11,8 +11,6 @@
 
 #include "viper/placement.hpp"
 
-
-
 plek::plek(){
 
 }
@@ -523,6 +521,8 @@ int plek::alignJustify(){
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
       index = this->layout[i][j];
 
+      // cout << "Placed[" << index << "]: " << this->nodes[index].GateType << "; x=" << cPtX << " y=" << cPtY << endl;
+
       this->nodes[index].corX = cPtX;
       this->nodes[index].corY = cPtY;
 
@@ -553,6 +553,8 @@ int plek::alignJustify(){
  */
 
 gdsSTR plek::gsdLayout(){
+  cout << "Final layout:" << endl;
+  this->printLayout();
 
   // layout of the cells
   if(!this->rAlign.compare("left")){

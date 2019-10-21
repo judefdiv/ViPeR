@@ -56,7 +56,7 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                           SFQcir.get_CLKlevels());
   placedCir.populate(configFName);
   SFQchip.appendSTR(placedCir.defSTR());
-  SFQchip.addSTR(placedCir.gsdLayout());
+  // SFQchip.addSTR(placedCir.gsdLayout());
 
 
   // clk placement
@@ -65,16 +65,19 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                     placedCir.get_nets(),
                     placedCir.get_GateList(),
                     configFName,
-                    SFQcir.getGateCnt());
-  clockIt.hitIt();
-  SFQchip.addSTR(clockIt.to_gds());
+                    SFQcir.getGateCnt(),
+                    placedCir.get_layout());
+  clockIt.execute();
 
-  // SFQcir.set_stuffs(clockIt.get_nodes(), clockIt.get_nets());
-  // SFQcir.to_str();
+  placedCir.setLayout(clockIt.getCellLayout(), clockIt.get_nodes());
+  SFQchip.addSTR(placedCir.gsdLayout());
+
+  SFQcir.set_stuffs(clockIt.get_nodes(), clockIt.get_nets());
+  SFQcir.to_str();
 
   // Routing
   roete route;
-  route.fetchData(clockIt.get_nodes(),
+  route.fetchData(placedCir.get_nodes(),
                   clockIt.get_nets(),
                   clockIt.get_GateList(),
                   configFName);
