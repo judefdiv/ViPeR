@@ -72,8 +72,8 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
   placedCir.setLayout(clockIt.getCellLayout(), clockIt.get_nodes());
   SFQchip.addSTR(placedCir.gsdLayout());
 
-  SFQcir.set_stuffs(clockIt.get_nodes(), clockIt.get_nets());
-  SFQcir.to_str();
+  // SFQcir.set_stuffs(clockIt.get_nodes(), clockIt.get_nets());
+  // SFQcir.to_str();
 
   // Routing
   roete route;

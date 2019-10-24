@@ -41,8 +41,9 @@ int clkChip::execute(){
 
 
   // --------------------------- Method 2 ---------------------------
-  this->bottomUp();
-  this->mapNets();
+  this->initialLogic2CLK();
+  this->mapInitialLogic2CLKNets();
+  this->stitchCLKrows();
   this->mergeLayouts();
 
   cout << "Clocking all the gates done." << endl;
@@ -197,11 +198,11 @@ int clkChip::drawCLKnode(int corX, int corY, unsigned int netNo){
  */
 
 /**
- * [clkChip::bottomUp description]
+ * [clkChip::initialLogic2CLK description]
  * @return [1 - All good; 0 - Error]
  */
 
-int clkChip::bottomUp(){
+int clkChip::initialLogic2CLK(){
   cout << "Building clock from bottom up" << endl;
 
   uint32_t cellCnt;
@@ -266,11 +267,11 @@ int clkChip::mergeLayouts(){
 }
 
 /**
- * [clkChip::mapNets - Maps/joins the splitter nodes]
+ * [clkChip::mapInitialLogic2CLKNets - Maps/joins the splitter nodes]
  * @return [1 - All good; 0 - Error]
  */
 
-int clkChip::mapNets(){
+int clkChip::mapInitialLogic2CLKNets(){
   cout << "Mapping clock nets." << endl;
   vector<unsigned int> rowJoin;
   unsigned int row0, row1, col0, col1, clkRow;
@@ -322,12 +323,6 @@ int clkChip::mapNets(){
     // }
     // cout << endl;
 
-  // for(unsigned int j = 0; j < rowJoin.size(); j++){
-  //   this->nodes[rowJoin[i]].clkNet =
-  // }
-
-  // unsigned int clkSplitIndex;
-
   clkSplitIndex = 0;
   outNetIndex = 0;
 
@@ -354,6 +349,165 @@ int clkChip::mapNets(){
   return 1;
 }
 
+/**
+ * [clkChip::stitchCLKrows description]
+ * @return [1 - All good; 0 - Error]
+ */
+
+int clkChip::stitchCLKrows(){
+  cout << "Stitching clk row splitters." << endl;
+  // find the widest row
+  unsigned int widestRow;
+  unsigned int widestRowCnt = 0;
+  for(unsigned int i = 0; i < this->clkLayout.size(); i++){
+    if(this->clkLayout[i].size() > widestRowCnt){
+      widestRowCnt = this->clkLayout[i].size();
+      widestRow = i;
+    }
+  }
+
+  // calc number of levels needed
+  int noLevels = ceil(log(widestRowCnt)/log(2));
+
+  // loop through levels
+  vector<unsigned int> splitJoin0, splitJoin1, splitPos, insertedNodes;
+  int sIndex0, sIndex1;    // split index
+  for(unsigned int i = 0; i < this->clkLayout.size(); i++){
+    for(unsigned int j = 0; j < noLevels; j++){
+        sIndex0 = -1;
+        sIndex1 = -1;
+        splitJoin0.clear();
+        splitJoin1.clear();
+        splitPos.clear();
+        insertedNodes.clear();
+      for(unsigned int k = 0; k < this->clkLayout[i].size(); k++){
+        // find the next 2 splitters
+        if(sIndex0 == -1 && this->nodes[this->clkLayout[i][k]].inNets.size() == 0){
+          sIndex0 = k;
+          splitJoin0.push_back(sIndex0);
+        }
+        else if(sIndex1 == -1 && this->nodes[this->clkLayout[i][k]].inNets.size() == 0){
+          sIndex1 = k;
+          splitJoin1.push_back(sIndex1);
+        }
+
+        if(sIndex0 != -1 && sIndex1 != -1){
+          sIndex0 = -1;
+          sIndex1 = -1;
+        }
+        else if(sIndex0 != -1 && k == this->clkLayout[i].size() -1){
+          // the odd splitter
+          cout << "Odd splitter, thats a bit unfortunate" << endl;
+        }
+      }
+
+      for(unsigned int k = 0; k < splitJoin0.size(); k++){
+
+        if(splitJoin1.size() > k){
+          insertedNodes.push_back(createCLKnode(this->clkLayout[i][splitJoin0[k]], this->clkLayout[i][splitJoin1[k]]));
+        }
+        else{
+          insertedNodes.push_back(createCLKnodeAlone(this->clkLayout[i][splitJoin0[k]]));
+        }
+
+        splitPos.push_back((splitJoin0[k] + splitJoin1[k]) / 2 +1);
+      }
+
+      // inserting splitters.... must improve
+      vector<unsigned int>::iterator itSplitPos;
+      for(int l = splitPos.size()-1; l >= 0; l--){
+        itSplitPos = clkLayout[i].begin() + splitPos[l];
+        clkLayout[i].insert(itSplitPos, insertedNodes[l]);
+      }
+
+
+    }
+
+
+  }
+
+  cout << "Stitching clk row splitters done." << endl;
+  return 1;
+}
+
+/**
+ * [clkChip::createCLKnode description]
+ * @param  CLKnode0 [description]
+ * @param  CLKnode1 [description]
+ * @return          [index of new node]
+ */
+
+unsigned int clkChip::createCLKnode(unsigned int CLKnode0, unsigned int CLKnode1){
+  BlifNode fooNode;
+  BlifNet fooNet;
+
+  fooNode.name = "SC_" + to_string(this->nodes.size());
+  fooNode.GateType = "SPLIT";
+  fooNode.strRef = this->splitIndex;
+
+  fooNode.outNets.push_back(this->nets.size());
+  fooNode.outNets.push_back(this->nets.size()+1);
+
+  this->nodes[CLKnode0].inNets.push_back(this->nets.size());
+  this->nodes[CLKnode1].inNets.push_back(this->nets.size()+1);
+
+  for(unsigned int i = 0; i < 2; i++){
+    fooNet.name = "net_" + to_string(this->nets.size());
+    fooNet.inNodes.clear();
+    fooNet.inNodes.push_back(this->nodes.size());
+    fooNet.outNodes.clear();
+    if(i == 0){
+      fooNet.outNodes.push_back(CLKnode0);
+    }
+    else if(i == 1){
+      fooNet.outNodes.push_back(CLKnode1);
+    }
+    else{
+      cout << "Creating CLK error" << endl;
+      return 0;
+    }
+
+    this->nets.push_back(fooNet);
+  }
+
+  this->nodes.push_back(fooNode);
+
+  return this->nodes.size() -1;
+}
+
+/**
+ * [clkChip::createCLKnodeAlone description]
+ * @param  CLKnode [description]
+ * @return         [index of new node]
+ */
+
+unsigned int clkChip::createCLKnodeAlone(unsigned int CLKnode){
+  BlifNode fooNode;
+  BlifNet fooNet;
+
+  fooNode.name = "SC_" + to_string(this->nodes.size());
+  fooNode.GateType = "SPLIT";
+  fooNode.strRef = this->splitIndex;
+
+  fooNode.outNets.push_back(this->nets.size());
+  // fooNode.outNets.push_back(this->nets.size()+1);
+
+  this->nodes[CLKnode].inNets.push_back(this->nets.size());
+
+  for(unsigned int i = 0; i < 1; i++){
+    fooNet.name = "net_" + to_string(this->nets.size());
+    fooNet.inNodes.clear();
+    fooNet.inNodes.push_back(this->nodes.size());
+
+    fooNet.outNodes.push_back(CLKnode);
+
+    this->nets.push_back(fooNet);
+  }
+
+  this->nodes.push_back(fooNode);
+
+  return this->nodes.size() -1;
+}
 /**
  * [clkChip::drawCLKnode - creates/draws the nodes]
  * @return      [1 - All good; 0 - Error]

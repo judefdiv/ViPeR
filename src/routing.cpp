@@ -136,19 +136,24 @@ gdsSTR roete::route2gds(){
 
   for(unsigned int i = 0; i < this->nets.size(); i++){
     for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
-      if(this->nets[i].outNodes.size() > 0){
-        if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
-          continue;
-        }
-      }
-      if(this->nets[i].inNodes.size() > 0){
-        if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
-          continue;
-        }
-      }
+      // if(this->nets[i].outNodes.size() > 0){
+      //   if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
+      //     continue;
+      //   }
+      // }
+      // if(this->nets[i].inNodes.size() > 0){
+      //   if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
+      //     continue;
+      //   }
+      // }
 
       for(unsigned int k = 0; k < this->nets[i].route.size(); k++){
-        resultSTR.PATH.push_back(drawPath(4, this->ptl_width, this->nets[i].route[k].corX, this->nets[i].route[k].corY));
+        if(this->nodes[this->nets[i].inNodes[0]].name.find("SC") == string::npos){
+          resultSTR.PATH.push_back(drawPath(4, this->ptl_width, this->nets[i].route[k].corX, this->nets[i].route[k].corY));
+        }
+        else{
+          resultSTR.PATH.push_back(drawPath(5, this->ptl_width, this->nets[i].route[k].corX, this->nets[i].route[k].corY));
+        }
       }
     }
   }

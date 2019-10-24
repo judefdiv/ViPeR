@@ -15,6 +15,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <math.h>
 // #include <map>
 
 // #include "toml/toml.hpp"
@@ -63,10 +64,14 @@ class clkChip{
     vector<vector<unsigned int>> clkLayout;
 
 
-    int bottomUp();
+    int initialLogic2CLK();
     int mergeLayouts();
-    int mapNets();
+    int mapInitialLogic2CLKNets();
+    int stitchCLKrows();
+    // aux functions
     int drawCLKnodeBasic();
+    unsigned int createCLKnode(unsigned int CLKnode0, unsigned int CLKnode1);
+    unsigned int createCLKnodeAlone(unsigned int CLKnode);
 
   public:
     clkChip(){};
