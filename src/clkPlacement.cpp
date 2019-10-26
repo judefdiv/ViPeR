@@ -44,6 +44,7 @@ int clkChip::execute(){
   this->initialLogic2CLK();
   this->mapInitialLogic2CLKNets();
   this->stitchCLKrows();
+  this->mainCLKdistri();
   this->mergeLayouts();
 
   cout << "Clocking all the gates done." << endl;
@@ -350,7 +351,7 @@ int clkChip::mapInitialLogic2CLKNets(){
 }
 
 /**
- * [clkChip::stitchCLKrows description]
+ * [clkChip::stitchCLKrows - stitches and adds splitter until each row only requires 1 input clk signal. Bottom up approach]
  * @return [1 - All good; 0 - Error]
  */
 
@@ -419,14 +420,126 @@ int clkChip::stitchCLKrows(){
         itSplitPos = clkLayout[i].begin() + splitPos[l];
         clkLayout[i].insert(itSplitPos, insertedNodes[l]);
       }
-
-
     }
 
-
+    for(unsigned int j = 0; j < this->clkLayout[i].size(); j++){
+      if(this->nodes[this->clkLayout[i][j]].inNets.size() == 0){
+        this->rowCLKin.push_back(this->clkLayout[i][j]);
+        break;
+      }
+    }
   }
 
   cout << "Stitching clk row splitters done." << endl;
+  return 1;
+}
+
+
+/**
+ * [clkChip::mainCLKdistro - Creates the main clock distribution. top down approach]
+ * @return [1 - All good; 0 - Error]
+ */
+
+int clkChip::mainCLKdistri(){
+  cout << "Stitching main clk row splitters." << endl;
+
+  // Create/connect initial CLK
+  BlifNode fooNode;
+  BlifNet fooNet;
+
+  fooNode.name = "SC_" + to_string(this->nodes.size());
+  fooNode.GateType = "SPLIT";
+  fooNode.strRef = this->splitIndex;
+  fooNode.inNets.push_back(this->nets.size()); // clk pad
+
+  fooNet.name = "net_" + to_string(this->nets.size());
+  fooNet.inNodes.push_back(this->clkSplitIndex);
+  fooNet.outNodes.push_back(this->nodes.size());
+
+  this->nets.push_back(fooNet);
+  this->nodes.push_back(fooNode);
+
+
+  // calc number of levels needed
+  int noLevels = ceil(log(this->rowCLKin.size())/log(2));
+
+  vector<unsigned int> insertedNodes, newClkNodes, fooVec;
+  insertedNodes.push_back(this->nodes.size()-1);    // adding in the first CLK splitter
+
+  for(unsigned int i = 0; i < noLevels-1; i++){
+    newClkNodes.clear();
+    for(unsigned int j = 0; j < insertedNodes.size(); j++){
+      fooVec = create2CLKnode(insertedNodes[j]);
+      newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
+    }
+
+    vector<unsigned int>::iterator itSplitPos;
+    // for(unsigned int j = newClkNodes.size()-1; j >= 0; j--){
+    for(unsigned int j = 0; j < newClkNodes.size(); j++){
+      itSplitPos = insertedNodes.begin() + j*2;
+      insertedNodes.insert(itSplitPos, newClkNodes[j]);
+    }
+  }
+
+  // connecting main clock to the rest of the clocks
+  unsigned int clkCnt = 0;
+  for(unsigned int i = 0; i < newClkNodes.size(); i++){
+    this->stitch2Clk(newClkNodes[i], this->rowCLKin[clkCnt++]);
+    if(clkCnt < this->rowCLKin.size()){
+      this->stitch2Clk(newClkNodes[i], this->rowCLKin[clkCnt++]);
+    }
+  }
+
+  // inserting into clk layout
+  unsigned int midPos = this->clkLayout.size() / 2;
+
+  vector<vector<unsigned int>>::iterator itClkLayout;
+  itClkLayout = this->clkLayout.begin() + midPos;
+  this->clkLayout.insert(itClkLayout, insertedNodes);
+
+  vector<unsigned int>::iterator itSplitPos;
+  itSplitPos = rowSplitInsert.begin() + midPos;
+  rowSplitInsert.insert(itSplitPos, (this->cellLayout.size() /2)-1);
+
+  cout << "Stitching main clk row splitters done." << endl;
+  return 1;
+}
+
+/**
+ * [clkChip::stitch2Clk description]
+ * @param  parentCLK [description]
+ * @param  childCLK  [description]
+ * @return           [1 - All good; 0 - Error]
+ */
+
+int clkChip::stitch2Clk(unsigned int parentCLK, unsigned int childCLK){
+  BlifNet fooNet;
+
+  if(this->nodes[parentCLK].GateType.compare("SPLIT")){
+    cout << "Clock stitching error, not Splitter" << endl;
+    return 0;
+  }
+  if(this->nodes[parentCLK].outNets.size() == 0){
+    this->nodes[parentCLK].outNets.push_back(this->nets.size());
+    this->nodes[childCLK].outNets.push_back(this->nets.size());
+  }
+  else if(this->nodes[parentCLK].outNets.size() == 1){
+    this->nodes[parentCLK].outNets.push_back(this->nets.size());
+    this->nodes[childCLK].outNets.push_back(this->nets.size());
+  }
+  else{
+    cout << "Clock stitching error, Splitter can only handle 2 outputs" << endl;
+    return 0;
+  }
+
+  fooNet.name = "net_" + to_string(this->nets.size());
+  // fooNet.inNodes.clear();
+  fooNet.inNodes.push_back(parentCLK);
+  // fooNet.outNodes.clear();
+  fooNet.outNodes.push_back(childCLK);
+
+  this->nets.push_back(fooNet);
+
   return 1;
 }
 
@@ -508,6 +621,49 @@ unsigned int clkChip::createCLKnodeAlone(unsigned int CLKnode){
 
   return this->nodes.size() -1;
 }
+
+/**
+ *
+ */
+
+vector<unsigned int> clkChip::create2CLKnode(unsigned int CLKnode){
+  BlifNode fooNode;
+  BlifNet fooNet;
+
+  vector<unsigned int> resVec;
+
+  fooNode.GateType = "SPLIT";
+  fooNode.strRef = this->splitIndex;
+
+  this->nodes[CLKnode].outNets.push_back(this->nets.size());
+  this->nodes[CLKnode].outNets.push_back(this->nets.size()+1);
+
+  fooNet.inNodes.push_back(CLKnode);
+
+  for(unsigned int i = 0; i < 2; i++){
+    fooNode.name = "SC_" + to_string(this->nodes.size());
+    fooNode.inNets.clear();
+    fooNode.inNets.push_back(this->nets.size());
+
+    fooNet.name = "net_" + to_string(this->nets.size());
+    // fooNet.inNodes.clear();
+    // fooNet.inNodes.push_back(CLKnode);
+    fooNet.outNodes.clear();
+    fooNet.outNodes.push_back(this->nodes.size());
+
+    resVec.push_back(this->nodes.size());
+    this->nodes.push_back(fooNode);
+    this->nets.push_back(fooNet);
+  }
+
+  // vector<unsigned int> resVec;
+
+  // resVec.push_back(this->nodes.size() -1);
+  // resVec.push_back(this->nodes.size() -2);
+
+  return resVec;
+}
+
 /**
  * [clkChip::drawCLKnode - creates/draws the nodes]
  * @return      [1 - All good; 0 - Error]
@@ -539,8 +695,6 @@ int clkChip::drawCLKnodeBasic(){
 
   return 1;
 }
-
-
 
 /* ----------------------------------------------------------------------------------
    --------------------------------- Miscellaneous ----------------------------------

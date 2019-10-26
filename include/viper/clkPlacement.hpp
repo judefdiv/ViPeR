@@ -62,16 +62,23 @@ class clkChip{
 
     vector<unsigned int> rowSplitInsert;
     vector<vector<unsigned int>> clkLayout;
+    vector<unsigned int> rowCLKin; // the input clk per row
 
 
     int initialLogic2CLK();
     int mergeLayouts();
     int mapInitialLogic2CLKNets();
     int stitchCLKrows();
+    int mainCLKdistri();
+
     // aux functions
     int drawCLKnodeBasic();
-    unsigned int createCLKnode(unsigned int CLKnode0, unsigned int CLKnode1);
+    unsigned int createCLKnode(unsigned int CLKnode0,
+                                unsigned int CLKnode1);
     unsigned int createCLKnodeAlone(unsigned int CLKnode);
+    vector<unsigned int> create2CLKnode(unsigned int CLKnode);
+    int stitch2Clk(unsigned int parentCLK, unsigned int childCLK);
+
 
   public:
     clkChip(){};
