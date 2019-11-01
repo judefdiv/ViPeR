@@ -27,6 +27,19 @@
 
 #define xOffset 2000000
 
+void vecInsert(vector<vector<unsigned int>> &vec,
+                unsigned int whichRow,
+                unsigned int toBeInserted,
+                unsigned int pos);
+
+vector<unsigned int> vecInsert(vector<unsigned int> &vec,
+                                unsigned int toBeInserted,
+                                unsigned int pos);
+
+vector<vector<unsigned int>> vecInsertRow(vector<vector<unsigned int>> &vec,
+                                          vector<unsigned int> &vecRow,
+                                          unsigned int posRow);
+
 class clkChip{
   private:
     vector<BlifNode> nodes;
