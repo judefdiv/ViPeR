@@ -10,22 +10,29 @@
 # version = 0.1
 
 [run_parameters]
-	Command   = "blif2gds" # verilog2gds; blif2gds; runABC;
+	Command   = "gdf2lef" # verilog2gds; blif2gds; runABC; gdf2lef;
 
 	# Working directory, all file names will be referenced with this
 	# work_dir = "data/adder3bit/"
 	# work_dir = "data/adder6bit/"
-	work_dir = "data/rca2/"
+	# work_dir = "data/rca2/"
+	work_dir = "data/KSA4/"
 
 	gds_file  = "outGDS.gds"     # GDS file to be created
 	# blif_file = "adder3bit.blif" # Standard blif that will be converted to SFQblif
 	# blif_file = "adder6bit.blif" # Standard blif that will be converted to SFQblif
-	blif_file = "rca2.blif" # Standard blif that will be converted to SFQblif
+	blif_file = "KSA4.blif" # Standard blif that will be converted to SFQblif
+	# blif_file = "rca2.blif" # Standard blif that will be converted to SFQblif
 	# sfqblif_file = ""            # The SFQblif file that will be converted to GDS
-	# veri_file = ""	              # Verilog file for ABC to convert to a standard blif
+	# veri_file = "KSA4.v"	              # Verilog file for ABC to convert to a standard blif
 	# cell_dis  = "LSmitll.genlib" # cell/gate description for ABC
 	cell_dis_gds = "LSmitll_cell_lib.toml"
 	# NOTE: all directories are relative to the current directory
+
+
+	# Converting a GDF(Gate Definition File) to LEF
+	# cell_dis_gds = "LSmitll_cell_lib.toml"
+	lef_file = "SUN.lef"
 
 [wafer_parameters]
 	vertical_gap   = 0         # Spacing between cells

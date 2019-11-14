@@ -104,3 +104,18 @@ int runABC(string blifFile, string veriFile, string cellFile){
 
   return 1;
 }
+
+/**
+ * [gdf2lef - Converting a gdf.toml file to a standard .lef file]
+ * @param  gdfFile [The .toml file containing definitions of the cells]
+ * @param  lefFile [The .lef file that is going to be created]
+ * @return         [1 - All good; 0 - Error]
+ */
+
+int gdf2lef(const string &gdfFile, const string &lefFile){
+  lef_file foo;
+  foo.importGDF(gdfFile);
+  foo.exportLef(lefFile);
+
+  return 1;
+}

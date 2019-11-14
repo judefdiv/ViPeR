@@ -21,6 +21,7 @@ set(SOURCES
   src/chipForge.cpp
   src/routing.cpp
   src/clkPlacement.cpp
+  src/ParserLef.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

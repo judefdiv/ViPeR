@@ -22,6 +22,7 @@
 #include "viper/placement.hpp"
 #include "viper/chipForge.hpp"
 #include "viper/clkPlacement.hpp"
+#include "viper/ParserLef.hpp"
 
 
 using namespace std;
@@ -29,3 +30,4 @@ using namespace std;
 int verilog2gds(string gdsFile, string veriFile, string cellFile, string configFName);
 int blif2gds(string gdsFile, string blifFile, string configFName);
 int runABC(string blifFile, string veriFile, string cellFile);
+int gdf2lef(const string &gdfFile, const string &lefFile);

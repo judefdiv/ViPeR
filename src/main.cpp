@@ -137,6 +137,7 @@ int RunToolFromConfig(string fileName){
 	string verFName = "\0";			// verilog
 	string glbFName = "\0";			// .genlib
 	string clbFName = "\0";			// .toml
+	string lefFName = "\0";			// .toml
 	string workDir  = "";			//
 
 	it_run_para = run_para.find("Command");
@@ -183,6 +184,12 @@ int RunToolFromConfig(string fileName){
 		clbFName = clbFName.insert(0, workDir);
 	}
 
+	it_run_para = run_para.find("lef_file");
+	if(it_run_para != run_para.end()){
+		lefFName = it_run_para->second;
+		lefFName = lefFName.insert(0, workDir);
+	}
+
 	if(!command.compare("verilog2gds")){
 		if(verFName.compare("\0") && gdsFName.compare("\0") && glbFName.compare("\0")){
 			return verilog2gds(gdsFName, verFName, glbFName, fileName);
@@ -195,6 +202,15 @@ int RunToolFromConfig(string fileName){
 	else if(!command.compare("blif2gds")){
 		if(bliFName.compare("\0") && gdsFName.compare("\0")){
 			return blif2gds(gdsFName, bliFName, fileName);
+		}
+		else{
+			cout << "Input argument error." << endl;
+			return 0;
+		}
+	}
+	else if(!command.compare("gdf2lef")){
+		if(lefFName.compare("\0") && clbFName.compare("\0")){
+			return gdf2lef(clbFName, lefFName);
 		}
 		else{
 			cout << "Input argument error." << endl;
