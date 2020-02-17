@@ -82,6 +82,7 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                   clockIt.get_GateList(),
                   configFName);
   route.straightRoute();
+  route.qrouter(fileExtensionRenamer(blifFile, ".def"));
   SFQchip.addSTR(route.route2gds());
 
   SFQchip.forgeChip(gdsFile);

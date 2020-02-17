@@ -293,7 +293,7 @@ int clkChip::mergeLayouts(){
     for(unsigned int j = 0; j < this->rowSplitInsert.size(); j++){
       if(i == this->rowSplitInsert[j]){
         newCellLayout.push_back(this->clkLayout[j]);
-        break;
+        // break;
       }
     }
 

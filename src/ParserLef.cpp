@@ -109,13 +109,19 @@ int lef_file::importGDF(const string &fileName){
       element = toml::find(gateBlk, pinName);
       intVec = toml::get<vector<int>>(element);
 
-      foo.ports.resize(1);
-      foo.ports[0].layer = "unknown";
+      foo.ports.resize(2);
 
+      foo.ports[0].layer = "metal1";
       foo.ports[0].ptsX.push_back(((double)intVec[0] * unitScale) - (viaSizeX/2));
       foo.ports[0].ptsY.push_back(((double)intVec[1] * unitScale) - (viaSizeY/2));
       foo.ports[0].ptsX.push_back(((double)intVec[0] * unitScale) + (viaSizeX/2));
       foo.ports[0].ptsY.push_back(((double)intVec[1] * unitScale) + (viaSizeY/2));
+
+      foo.ports[1].layer = "metal2";
+      foo.ports[1].ptsX.push_back(((double)intVec[0] * unitScale) - (viaSizeX/2));
+      foo.ports[1].ptsY.push_back(((double)intVec[1] * unitScale) - (viaSizeY/2));
+      foo.ports[1].ptsX.push_back(((double)intVec[0] * unitScale) + (viaSizeX/2));
+      foo.ports[1].ptsY.push_back(((double)intVec[1] * unitScale) + (viaSizeY/2));
 
       if(!pinType.compare("in")){
         foo.name = "IN_" + to_string(pinInCnt++);
@@ -137,8 +143,45 @@ int lef_file::importGDF(const string &fileName){
         cout << "Pin naming error with \"" << mac.name << endl;
         return 0;
       }
-
     }
+
+    // for(auto &foo:mac.pins){
+    //   pinType = strVec[pinCnt];
+    //   pinName = "P" + to_string(++pinCnt);
+
+    //   element = toml::find(gateBlk, pinName);
+    //   intVec = toml::get<vector<int>>(element);
+
+    //   foo.ports.resize(1);
+    //   foo.ports[0].layer = "unknown";
+
+    //   foo.ports[0].ptsX.push_back(((double)intVec[0] * unitScale) - (viaSizeX/2));
+    //   foo.ports[0].ptsY.push_back(((double)intVec[1] * unitScale) - (viaSizeY/2));
+    //   foo.ports[0].ptsX.push_back(((double)intVec[0] * unitScale) + (viaSizeX/2));
+    //   foo.ports[0].ptsY.push_back(((double)intVec[1] * unitScale) + (viaSizeY/2));
+
+    //   if(!pinType.compare("in")){
+    //     foo.name = "IN_" + to_string(pinInCnt++);
+    //     foo.direction = "IN";
+    //   }
+    //   else if(!pinType.compare("out")){
+    //     foo.name = "OUT_" + to_string(pinOutCnt++);
+    //     foo.direction = "OUT";
+    //   }
+    //   else if(!pinType.compare("clk")){
+    //     foo.name = "CLK";
+    //     foo.direction = "IN";
+    //   }
+    //   else if(!pinType.compare("in_out")){
+    //     foo.name = "INOUT_" + to_string(pinInOutCnt++);
+    //     foo.direction = "INOUT";
+    //   }
+    //   else{
+    //     cout << "Pin naming error with \"" << mac.name << endl;
+    //     return 0;
+    //   }
+    // }
+
   }
 
   // ----------------------- Layers ---------------------------
@@ -204,7 +247,7 @@ int lef_file::exportLef(const string &fileName){
   time_t now = time(0);
   char* currentTime = ctime(&now);
 
-  lefFile << "# Def file generated with ViPeR " << endl;
+  lefFile << "# Lef file generated with ViPeR " << endl;
   lefFile << "# Jude de Villiers, Stellenbosch University" << endl;
   lefFile << "# " << currentTime << endl;
 
@@ -261,7 +304,7 @@ int lef_file::exportLef(const string &fileName){
 
   for(auto &foo: this->macros){
     lefFile << "MACRO " << foo.name << endl;
-    lefFile << "  TYPE CORE ;" << endl;
+    lefFile << "  CLASS CORE ;" << endl;
     lefFile << "  SIZE " << foo.sizeX << " by " << foo.sizeY << " ;" << endl;
     lefFile << "  ORIGIN " << foo.originX << " " << foo.originY << " ;" << endl;
     lefFile << "  SYMMETRY X ;" << endl;
@@ -286,17 +329,17 @@ int lef_file::exportLef(const string &fileName){
     }
 
     // ------------ obs ------------
-    if(foo.obs.size() > 0)
-      lefFile << "  OBS" << endl;
+    // if(foo.obs.size() > 0)
+    //   lefFile << "  OBS" << endl;
 
-    for(auto &bar: foo.obs){
-      lefFile << "    LAYER " << bar.layer << " ;" << endl;
-      lefFile << "      RECT " << bar.ptsX[0] << " "
-                                << bar.ptsY[0] << " "
-                                << bar.ptsX[1] << " "
-                                << bar.ptsY[1] << " ;" << endl;
-    }
-    lefFile << "  END " << endl;
+    // for(auto &bar: foo.obs){
+    //   lefFile << "    LAYER " << bar.layer << " ;" << endl;
+    //   lefFile << "      RECT " << bar.ptsX[0] << " "
+    //                             << bar.ptsY[0] << " "
+    //                             << bar.ptsX[1] << " "
+    //                             << bar.ptsY[1] << " ;" << endl;
+    // }
+    // lefFile << "  END " << endl;
 
     lefFile << "END " << foo.name << endl;
   }

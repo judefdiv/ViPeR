@@ -19,7 +19,11 @@
 #include <vector>
 #include <fstream>
 
+struct BlifNode;
+struct BlifNet;
+
 #include "viper/genFunc.hpp"
+// #include "viper/ParserDef.hpp"
 
 // #define binGVfile "data/bin/raw.gv"
 
@@ -59,7 +63,6 @@ struct BlifNode{ 			// includes input and outputs
     cout << "\tCorY: " << corY << endl;
     cout << endl;
   }
-
 };
 
 struct netRoute{

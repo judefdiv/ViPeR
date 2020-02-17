@@ -22,6 +22,7 @@ set(SOURCES
   src/routing.cpp
   src/clkPlacement.cpp
   src/ParserLef.cpp
+  src/ParserDef.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

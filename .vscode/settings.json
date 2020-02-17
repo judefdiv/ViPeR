@@ -72,6 +72,8 @@
             "-c",
             "config.toml"
         ]
-    }
+    },
+    "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
+    "cmake.configureOnOpen": false
 
 }

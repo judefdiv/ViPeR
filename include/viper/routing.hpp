@@ -22,6 +22,7 @@
 #include "viper/ParserBlif.hpp"
 #include "gdscpp/gdsCpp.hpp"
 #include "viper/placement.hpp"
+#include "viper/ParserDef.hpp"
 
 class roete{
   private:
@@ -43,6 +44,7 @@ class roete{
                     string configFile);
 
     int straightRoute();
+    int qrouter(const string &fileName);
     gdsSTR route2gds();
 
     void to_str();

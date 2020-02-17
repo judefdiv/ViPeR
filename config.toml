@@ -10,19 +10,19 @@
 # version = 0.1
 
 [run_parameters]
-	Command   = "gdf2lef" # verilog2gds; blif2gds; runABC; gdf2lef;
+	Command   = "blif2gds" # verilog2gds; blif2gds; runABC; gdf2lef;
 
 	# Working directory, all file names will be referenced with this
 	# work_dir = "data/adder3bit/"
 	# work_dir = "data/adder6bit/"
-	# work_dir = "data/rca2/"
-	work_dir = "data/KSA4/"
+	work_dir = "data/rca2/"
+	# work_dir = "data/KSA/4/"
 
 	gds_file  = "outGDS.gds"     # GDS file to be created
 	# blif_file = "adder3bit.blif" # Standard blif that will be converted to SFQblif
 	# blif_file = "adder6bit.blif" # Standard blif that will be converted to SFQblif
-	blif_file = "KSA4.blif" # Standard blif that will be converted to SFQblif
-	# blif_file = "rca2.blif" # Standard blif that will be converted to SFQblif
+	# blif_file = "KSA4.blif" # Standard blif that will be converted to SFQblif
+	blif_file = "rca2.blif" # Standard blif that will be converted to SFQblif
 	# sfqblif_file = ""            # The SFQblif file that will be converted to GDS
 	# veri_file = "KSA4.v"	              # Verilog file for ABC to convert to a standard blif
 	# cell_dis  = "LSmitll.genlib" # cell/gate description for ABC
@@ -31,16 +31,22 @@
 
 
 	# Converting a GDF(Gate Definition File) to LEF
-	# cell_dis_gds = "LSmitll_cell_lib.toml"
+	# cell_dis_gds = "LSmitll_cell_lib.toml"fg
 	lef_file = "SUN.lef"
 
+[Layout_parameters]
+	input_order = ["a0", "b0", "clk", "a1", "b1"]
+	output_order = ["s1", "s2", "s3"]
+
 [wafer_parameters]
+	x_offset       = 5
+	y_offset       = 5
 	vertical_gap   = 0         # Spacing between cells
-	horizontal_gap = 0         # Spacing between cells
+	horizontal_gap = 40         # Spacing between cells
 	cell_height    = 50        # The height of the cells
-	row_align      = "justify" # Row alignment {left, centre, justify}
-	pad_ver_gap    = 30        # The vertical distance between the pads and the gates/circuit
-	pad_hor_gap    = 0         # the horizontal gap between the pins/pads
+	row_align      = "left" # Row alignment {left, centre, justify}
+	pad_ver_gap    = 35        # The vertical distance between the pads and the gates/circuit
+	pad_hor_gap    = 10         # the horizontal gap between the pins/pads
 
 
 # [NOTES]

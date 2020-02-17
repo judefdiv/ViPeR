@@ -3,6 +3,10 @@ Current tasks:
 	□	Documentation
 
 Must get DONE:
+	□	qRouter automate
+	□	placement grid to 10um
+	□	Calculated the size of the chip
+	□	vertical clock distribution
 	□ Decide/fix splitter output net, single or dual?
 		clkChip::drawCLKnode is dual!!!!
 
@@ -73,6 +77,13 @@ Completed:
 		✔	Fix routing bug @done (19-10-09 09:49)
 		✔	Basic htree placement @done (19-10-09 16:23)
 		✔	proper htree placement and routing @done (19-10-11 11:41)
+		✔	bug fixing @done (19-11-14 08:08)
+	November:
+		✔	Created lef class @done (19-11-14 08:09)
+		✔	Creating a lef file @done (19-11-14 08:09)
+		✔	Convert GDF to lef file @done (19-11-14 08:09)
+	February:
+		□ Initial success with qrouter
 
 
 Notes:

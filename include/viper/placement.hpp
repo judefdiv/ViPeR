@@ -65,7 +65,11 @@ class plek{
     unsigned int pillar_size_y = 0;
 
     // wafer parameters
+    vector<string> inputPinOrder;
+    vector<string> outputPinOrder;
     string rAlign = "\0";
+    int xOffset = 0;
+    int yOffset = 0;
     int vGap = 0;
     int hGap = 0;
     int cellHeight = 0;
@@ -77,6 +81,8 @@ class plek{
     unsigned int pad_index; // the index in gateList of the PAD
 
     int optiLayout();
+    int sortRoutes();
+    int stackLayout();
     int importCellDef(string configFName);
 
   public:

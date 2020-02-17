@@ -125,6 +125,20 @@ int roete::straightRoute(){
 }
 
 /**
+ * [roete::qrouter - passes the routing data to qRouter]
+ * @return [1 - All good; 0 - error]
+ */
+
+int roete::qrouter(const string &fileName){
+  cout << "Parsing data for qRouter." << endl;
+
+  def_file defFile;
+  defFile.importNodesNets(this->nodes, this->nets);
+  defFile.to_def(fileName);
+  return 1;
+}
+
+/**
  * [roete::route2gds - Converts the nets' route to GDS format]
  * @return [The GDS PATH record of the tracks]
  */

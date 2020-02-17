@@ -58,6 +58,7 @@ int plek::importCellDef(string configFName){
   const auto mainConfig = toml::parse(configFName);
   const auto& w_para    = toml::find(mainConfig, "wafer_parameters");
   const auto& r_para    = toml::find(mainConfig, "run_parameters");
+  const auto& l_para    = toml::find(mainConfig, "Layout_parameters");
 
   // -----------------------------------------------------------------
 
@@ -67,6 +68,13 @@ int plek::importCellDef(string configFName){
   this->cellHeight = toml::find<int>(w_para, "cell_height") * GDSunitScale;
   this->padVerGap  = toml::find<int>(w_para, "pad_ver_gap") * GDSunitScale;
   this->padHorHap  = toml::find<int>(w_para, "pad_hor_gap") * GDSunitScale;
+  this->xOffset  = toml::find<int>(w_para, "x_offset") * GDSunitScale;
+  this->yOffset  = toml::find<int>(w_para, "y_offset") * GDSunitScale;
+
+  auto barElement     = toml::find(l_para, "input_order");
+  this->inputPinOrder  = toml::get<vector<float>>(barElement);
+  barElement           = toml::find(l_para, "output_order");
+  this->outputPinOrder = toml::get<vector<float>>(barElement);
 
   // -----------------------------------------------------------------
 
@@ -220,6 +228,34 @@ int plek::importCellDef(string configFName){
  */
 
 int plek::optiLayout(){
+  this->sortRoutes();
+  this->stackLayout();
+  return 1;
+}
+
+
+/**
+ * [plek::sortRoutes - sorts the routes according to a predefined rules]
+ * @return [1 - Good; 0 - Error]
+ */
+
+int plek::sortRoutes(){
+  /**
+   * Order of priority if sorting:
+   *   predefined input order
+   *   predefined output order
+   *   longest route
+   */
+
+
+  return 1;
+}
+/**
+ * [plek::stackLayout - Only thing it is suppose to do is to stack the routes]
+ * @return [1 - Good; 0 - Error]
+ */
+
+int plek::stackLayout(){
   cout << "Optimizing the layouts of the gates." << endl;
 
   // Find longest routes
@@ -297,6 +333,84 @@ int plek::optiLayout(){
   return 1;
 }
 
+// int plek::optiLayout(){
+//   cout << "Optimizing the layouts of the gates." << endl;
+
+//   // Find longest routes
+//   unsigned int longestRoute = 0;
+
+//   for(unsigned int i = 0; i < this->routesWS.size(); i++){
+//     if(longestRoute < this->routesWS[i].size()){
+//       longestRoute = this->routesWS[i].size();
+//     }
+//   }
+
+//   this->layout.resize(longestRoute-2);
+//   bool found = false;
+//   for(unsigned int i = 0; i < this->routesWS.size(); i++){
+//     for(unsigned int j = 1; j < this->routesWS[i].size()-1; j++){
+//       found = false;
+//       for(unsigned int k = 0; k < this->layout.size(); k++){
+//         for(unsigned int l = 0; l < this->layout[k].size(); l++){
+//           if(this->layout[k][l] == this->routesWS[i][j]){
+//             found = true;
+//             break;
+//           }
+//         }
+//       }
+//       if(!found){
+//         this->layout[j-1].push_back(this->routesWS[i][j]);
+//         this->used_gates.insert(this->nodes[this->routesWS[i][j]].GateType);
+//       }
+//     }
+//   }
+
+//   // adding the PAD to the list of used cells/gates
+//   this->used_gates.insert("PAD");
+//   for(unsigned int i = 0; i < this->routesWS.size(); i++){
+//     found = false;
+//     for(unsigned int j = 0; j < this->layoutInputs.size(); j++){
+//       if(this->layoutInputs[j] == this->routesWS[i][0]){
+//         found = true;
+//         break;
+//       }
+//     }
+//     if(!found){
+//       this->layoutInputs.push_back(this->routesWS[i][0]);
+//     }
+
+//     found = false;
+//     for(unsigned int j = 0; j < this->layoutOutputs.size(); j++){
+//       if(this->layoutOutputs[j] == this->routesWS[i].back()){
+//         found = true;
+//         break;
+//       }
+//     }
+//     if(!found){
+//       this->layoutOutputs.push_back(this->routesWS[i].back());
+//     }
+//   }
+
+//   // inserting clk clock in to input list
+//   for(unsigned int i = 0; i < this->nodes.size(); i++){
+//     if(!this->nodes[i].name.compare("clk")){
+//       this->layoutInputs.push_back(i);
+//       break;
+//     }
+//   }
+
+//   set<string>::iterator it;
+//   cout << "Gates used: ";
+//   for (it = this->used_gates.begin(); it != this->used_gates.end(); it++){
+//       cout << *it << "; ";
+//   }
+//   cout << endl;
+
+//   cout << "Optimizing the layouts of the gates done." << endl;
+
+//   return 1;
+// }
+
 /**
  * [plek::defSTR Defines all the GDS structures that will be referenced]
  * @return [1 - Good; 0 - Error]
@@ -361,8 +475,8 @@ vector<gdsSTR> plek::defSTR(){
  */
 
 int plek::alignLeft(){
-  int cPtX = 0; // current point on the X-axis
-  int cPtY = 0; // current point on the Y-axis
+  int cPtX = xOffset; // current point on the X-axis
+  int cPtY = yOffset; // current point on the Y-axis
   unsigned int index;
 
   // inserting output pads
@@ -375,7 +489,7 @@ int plek::alignLeft(){
 
   // the layout of the gates
   for(int i = this->layout.size()-1; i >= 0; i--){
-    cPtX = 0;
+    cPtX = xOffset;
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
       index = this->layout[i][j];
 
@@ -391,7 +505,7 @@ int plek::alignLeft(){
 
   // inserting input pads
   cPtY += this->padVerGap;
-  cPtX = 0;
+  cPtX = xOffset;
   for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
     this->nodes[this->layoutInputs[i]].corX = cPtX;
     this->nodes[this->layoutInputs[i]].corY = cPtY;
@@ -538,9 +652,14 @@ int plek::alignJustify(){
   cPtX = rowGapSize;
   cPtY += this->padVerGap;
 
+  // double caster;
+
   for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
-    this->nodes[this->layoutInputs[i]].corX = cPtX;
-    this->nodes[this->layoutInputs[i]].corY = cPtY;
+    // caster = round(((double)cPtX / 1000)) *1000
+    this->nodes[this->layoutInputs[i]].corX = round(((double)cPtX / 1000)) *1000;
+    this->nodes[this->layoutInputs[i]].corY = round(((double)cPtY / 1000)) *1000;
+    // this->nodes[this->layoutInputs[i]].corX = cPtX;
+    // this->nodes[this->layoutInputs[i]].corY = cPtY;
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
   }
 
@@ -599,6 +718,13 @@ gdsSTR plek::gsdLayout(){
 void plek::printLayout(){
   cout << "Circuit layout:" << endl;
 
+  cout << "I: ";
+  for(const auto &foo: this->layoutInputs){
+    cout << "\"" << this->nodes[foo].name << "\"; ";
+  }
+  cout << endl;
+
+
   for(unsigned int i = 0; i < this->layout.size(); i++){
     cout << i << ": ";
     for(unsigned j = 0; j < this->layout[i].size(); j++){
@@ -606,6 +732,12 @@ void plek::printLayout(){
     }
     cout << endl;
   }
+
+  cout << "O: ";
+  for(const auto &foo: this->layoutOutputs){
+    cout << "\"" << this->nodes[foo].name << "\"; ";
+  }
+  cout << endl;
 }
 
 /**
