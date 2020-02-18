@@ -84,6 +84,7 @@ class plek{
     int sortRoutes();
     int stackLayout();
     int importCellDef(string configFName);
+    int importParameters(string configFName);
 
   public:
     plek();

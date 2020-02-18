@@ -38,8 +38,11 @@ void plek::fetchSFQblif(vector<BlifNode> inNodes, vector<BlifNet> inNets, vector
  */
 
 int plek::populate(string configFName){
+  // this->importCellDef(configFName);
+  this->importParameters(configFName);
   this->optiLayout();
   this->printLayout();
+  // this->postLayoutGoodies();
   this->importCellDef(configFName);
   // this->to_str();
 
@@ -56,25 +59,25 @@ int plek::importCellDef(string configFName){
   cout << "Importing parameters." << endl;
 
   const auto mainConfig = toml::parse(configFName);
-  const auto& w_para    = toml::find(mainConfig, "wafer_parameters");
+  // const auto& w_para    = toml::find(mainConfig, "wafer_parameters");
   const auto& r_para    = toml::find(mainConfig, "run_parameters");
-  const auto& l_para    = toml::find(mainConfig, "Layout_parameters");
+  // const auto& l_para    = toml::find(mainConfig, "Layout_parameters");
 
   // -----------------------------------------------------------------
 
-  this->rAlign     = toml::find<string>(w_para, "row_align");
-  this->vGap       = toml::find<int>(w_para, "vertical_gap") * GDSunitScale;
-  this->hGap       = toml::find<int>(w_para, "horizontal_gap")  * GDSunitScale;
-  this->cellHeight = toml::find<int>(w_para, "cell_height") * GDSunitScale;
-  this->padVerGap  = toml::find<int>(w_para, "pad_ver_gap") * GDSunitScale;
-  this->padHorHap  = toml::find<int>(w_para, "pad_hor_gap") * GDSunitScale;
-  this->xOffset  = toml::find<int>(w_para, "x_offset") * GDSunitScale;
-  this->yOffset  = toml::find<int>(w_para, "y_offset") * GDSunitScale;
+  // this->rAlign     = toml::find<string>(w_para, "row_align");
+  // this->vGap       = toml::find<int>(w_para, "vertical_gap") * GDSunitScale;
+  // this->hGap       = toml::find<int>(w_para, "horizontal_gap")  * GDSunitScale;
+  // this->cellHeight = toml::find<int>(w_para, "cell_height") * GDSunitScale;
+  // this->padVerGap  = toml::find<int>(w_para, "pad_ver_gap") * GDSunitScale;
+  // this->padHorHap  = toml::find<int>(w_para, "pad_hor_gap") * GDSunitScale;
+  // this->xOffset  = toml::find<int>(w_para, "x_offset") * GDSunitScale;
+  // this->yOffset  = toml::find<int>(w_para, "y_offset") * GDSunitScale;
 
-  auto barElement     = toml::find(l_para, "input_order");
-  this->inputPinOrder  = toml::get<vector<float>>(barElement);
-  barElement           = toml::find(l_para, "output_order");
-  this->outputPinOrder = toml::get<vector<float>>(barElement);
+  // auto barElement     = toml::find(l_para, "input_order");
+  // this->inputPinOrder  = toml::get<vector<string>>(barElement);
+  // barElement           = toml::find(l_para, "output_order");
+  // this->outputPinOrder = toml::get<vector<string>>(barElement);
 
   // -----------------------------------------------------------------
 
@@ -114,8 +117,7 @@ int plek::importCellDef(string configFName){
 
   // -----------------------------------------------------------------
 
-  const auto& cellLibConfig = toml::find(cellLibFile, "CONFIG");
-  const auto& CellList      = toml::find(cellLibConfig, "list");
+  const auto& CellList      = toml::find(g_para, "list");
   vector<string> cellList   = toml::get<vector<string>>(CellList);
 
   // ----------------- Cell library definitions ----------------------
@@ -222,6 +224,41 @@ int plek::importCellDef(string configFName){
   return 1;
 }
 
+
+
+/**
+ * [plek::importParameters - I dont know why]
+ * @return [1 - Good; 0 - Error]
+ */
+
+int plek::importParameters(string configFName){
+  cout << "Importing parameters." << endl;
+
+  const auto mainConfig = toml::parse(configFName);
+  const auto& w_para    = toml::find(mainConfig, "wafer_parameters");
+  const auto& l_para    = toml::find(mainConfig, "Layout_parameters");
+
+  // -----------------------------------------------------------------
+
+  this->rAlign     = toml::find<string>(w_para, "row_align");
+  this->vGap       = toml::find<int>(w_para, "vertical_gap") * GDSunitScale;
+  this->hGap       = toml::find<int>(w_para, "horizontal_gap")  * GDSunitScale;
+  this->cellHeight = toml::find<int>(w_para, "cell_height") * GDSunitScale;
+  this->padVerGap  = toml::find<int>(w_para, "pad_ver_gap") * GDSunitScale;
+  this->padHorHap  = toml::find<int>(w_para, "pad_hor_gap") * GDSunitScale;
+  this->xOffset  = toml::find<int>(w_para, "x_offset") * GDSunitScale;
+  this->yOffset  = toml::find<int>(w_para, "y_offset") * GDSunitScale;
+
+  auto barElement     = toml::find(l_para, "input_order");
+  this->inputPinOrder  = toml::get<vector<string>>(barElement);
+  barElement           = toml::find(l_para, "output_order");
+  this->outputPinOrder = toml::get<vector<string>>(barElement);
+
+  cout << "Importing parameters, done" << endl;
+
+  return 1;
+}
+
 /**
  * [plek::optiLayout - Optimize the layout of the IC]
  * @return [1 - Good; 0 - Error]
@@ -242,11 +279,57 @@ int plek::optiLayout(){
 int plek::sortRoutes(){
   /**
    * Order of priority if sorting:
-   *   predefined input order
-   *   predefined output order
-   *   longest route
+   *   predefined input order    @ inputOrder
+   *   predefined output order   @ outputOrder
+   *   longest route             @ USroutes[i].size()
    */
 
+  // for(auto &itNodes: inNodes){
+
+  cout << "Optimizing(sorting) the layouts of the gates." << endl;
+
+  vector<vector<unsigned int>> USroutes; // unsorted routes
+  vector<vector<unsigned int>> Sroutes;   // sorted routes
+
+  vector<unsigned int> inputOrder, outputOrder;
+
+  for(auto const &itInput: this->inputPinOrder){
+    for(unsigned int i = 0; i < this->nodes.size(); i++){
+      if(!itInput.compare(this->nodes[i].name)){
+        inputOrder.push_back(i);
+        continue;
+      }
+    }
+  }
+
+  for(auto const &itOutput: this->outputPinOrder){
+    for(unsigned int i = 0; i < this->nodes.size(); i++){
+      if(!itOutput.compare(this->nodes[i].name)){
+        outputOrder.push_back(i);
+        continue;
+      }
+    }
+  }
+
+  cout << "Input Order: ";
+  for(auto const &foo: inputOrder){
+    cout << this->nodes[foo].name << "; ";
+  }
+  cout << endl;
+
+  cout << "Output Order: ";
+  for(auto const &foo: outputOrder){
+    cout << this->nodes[foo].name << "; ";
+  }
+  cout << endl;
+
+
+  USroutes = this->routesWS;
+
+
+
+
+  cout << "Optimizing(sorting) the layouts of the gates, done." << endl;
 
   return 1;
 }
@@ -256,7 +339,7 @@ int plek::sortRoutes(){
  */
 
 int plek::stackLayout(){
-  cout << "Optimizing the layouts of the gates." << endl;
+  cout << "Stacking the layouts of the gates." << endl;
 
   // Find longest routes
   unsigned int longestRoute = 0;
@@ -328,7 +411,7 @@ int plek::stackLayout(){
   }
   cout << endl;
 
-  cout << "Optimizing the layouts of the gates done." << endl;
+  cout << "Stacking the layouts of the gates, done." << endl;
 
   return 1;
 }
