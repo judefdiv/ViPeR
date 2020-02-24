@@ -86,6 +86,8 @@ class plek{
     int importCellDef(string configFName);
     int importParameters(string configFName);
 
+    void printRoutesSubset(vector<vector<unsigned int>> inRoute);
+
   public:
     plek();
     ~plek(){};

@@ -43,7 +43,18 @@ If splitters are inserted first, its a huge mess. The circuit has to be cleaned 
 
 Stacking all possible routes including splitters.
 
-Must investigate the order of the stacking
+
+
+#### Order of priority if sorting:
+
+   *   predefined input order
+   * predefined output order
+   * longest route
+
+#### Sorting
+
+* Creating subsets per priority
+* use insertion for sorting per subset
 
 ### Layout
 
@@ -84,34 +95,34 @@ Look for widest row, calculate each row length. divide by the number of gaps, ad
 ### config file
 
 **Route Segment Cost** *value*
-     
 
-Cost of a route of the length of one track pitch on any metal  layer in the preferred direction of the route layer.  This  should be the lowest of all the costs.  Default value 2.     
+
+Cost of a route of the length of one track pitch on any metal  layer in the preferred direction of the route layer.  This  should be the lowest of all the costs.  Default value 2.
 
 **Route Via Cost** *value*
-     
 
-Cost to switch routing layers up or down using a via.  Default  value 10.     
+
+Cost to switch routing layers up or down using a via.  Default  value 10.
 
 **Route Jog Cost** *value*
-     
 
-Cost of a route of the length of one track pitch on any metal  layer against the preferred direction of the route layer.  This cost should be relatively high;  however, it should be  less than (Route Segment Cost + 2 * Route Via Cost) to allow  a jog of a single track pitch to be preferred over switching  to another layer.  Default value 20.     
+
+Cost of a route of the length of one track pitch on any metal  layer against the preferred direction of the route layer.  This cost should be relatively high;  however, it should be  less than (Route Segment Cost + 2 * Route Via Cost) to allow  a jog of a single track pitch to be preferred over switching  to another layer.  Default value 20.
 
 **Route Crossover Cost** *value*
-     
 
-Cost of routing directly over or under an unrouted pin  connection to a cell.  This helps prevent pins from getting  boxed in before they are routed, making them unroutable.  Default value 8.     
+
+Cost of routing directly over or under an unrouted pin  connection to a cell.  This helps prevent pins from getting  boxed in before they are routed, making them unroutable.  Default value 8.
 
 **Route Block Cost** *value*
-     
 
-Cost of routing directly over or under an unrouted pin  connection to a cell, when that connection is the only  available vertical connection to the pin.  Default value 25.     
+
+Cost of routing directly over or under an unrouted pin  connection to a cell, when that connection is the only  available vertical connection to the pin.  Default value 25.
 
 **Route Collision Cost** *value*
-     
 
-Cost of shorting another net.  This happens during the second  routing stage.  All nets that are shorted by this net will  have to be ripped up and rerouted.  The value should be large  to avoid a large number of existing routes needing to be ripped  up.  Default value 50. 
+
+Cost of shorting another net.  This happens during the second  routing stage.  All nets that are shorted by this net will  have to be ripped up and rerouted.  The value should be large  to avoid a large number of existing routes needing to be ripped  up.  Default value 50.
 
 
 
@@ -122,21 +133,21 @@ Cost of shorting another net.  This happens during the second  routing stage.  A
 [TRACKS
 [{X | Y} start DO numtracks STEP space
  [LAYER layerName ...]
-;] ...] 
+;] ...]
 
-Defines the routing grid for a standard cell-based design. 
+Defines the routing grid for a standard cell-based design.
 The track spacing is the PITCH value for the layer defined in LEF.
 
--{X | Y} start 
-Specifies the location and direction of the first track defined. X indicates vertical lines; Y indicates horizontal lines. 
-start is the X or Y coordinate of the first line. 
-For example, X 3000 creates a set of vertical lines, with the first line going through (3000 0). 
+-{X | Y} start
+Specifies the location and direction of the first track defined. X indicates vertical lines; Y indicates horizontal lines.
+start is the X or Y coordinate of the first line.
+For example, X 3000 creates a set of vertical lines, with the first line going through (3000 0).
 
-DO numTracks 
+DO numTracks
 Specifies the number of tracks to create for the grid. You cannot specify 0 numtracks.
 
--STEP space 
+-STEP space
 Specifies the spacing between the tracks.
 
--LAYER layerName 
+-LAYER layerName
 Specifies the routing layer used for the tracks. You can specify more than one layer.

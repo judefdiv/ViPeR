@@ -110,7 +110,7 @@ void clkChip::fetchData(vector<BlifNode> inNodes,
   this->clkSplitIndex = this->nodes.size()-1;
 
   const auto ConfigFile = toml::parse(configFile);
-  const auto& w_para    = toml::find(ConfigFile, "wafer_parameters");
+  const auto& w_para    = toml::find(ConfigFile, "Wafer_Parameters");
 
   this->veriticalHeightGap = toml::find<int>(w_para, "vertical_gap") * 1000;
   this->cellHeight         = toml::find<int>(w_para, "cell_height") * 1000;

@@ -128,6 +128,8 @@ int RunToolFromConfig(string fileName){
 
 	const auto mainConfig  = toml::parse(fileName);
 	map<string, string> run_para = toml::get<map<string, string>>(mainConfig.at("run_parameters"));
+	map<string, string> cir_Files = toml::get<map<string, string>>(mainConfig.at("Circuit_Files"));
+	map<string, string> gen_Files = toml::get<map<string, string>>(mainConfig.at("General_Config_File"));
 
 	map<string, string>::iterator it_run_para;
 
@@ -138,7 +140,7 @@ int RunToolFromConfig(string fileName){
 	string glbFName = "\0";			// .genlib
 	string clbFName = "\0";			// .toml
 	string lefFName = "\0";			// .toml
-	string workDir  = "";			//
+	string workDir  = "";			  //
 
 	it_run_para = run_para.find("Command");
 	if(it_run_para != run_para.end()){
@@ -149,45 +151,45 @@ int RunToolFromConfig(string fileName){
 		return 0;
 	}
 
-	it_run_para = run_para.find("work_dir");
-	if(it_run_para != run_para.end()){
+	it_run_para = cir_Files.find("work_dir");
+	if(it_run_para != cir_Files.end()){
 		workDir = it_run_para->second;
 	}
 
-	it_run_para = run_para.find("gds_file");
-	if(it_run_para != run_para.end()){
+	it_run_para = cir_Files.find("gds_file");
+	if(it_run_para != cir_Files.end()){
 		gdsFName = it_run_para->second;
 		gdsFName = gdsFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("blif_file");
-	if(it_run_para != run_para.end()){
+	it_run_para = cir_Files.find("blif_file");
+	if(it_run_para != cir_Files.end()){
 		bliFName = it_run_para->second;
 		bliFName = bliFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("veri_file");
-	if(it_run_para != run_para.end()){
+	it_run_para = cir_Files.find("veri_file");
+	if(it_run_para != cir_Files.end()){
 		verFName = it_run_para->second;
 		verFName = verFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("cell_dis");
-	if(it_run_para != run_para.end()){
+	it_run_para = gen_Files.find("cell_dis");
+	if(it_run_para != gen_Files.end()){
 		glbFName = it_run_para->second;
-		glbFName = glbFName.insert(0, workDir);
+		// glbFName = glbFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("cell_dis_gds");
-	if(it_run_para != run_para.end()){
+	it_run_para = gen_Files.find("cell_dis_gds");
+	if(it_run_para != gen_Files.end()){
 		clbFName = it_run_para->second;
-		clbFName = clbFName.insert(0, workDir);
+		// clbFName = clbFName.insert(0, workDir);
 	}
 
-	it_run_para = run_para.find("lef_file");
-	if(it_run_para != run_para.end()){
+	it_run_para = gen_Files.find("lef_file");
+	if(it_run_para != gen_Files.end()){
 		lefFName = it_run_para->second;
-		lefFName = lefFName.insert(0, workDir);
+		// lefFName = lefFName.insert(0, workDir);
 	}
 
 	if(!command.compare("verilog2gds")){

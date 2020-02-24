@@ -329,17 +329,18 @@ int lef_file::exportLef(const string &fileName){
     }
 
     // ------------ obs ------------
-    // if(foo.obs.size() > 0)
-    //   lefFile << "  OBS" << endl;
+    if(foo.obs.size() > 0)
+      lefFile << "  OBS" << endl;
 
-    // for(auto &bar: foo.obs){
-    //   lefFile << "    LAYER " << bar.layer << " ;" << endl;
-    //   lefFile << "      RECT " << bar.ptsX[0] << " "
-    //                             << bar.ptsY[0] << " "
-    //                             << bar.ptsX[1] << " "
-    //                             << bar.ptsY[1] << " ;" << endl;
-    // }
-    // lefFile << "  END " << endl;
+    for(auto &bar: foo.obs){
+      lefFile << "    LAYER " << bar.layer << " ;" << endl;
+      lefFile << "      RECT " << bar.ptsX[0] << " "
+                                << bar.ptsY[0] << " "
+                                << bar.ptsX[1] << " "
+                                << bar.ptsY[1] << " ;" << endl;
+      lefFile << "  END " << endl;
+    }
+
 
     lefFile << "END " << foo.name << endl;
   }

@@ -10,49 +10,53 @@
 # version = 0.1
 
 [run_parameters]
-	Command   = "blif2gds" # verilog2gds; blif2gds; runABC; gdf2lef;
-
-	# Working directory, all file names will be referenced with this
-	# work_dir = "data/adder3bit/"
-	# work_dir = "data/adder6bit/"
-	work_dir = "data/rca2/"
-	# work_dir = "data/KSA/4/"
-
-	gds_file  = "outGDS.gds"     # GDS file to be created
-	# blif_file = "adder3bit.blif" # Standard blif that will be converted to SFQblif
-	# blif_file = "adder6bit.blif" # Standard blif that will be converted to SFQblif
-	# blif_file = "KSA4.blif" # Standard blif that will be converted to SFQblif
-	blif_file = "rca2.blif" # Standard blif that will be converted to SFQblif
-	# sfqblif_file = ""            # The SFQblif file that will be converted to GDS
-	# veri_file = "KSA4.v"	              # Verilog file for ABC to convert to a standard blif
-	# cell_dis  = "LSmitll.genlib" # cell/gate description for ABC
-	cell_dis_gds = "LSmitll_cell_lib.toml"
-	# NOTE: all directories are relative to the current directory
+	# Command   = "blif2gds"
+	Command   = "gdf2lef"
+	# Command   = "verilog2gds"
+	# Command   = "runABC"
 
 
-	# Converting a GDF(Gate Definition File) to LEF
-	# cell_dis_gds = "LSmitll_cell_lib.toml"fg
-	lef_file = "SUN.lef"
+[Circuit_Files]
+	# work_dir  = "data/.../"   # Working directory, all file names will be referenced with this
+	# blif_file = ".blif"       # Standard blif that will be converted to SFQblif
+	# veri_file = ".v"	        # Verilog file for ABC to convert to a standard blif
 
-[Layout_parameters]
-	input_order = ["a0", "b0", "clk", "a1", "b1"]
-	output_order = ["s0", "s1", "s2"]
+	gds_file    = "outGDS.gds"     # GDS file to be created
 
-[wafer_parameters]
+	# work_dir  = "data/adder3bit/"
+	# blif_file = "adder3bit.blif"
+
+	# work_dir  = "data/adder6bit/"
+	# blif_file = "adder6bit.blif"
+
+	# work_dir  = "data/rca2/"
+	# blif_file = "rca2.blif"
+
+	work_dir    = "data/KSA4/"
+	blif_file   = "KSA4.blif"
+	# veri_file = "KSA4.v"
+
+
+[General_Config_File]
+	cell_dis     = "data/LSmitll.genlib"          # Logic cell/gate description for ABC
+	cell_dis_gds = "data/LSmitll_cell_lib.toml"   # Homebrewed description for physical cell layout
+	lef_file     = "data/SUNobs.lef"                 # Used for converting a GDF(Gate Definition File) to LEF
+
+[Layout_Parameters]
+	# RCA2
+	# input_order = ["a0", "b0", "a1", "b1"]
+	# output_order = ["s0", "s1", "s2"]
+
+	# KSA4
+	input_order = ["cin", "a0", "b0", "a1", "b1", "a2", "b2", "a3", "b3"]
+	output_order = ["sum0", "sum1", "sum2", "sum3", "cout"]
+
+[Wafer_Parameters]
 	x_offset       = 5
 	y_offset       = 5
 	vertical_gap   = 0         # Spacing between cells
 	horizontal_gap = 40         # Spacing between cells
 	cell_height    = 50        # The height of the cells
-	row_align      = "left" # Row alignment {left, centre, justify}
+	row_align      = "left"    # Row alignment {left, centre, justify}
 	pad_ver_gap    = 35        # The vertical distance between the pads and the gates/circuit
-	pad_hor_gap    = 10         # the horizontal gap between the pins/pads
-
-
-# [NOTES]
-# ALL MEASUREMENTS are in um.
-# Pin location is at the CENTRE of the port.
-# Routing connection to the pin must be a PTL on layer M3 with M2 and M4 as shielding groundplanes.
-# The biasing pillars are on layer M5.
-# Pillars are considered as obstructions.
-# The the names for the gates in the .genlib file must match the gates of the gates in the runParameter.toml(this) file
+	pad_hor_gap    = 10        # the horizontal gap between the pins/pads

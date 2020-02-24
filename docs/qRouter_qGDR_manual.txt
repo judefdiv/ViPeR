@@ -1,0 +1,727 @@
+================================================================================
+                        USC SPORT Lab - qGDR (Integrated Router)
+
+             SPORT Lab, University of Southern California, Los Angeles, CA 90089      
+                            http://sportlab.usc.edu/
+
+qGDR integrates the global router and the detailed router from two teams
+
+Global Router version 1.0
+Global netlist router for ASICs
+(c) 2018 by Ting-Ru Lin and Massoud Pedram
+Ming Hsieh Department of Electrical Engineering, University of Southern California
+The development is supported by Office of the Director of National Intelligence (ODNI),            
+Intelligence Advanced Research Projects Activity (IARPA), 
+via the U.S. Army Research Office grant W911NF-17-1-0120.         
+                                                                              
+
+Qrouter version 1.3
+Detail netlist router for ASICs
+(c) 2014 by Tim Edwards
+Released under Gnu Public License                 
+--------------------------------------------------------------------------------
+
+
+Description:
+********************
+This tutorial explains details of the input file and the output files of qGDR.
+For the usage of qGDR, please read README file.
+For the installment of qGDR, please read INSTALLMENT file.
+--------------------------------------------------------------------------------
+
+
+Section 1: Running the program
+********************
+This integrated router generates metal (PTL) layers and vias to route signal and clock
+signals of a circuit. 
+
+Compile:
+********************
+In the 'src' directory:
+
+ $ make
+ 
+ 
+Run the default version without the feedback mechanism:
+********************
+In the 'src' directory, run:
+
+ $ ./qrouter <CIRCUIT-NAME> -c route.cfg
+
+
+usage:  qrouter [-switches] design_name
+
+switches:
+	-c <file>     		Configuration file name if not route.cfg.
+	-v <level>    	Verbose output level.
+	-i <file>    		Print route names and pitches and exit.
+	-p <name>    	Specify global power bus name.
+	-g <name>     	Specify global ground bus name.
+
+
+When routing is completed, the following file will be generated
+
+  <CIRCUIT-NAME>_route.def
+
+which contains the routing information.
+
+After running qGDR, time.txt is generated and the time cost for the global routing and the detailed routing is recorded. 
+
+
+Run the complete version with the feedback mechanism:
+********************
+In the 'src' directory, run:
+
+ $ ./python RoutingFeedback <CIRCUIT-NAME>
+ 
+usage:  RoutingFeedback [-switches] design_name
+
+switches:
+	-m <int>			maximal iterations for trials
+    -c <file>   	  	Configuration file name if not route.cfg.
+    -v <level>	   	Verbose output level.
+    -i <file>     		Print route names and pitches and exit.
+
+
+NOTICE1: route.cfg is the configuration file in three directories (./scr, ./src/PlacementFeedback_column , ./src/PlacementFeedback_row)
+NOTICE2: LEF file is the library file in three directories (./scr, ./src/PlacementFeedback_column , ./src/PlacementFeedback_row)
+ 
+When routing is completed, the following file will be generated
+
+  <CIRCUIT-NAME>_route.def
+
+which contains the routing information.
+
+During the routing process, TempResult.log file records the remaining nets for the detailed routing process.
+After running qGDR, time.txt is generated and the time cost for the global routing and the detailed routing is recorded. 
+--------------------------------------------------------------------------------
+
+
+
+Section 2: Input files of qGDR
+********************
+There are three necessary files: (1) a configuration file (.cfg) (2) a library file (.lef) (3) a design file (.def)
+
+Configuration file (.cfg)
+********************
+The configuration file contains all information not present in the library file (LEF). 
+It allows some simple definitions for macros where a LEF file is not provided.
+However, these definitions are not as complete as those parsed from a LEF file.
+The default configuration file for the 2 metal layer routing process is route_2_metals.cfg in ./configs directory. 
+Other configuration files are also available for the multiple layer routing proces, which are included in ./configs directory.
+Other than filenames, the file contents are not case-sensitive. Comment lines begin with the character "#".
+
+
+NOTICE1: x, value and name are variables in the following description.
+
+-Num_layers x
+where x is the number of layers to route and the default value is 2. 
+The LEF file will generally define all routing layers, and the end-user will normally want to restrict the physical routing to a subset of these.
+
+-Layer_x_name name 
+The name of the routing layer number x used in the design file (DEF) file. 
+The value x should start at one for the first (lowest) routing layer.
+
+-Layer_x_width value 
+The width of the metal routing layer wires for layer number x. 
+The value is given in units of microns and default value is 5.
+
+-Layer x wire pitch value 
+The track pitch of the metal routing layer for layer number x. 
+The value is given in units of microns and default value is 10.
+
+-Layer x horizontal | vertical 
+Declares the metal routing layer number x to have a preferred route direction which is either horizontal or vertical. 
+This will determine which direction is given the segment cost and which is given the jog cost (see below).
+
+-Num Passes value
+The maximum number of passes per route attempt by a modified Lee search algorithm in the detailed routing process of qGDR. 
+Each pass limiting the search area by masking out the area to be searched, and specifying a maximum cost, 
+above which route searches may not continue. Default value is 10.
+
+NOTICE2: all following five route costs are integer and have no absolute meaning; only their values relative to one another are meaningful.
+
+-Route Segment Cost value
+Cost of a route of the length of one track pitch on any metal layer in the preferred direction of the route layer. 
+This should be the lowest of all the costs. Default value is 2.
+
+-Route Via Cost value
+Cost to switch routing layers up or down using a via. Default value is 5.
+
+-Route Jog Cost value
+Cost of a route of the length of one track pitch on any metal layer against the preferred direction of the route layer. 
+It should be less than (Route Segment Cost + 2 * Route Via Cost) to allow a jog of a single track pitch to be preferred over switching to another layer. 
+Default value is 3.
+
+-Route Crossover Cost value
+Cost of routing directly over or under an unrouted pin connection to a cell. This helps prevent pins from getting boxed in before they are routed, making them unroutable. 
+Default value is 2.
+
+-Route Block Cost value
+Cost of routing directly over or under an unrouted pin connection to a cell, when that connection is the only available vertical connection to the pin. 
+Default value is 50.
+
+-do not route node name 
+Do not route the net named name. Note that this can also be accomplished by removing the net from the input DEF file.
+In the current version, we have not finished full testing on power nets (vss and vdd nets) so qGDR skips the routing of the power nets.
+
+-route priority name 
+Route the net named name first, before other routes. This will ensure the most efficient route solution for the network, as it will not have to route around existing networks. 
+Otherwise, networks are ordered by an internal sorting function. However, the rip-up process in the detailed routing process can rip up the prioritized nets.
+
+NOTICE3: The following four bounds are optional because the design file (DEF) determinies the exact routing layout before the routing process.
+
+-X upper bound value
+Indicates the right side limit of the routing. If not declared, the upper bound will be determined by the extent of the cell and pin layout. 
+The value is in units of microns and can be used to allow the router to route outside of the immediate cell layout area.
+
+-X lower bound value
+Indicates the left side limit of the routing. If not declared, the lower bound will be determined by the extent of the cell and pin layout. 
+The value is in units of microns and can be used to allow the router to route outside of the immediate cell layout area.
+
+-Y upper bound value
+Indicates the top side limit of the routing. If not declared, the upper bound will be determined by the extent of the cell and pin layout. 
+The value is in units of microns and can be used to allow the router to route outside of the immediate cell layout area.
+
+-Y lower bound value
+Indicates the bottom side limit of the routing. If not declared, the lower bound will be determined by the extent of the cell and pin layout. 
+The value is in units of microns and can be used to allow the router to route outside of the immediate cell layout area.
+
+-lef filename
+The given filename is a relative or absolute path to the technology LEF file defining the standard cell geometry and routing layer parameters. 
+If the technology specifications and the standard cell macros are in separate LEF files, the lef statement may be used more than once.
+Default filename is configs/lef_2_metals.lef
+
+-obstruction llx lly urx ury layer 
+llx: lower left x; lly: lower left y; urx: upper right x; ury: upper right y
+While the technology LEF file declares all obstructions occuring in a cell, there are many reasons why one may want to declare other areas to be obstructions to routing.
+For example, to prevent placement of vias on top of pins. Argument layer is the name of a metal route layer that is obstructed by the declared area.
+The bounds of the obstruction rectangle are declared by the remaining values (llx lly urx ury), which are in units of microns.
+
+
+Reference:
+http://opencircuitdesign.com/qrouter/
+
+
+Library file (.lef)
+********************
+The library file (LEF) is an open standard file format for describing circuit technology and parameters, and defining subcircuit geometry, especially for standard cells. 
+Default LEF files contain the following statements. You can specify statements in any order; however, data must be defined before it is used. 
+For example, the UNITS statement must be defined before any statements that use values that are dependent on UNITS values, 
+LAYER statements must be defined before statements that use the layer names, 
+and VIA statements must be defined before referencing them in other statements. 
+If you specify statements in the following order, all data is defined before being used.
+
+[ UNITS statement ] ...
+[ LAYER (Nonrouting) statement
+ | LAYER (Routing) statement] ...
+[ VIA statement ]...
+[ SPACING statement ]...
+[ SITE statement ] ...
+[ MACRO statement
+ [ PIN statement ] ...
+ [ OBS statement ...]] ...
+[ BEGINEXT statement ] ...
+[ END LIBRARY ]
+
+Comment lines begin with the character "#".
+Default LEF file for SFQ circuits is lef_2_metals.lef under the directory ./configs.
+Generally, the LEF file can be provided by the user or by the standard cell vendor to match a specific geometry, and complements a GDS file containing the manufacturing layer geometry of the same standard cells. 
+For purposes of input to qGDR, the LEF file should contain three statements: 
+(1) [LAYER (Routing) statement] to describe each routing layer 
+(2) [VIA statement] to describe the geometry of vias to connect routing layers 
+(3) [MACRO statement] to describe the geometry of each subcell in the layout
+The following descritption explains details of the default LEF file and optional statements for qGDR are marked with (OPT).
+The optional statements are kept for other physical design tools.
+
+
+[ UNITS statement ]:
+********************
+UNITS
+DATABASE MICRONS LEFconvertFactor ;
+END UNITS
+
+Defines the units of measure in LEF. The values tell you how to interpret the numbers found in the LEF file. 
+The UNITS statement is optional and, when used, must precede the LAYER statements. 
+
+-DATABASE MICRONS LEFconvertFactor
+Interprets one LEF distance unit as multiplied when converted into database units.
+If you omit the DATABASE MICRONS statement, a default value of 100 is recorded as the LEFconvertFactor in the database.
+In this case, one micron would equal 100 database units. Default LEFconvertFactor is 100.
+
+
+[ LAYER (Nonrouting) statement ]:
+********************
+LAYER layerName
+	TYPE MASTERSLICE | OVERLAP ;
+END layerName
+
+Layer of Masterslice or Overlap defines masterslice (nonrouting) or overlap layers in the design. 
+Masterslice layers are typically polysilicon layers and are only needed if the cell MACROs have pins on the polysilicon layer.
+The overlap layer should normally be named OVERLAP. It can be used in MACRO definitions to form rectilinear-shaped cells and blocks (that is, an “L”-shaped block).
+Each layer is defined by assigning it a name and design rules. You must define masterslice or overlap layers separately, with their own layer statements.
+You must define layers in process order from bottom to top following process order. For example:
+  
+  poly masterslice
+  cut01 cut
+  metal1 routing
+  cut12 cut
+  metal2 routing
+  cut23 cut
+  metal3 routing
+
+-LAYER layerName
+Specifies the name for the layer. This name is used in later references to the layer. 
+
+-TYPE
+Specifies the purpose of the layer.
+ 
+MASTERSLICE Layer is fixed in the base array. 
+If pins appear in the masterslice layers, you must define vias to permit the routers to connect those pins and the first routing layer. 
+Wires are not allowed on masterslice layers. Routing tools can use only one masterslice layer. 
+If a masterslice layer is defined, exactly one cut layer must be defined between the masterslice layer and the adjacent routing layers.
+
+OVERLAP Layer used for overlap checking for rectilinear blocks. 
+Obstruction descriptions in the macro obstruction statements refer to the overlap layer.
+
+
+[ LAYER (Routing) statement ]:
+********************
+LAYER layerName
+	TYPE ROUTING ;
+	PITCH {distance | xDistance yDistance} ;
+	WIDTH defaultWidth ;
+	SPACING minSpacing ;
+	DIRECTION {HORIZONTAL | VERTICAL} ;
+END layerName
+
+-PITCH {distance | xDistance yDistance}
+Specifies the required routing pitch for the layer. Pitch is used to generate the routing grid (the design file TRACKS).
+Type: Float, specified in microns 
+
+distance specifies one pitch value that is used for both the x and y pitch. Default distance is 10.
+
+(xDistance yDistance) specifies the x pitch (the space between each vertical routing track), 
+and the y pitch (the space between each horizontal routing track).
+
+-WIDTH defaultWidth ;
+Specifies the default routing width on the layer.
+Type: Float, specified in microns. defaultWidth is 5. 
+
+-SPACING minSpacing
+Specifies the spacing rules to use for wiring on the layer. 
+Type: Float, specified in microns. Default minSpacing is 5.
+
+-DIRECTION {HORIZONTAL | VERTICAL}
+Specifies the preferred routing direction. qGDR or other automatic routing tools attempt to route in the preferred direction on a layer. 
+A typical case is to route horizontally on layers metal1 and vertically on layer metal2. 
+
+
+[ VIA statement ]:
+********************
+VIA viaName [DEFAULT]
+ LAYER layerName ;
+	RECT  llx lly urx ury ;
+END viaName
+
+Fixed vias consist of shapes on three layers: a cut layer and two routing (or masterslice) layers that connect through that cut layer.
+
+-DEFAULT
+Identifies the via as the default via between the defined layers. Default vias are used for default routing by qGDR or other signal routers.
+There should be at least one RECT on each of the three layers.
+
+-LAYER layerName
+Specifies the layer on which to create the rectangles that make up the via. 
+
+-RECT llx lly urx ury
+(llx: lower left x; lly: lower left y; urx: upper right x; ury: upper right y)
+Defines port geometries for the pin and RECT specifies a rectangle, where the two points specified are opposite corners of the rectangle.
+
+
+[ SPACING statement ]:
+********************
+SPACING
+	SAMENET {layerName | viaName} {layerName | viaName} value
+END SPACING
+
+-SAMENET {layerName | viaName} {layerName | viaName} value
+Specifies the minimum spacing allowed between wires or between a wire and a via or between vias on the same net.
+
+
+(OPT) [ SITE statement ]:
+********************
+SITE siteName
+	CLASS {PAD | CORE} ;
+	SYMMETRY {X | Y | R90} ;
+	SIZE width BY height ;
+END siteName
+
+Defines a placement site in the design. A placement site gives the placement grid for a family of macros, such as I/O, core, block, analog, digital, short, tall, and so forth. 
+
+-SITE siteName 
+Specifies the name for the placement site.
+
+-CLASS {PAD | CORE} 
+Specifies whether the site is an I/O pad site or a core site. CORE is a standard cell used in the core area. 
+
+-SYMMETRY {X | Y | R90}
+Indicates which site orientations are equivalent. The sites in a given row all have the same orientation as the row.
+Generally, site symmetry should be used to control the flipping allowed inside the rows.
+
+X Site is symmetric about the x axis. 
+This means that N and FS sites are equivalent, and FN and S sites are equivalent where F means flipped.
+A macro with an orientation of N matches N or FS rows.
+Y Site is symmetric about the y axis. This means that N and FN sites are equivalent, and FS and S sites are equivalent. 
+A macro with an orientation of N matches N or FN rows. X Y Site is symmetric about the x and y axis. This means that N, FN, FS, and S sites are equivalent. 
+A macro with orientation N matches N, FN, FS, or S rows.
+R90 Site is symmetric when rotated 90 degrees. Typically, this value is not used.
+
+-SIZE width BY height
+Specifies the dimensions of the site in normal (or north) orientation, in microns.
+
+
+[ MACRO statement
+ [ PIN statement ] ...
+ [ OBS statement ...]]:
+ ********************
+MACRO macroName
+	CLASS CORE ;
+	SIZE width height ;
+	ORIGIN x y ;
+	SYMMETRY X ;
+	SITE siteName [ sitePattern ] ;
+	[ PIN statement ] ...
+	[ OBS statement ] ...
+END macroName
+
+-MACRO macroName 
+Specifies the name of the library macro.
+
+-CLASS CORE
+Specifies the macro type. If you do not specify CLASS, the macro is considered a CORE macro, and a warning prints when the LEF file is read in. 
+CORE is a standard cell used in the core area. 
+CORE macros should always contain a SITE definition so that standard cell placers can correctly align the CORE macro to the standard cell rows. 
+
+-SIZE width BY height
+Specifies a placement bounding rectangle, in microns, for the macro. The bounding rectangle always stretches from (0, 0) to the point defined by SIZE. 
+For example, given SIZE 10 BY 40, the bounding rectangle reaches from (0, 0) after adjustment due to the ORIGIN statement, to (100, 400).
+Placers assume the placement bounding rectangle cannot overlap placement bounding rectangles of other macros.
+
+-ORIGIN x y:
+Specifies how to find the origin of the macro to align with a DEF COMPONENT placement point. 
+If there is no ORIGIN statement, the DEF placement point for a North-oriented macro is aligned with 0, 0 in the macro. 
+If ORIGIN is given in the macro, the macro is shifted by the ORIGIN x, y values first, before aligning with the DEF placement point. 
+For example, if the ORIGIN is 0, -1, then macro geometry at 0, 1 are shifted to 0, 0, and then aligned to the DEF placement point.
+
+-SYMMETRY X
+Specifies which macro orientations is used. In general, most standard cell macros should have symmetry X Y. 
+X is the North orientation.
+
+-SITE siteName [sitePattern]:
+Specifies the site associated with the macro. Normal rowbased standard cells only have a single SITE siteName statement, without a sitePattern. 
+The sitePattern syntax indicates that the cell is a gate-array cell, rather than a row-based standard cell. 
+Gate-array standard cells can have multiple SITE statements, each with a sitePattern.
+The sitePattern syntax is defined as follows:
+
+[xOrigin yOrigin siteOrient [stepPattern]]
+
+(xOrigin yOrigin) specifies the origin of the site inside the macro. Type: Float, specified in microns
+siteOrient specifies the orientation of the site at that location.
+Value: N, S, E, W, FN, FS, FE, or FW
+ 
+The stepPattern syntax is defined as follows:
+
+[ DO xCount BY yCount STEP xStep yStep ] 
+
+(xCount yCount) specifies the number of sites to add in the x and y directions.
+You must specify values that are greater than or equal to 0 (zero). Type: Integer
+(xStep yStep) specifies the spacing between sites in the x and y directions. Type: Float, specified in microns
+
+-[ PIN statement]:
+	PIN pinName
+	DIRECTION {INPUT | OUTPUT | INOUT} ;
+	USE { SIGNAL | POWER | GROUND | CLOCK } ;
+		PORT
+			RECT llx lly urx ury
+		END
+	END pinName 
+	
+Defines pins for the macro. PIN statements must be included in the LEF specification for each macro. 
+All pins, including VDD and VSS, must be specified. The first pin listed becomes the first pin in the database. 
+List the pins in the following order:
+	Netlist pins, including inout pins, output pins, and input pins
+	Power and ground pins
+
+PIN pinName
+Specifies the name for the library pin.
+	
+PORT
+Starts a pin port statement that defines a collection of geometries that are electrically equivalent points (strongly connected). 
+
+RECT llx lly urx ury
+Defines port geometries for the pin and RECT specifies a rectangle, where the two points specified are opposite corners of the rectangle.
+
+
+-[ OBS statement ]:
+OBS
+	LAYER layerName
+		RECT llx lly urx ury ;
+END
+
+Specifies obstructions on the macro. Obstruction geometries are specified using layer geometries syntax. 
+Normally, footprint descriptions in LEF are rectangular and the RECT is used to describe the details. 
+(llx: lower left x; lly: lower left y; urx: upper right x; ury: upper right y)
+The overlap layer is defined specifically for this purpose and does not contain any routing. 
+
+
+Reference:
+LEF/DEF 5.7 Language Reference by Cadence
+http://www.ispd.cc/contests/18/lefdefref.pdf
+
+--------------------------------------------------------------------------------
+
+Design file (.def)
+********************
+The design file is written in a design exchage format (DEF) file which is an open standard file format for describing circuit layout. 
+DEF conveys logical design data to, and physical design data from, place-and-route tools.
+Logical design data can include internal connectivity (represented by a netlist), grouping information, and physical constraints. 
+Physical data includes placement locations and orientations, routing geometry data, and logical design changes for backannotation. 
+Standard DEF files can contain the following statements and sections. 
+You can define the statements and sections in any order; however, data must be defined before it is used. 
+For example, you must specify the UNITS statement before any statements that use values dependent on UNITS values. 
+If you specify statements and sections in the following order, all data is defined before being used.
+
+[ DESIGN statement ]
+[ UNITS statement ]
+[ DIEAREA statement ]
+[ ROWS statement ] ...
+[ TRACKS statement ] ...
+[ GCELLGRID statement ] ...
+[ COMPONENTS section ]
+[ NETS section ]
+END DESIGN statement
+
+Comment lines begin with the character "#".
+For purposes of input to qGDR, the DEF file describing the circuit to be routed should contain three statements:
+(1) [TRACKS statement] to describe where the routing tracks or each metal routing layer should be placed
+(2) [COMPONENTS statement] to describe the placement of standard cells, an optional PINS section describing the placement of (labeled) pins
+(3) [NETS statement] to describe the netlist to be routed. 
+qGDR produces an output file (basename_route.def) following the same input DEF (file basename.def) but annotates the phyical routes in the NETS section for each net. 
+The following descritption explains details of the default DEF file and optional statements for qGDR are marked with (OPT).
+The optional statements are kept for other physical design tools.
+
+
+[ DESIGN statement ]:
+********************
+[ DESIGN designName ]
+
+Specifies a name for the design. 
+
+
+[ UNITS statement ]:
+********************
+[UNITS DISTANCE MICRONS dbuPerMicron ;]
+
+Specifies the database units per micron (dbuPerMicron) to convert DEF distance units into microns. 
+Default value is 100.
+
+
+(OPT) [ DIEAREA statement ]:
+********************
+[ DIEAREA (llx lly) (urx ury) ; ]
+
+If (llx lly) and (urx ury) are defined, specifies two corners of the bounding rectangle for the design. 
+All coordinates are integers, specified as DEF database units.
+
+
+(OPT) [ ROWS statement ]:
+********************
+[ROW rowName origX origY siteOrient
+ [DO numX BY numY [STEP stepX stepY]] ... ;] ...
+ 
+Defines rows in the design and this information is remained for placement.
+
+-rowName 
+Specifies the row name for this row. 
+
+-origX origY 
+Specifies the location of the first site in the row.
+Type: Integer, specified in DEF database units
+
+-siteOrient 
+Specifies the orientation of all sites in the row. 
+siteOrient must be one of N, S, E, W, FN, FS, FE, or FW. 
+
+-DO numX BY numY 
+Specifies a repeating set of sites that create the row. You must specify one of the values as 1. 
+If you specify 1 for numY, then the row is horizontal. If you specify 1 for numX, the row is vertical.
+Default: Both numX and numY equal 1, creating a single site at this location (that is, a horizontal row with one site). 
+
+STEP stepX stepY 
+Specifies the spacing between sites in horizontal and vertical rows. 
+
+
+[ TRACKS statement ]:
+********************
+[TRACKS
+[{X | Y} start DO numtracks STEP space
+ [LAYER layerName ...]
+;] ...] 
+
+Defines the routing grid for a standard cell-based design. 
+The track spacing is the PITCH value for the layer defined in LEF.
+
+-{X | Y} start 
+Specifies the location and direction of the first track defined. X indicates vertical lines; Y indicates horizontal lines. 
+start is the X or Y coordinate of the first line. 
+For example, X 3000 creates a set of vertical lines, with the first line going through (3000 0). 
+
+DO numTracks 
+Specifies the number of tracks to create for the grid. You cannot specify 0 numtracks.
+
+-STEP space 
+Specifies the spacing between the tracks.
+
+-LAYER layerName 
+Specifies the routing layer used for the tracks. You can specify more than one layer.
+
+
+(OPT) [ GCELLGRID statement ]:
+********************
+[ GCELLGRID
+{X start DO numColumns+1 STEP space} ...
+{Y start DO numRows+1 STEP space ;} ...]
+
+Specifies the gcell grid for a standard cell-based design. 
+Each GCELLGRID statement specifies a set of vertical (x) and horizontal (y) lines, or tracks, that define the gcell grid.
+qGDR doesn't need this information but typically, the GCELLGRID is automatically generated by other routers, and is not manually created by the designer.
+
+-X start, Y start 
+Specify the location of the first vertical (x) and first horizontal (y) track
+
+-DO numColumns+1 
+Specifies the number of columns in the grid.
+
+-DO numRows+1 
+Specifies the number of rows in the grid.
+
+-STEP space 
+Specifies the spacing between tracks.
+
+
+[ COMPONENTS section ]:
+********************
+COMPONENTS numComps ;
+[– compName modelName
+ [+ EEQMASTER macroName]
+ [+ {FIXED x y orient | PLACED x y orient} ]
+;] ...
+END COMPONENTS
+
+-numComps 
+Specifies the number of components defined in the COMPONENTS section.
+
+-compName modelName 
+Specifies the component name in the design, which is an instance of modelName, the name of a model defined in the library (LEF). 
+A modelName must be specified with each compName
+
+-FIXED x y orient 
+Specifies that the component has been placed in a location (x y) and cannot be moved by automatic tools. 
+You must specify the component’s location and orientation.
+Value of orient: N, S, E, W, FN, FS, FE, or FW
+
+-PLACED x y orient 
+Specifies that the component has a location, but can be moved using automatic layout tools. 
+You must specify the component’s location and orientation.
+Value of orient: N, S, E, W, FN, FS, FE, or FW
+
+Components are always placed such that the lower left corner of the cell is the origin (0,0) after any orientation. 
+When a component flips about the y axis, it flips about the component center. 
+When a component rotates, the lower left corner of the bounding box of the component’s sites remains at the same placement location.
+
+
+[ NETS section ]:
+********************
+NETS numNets ;
+[– netName
+ [ compName pinName ] ...
+ [ regularWiring ] ...
+;] ...
+END NETS
+
+Specifies netlist connectivity for nets containing regular pins. 
+The default design rules apply to these pins, and the regular routers route to these pins. 
+The SPECIALNETS statement generated by qGDR lists routing paths which may be further optimized. 
+The SPECIALNETS statement also defines netlist connectivity for nets containing special pins.
+
+-numNets 
+Specifies the number of nets defined in the NETS section.
+
+-netName 
+Specifies the name for the net. Each statement in the NETS section describes a single net. 
+
+-compName pinName 
+Specifies the name of a regular component pin on a net or a subnet. 
+
+-Regular Wiring Statement
+{+ FIXED | + ROUTED}
+layerName routingPoints routingPoints
+[ NEW layerName routingPoints routingPoints ] 
+
+-FIXED
+Specifies that the wiring cannot be moved by automatic layout. 
+If no wiring is specified for a particular net, the net is unrouted. 
+
+-ROUTED 
+Specifies that the wiring can be moved by the automatic layout tools. 
+If no wiring is specified for a particular net, the net is unrouted. 
+If you specify ROUTED, you must also specify layerName.
+
+-layerName 
+Specifies the layer on which the wire lies. You must specify layerName if you specify FIXED, ROUTED, or NEW.
+Specified layers must be routable. 
+
+-NEW layerName 
+Indicates a new wire segment (that is, there is no wire segment between the last specified coordinate and the next coordinate),
+and specifies the name of the layer on which the new wire lies.
+
+-routingPoints 
+Defines the center line coordinates of the route on layerName. 
+Routes that are 90 degrees, have a width defined by the routing rule for this wire, and extend from one coordinate (x y) to the next coordinate.
+If either endpoint has an extension value (extValue), the wire is extended by that amount past the endpoint. 
+To maximize compactness of the design files, the coordinates allow for the asterisk ( * ) convention. 
+Here, ( x * ) indicates that the y coordinate last specified in the wiring specification is used; ( * y ) indicates that the x coordinate last specified is used. 
+If there is a viaName in routingPoints, layerName for the next routing coordinates (if any) is implicitly changed to the other routing layer for the via.
+For example, if the current layer is metal1, a via12 changes the layer to metal2 for the next routing coordinates.
+
+
+Reference:
+LEF/DEF 5.7 Language Reference by Cadence
+http://www.ispd.cc/contests/18/lefdefref.pdf
+
+--------------------------------------------------------------------------------
+
+
+Authors:
+********************
+Ting-Ru Lin <tingruli@usc.edu>
+Massoud Pedram <pedram@usc.edu>
+
+
+----------------------------------------------
+
+1. For more information related to the global router, please email to the developers:
+
+Prof. Massoud Pedram: pedram@ee.usc.edu
+Ting-Ru Lin: tingruli@usc.edu
+pedram@usc.edu
+http://www.mpedram.com/
+
+2. For more information related to the Qrouter, please refer to the following website:
+
+http://opencircuitdesign.com/qrouter/index.html
+tim@opencircuitdesign.com
+
+
+--------------------------------------------------------------------------------
+

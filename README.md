@@ -58,6 +58,20 @@ std blif (.blif) -> SFQ blif (.blif)
 * Convert LEF/DEF to GDS
 * Convert LEF/DEF to JoSIM
 
+
+
+## Required files
+
+| **File**    | **Description**           | Required by                 |
+| ----------- | ------------------------- | --------------------------- |
+| .genlib     | logic gate description    | ABC(ViPeR)                  |
+| .toml       | physical gate description | ViPeR                       |
+| .cfg        | qRouter config            | qRouter                     |
+| .lef        | standard gate description | qRouter, Die2Sim, chipSmith |
+| config.toml | configuration for ViPeR   | ViPeR                       |
+
+
+
 ## Examples
 Examples of how to execute ViPeR:
 

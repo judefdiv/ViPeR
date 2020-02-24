@@ -310,8 +310,8 @@ int def_file::to_def(const string &fileName){
 
   defFile << endl;
 
-  defFile << "TRACKS Y 0 DO 250 STEP 1000 LAYER metal1 ;" << endl;
-  defFile << "TRACKS Y 0 DO 250 STEP 1000 LAYER metal2 ;" << endl;
+  defFile << "TRACKS Y 0 DO 125 STEP 1000 LAYER metal1 ;" << endl;
+  defFile << "TRACKS Y 0 DO 125 STEP 1000 LAYER metal2 ;" << endl;
   defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER metal1 ;" << endl;
   defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER metal2 ;" << endl;
 

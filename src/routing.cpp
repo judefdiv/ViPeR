@@ -25,11 +25,11 @@ int roete::fetchData(vector<BlifNode> inNodes, vector<BlifNet> inNets, vector<ce
 
 
   const auto ConfigFile = toml::parse(configFile);
-  const auto& r_para    = toml::find(ConfigFile, "run_parameters");
+  const auto& gen_config    = toml::find(ConfigFile, "General_Config_File");
 
-  string workDir      = toml::find<string>(r_para, "work_dir");
-  string cellLibFName = toml::find<string>(r_para, "cell_dis_gds");
-  cellLibFName        = cellLibFName.insert(0, workDir);
+  // string workDir      = toml::find<string>(r_para, "work_dir");
+  string cellLibFName = toml::find<string>(gen_config, "cell_dis_gds");
+  // cellLibFName        = cellLibFName.insert(0, workDir);
   const auto CellLibFile   = toml::parse(cellLibFName);
 
   const auto& g_para = toml::find(CellLibFile, "ALL_GATES");

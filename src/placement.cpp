@@ -38,16 +38,26 @@ void plek::fetchSFQblif(vector<BlifNode> inNodes, vector<BlifNet> inNets, vector
  */
 
 int plek::populate(string configFName){
-  // this->importCellDef(configFName);
   this->importParameters(configFName);
   this->optiLayout();
   this->printLayout();
-  // this->postLayoutGoodies();
   this->importCellDef(configFName);
   // this->to_str();
 
   return 1;
 }
+
+/**
+ * [plek::optiLayout - Optimize the layout of the IC]
+ * @return [1 - Good; 0 - Error]
+ */
+
+int plek::optiLayout(){
+  this->sortRoutes();
+  this->stackLayout();
+  return 1;
+}
+
 
 /**
  * [plek::importCellDef - Imports the definitions of the cells]
@@ -56,11 +66,11 @@ int plek::populate(string configFName){
  */
 
 int plek::importCellDef(string configFName){
-  cout << "Importing parameters." << endl;
+  cout << "Importing cell parameters." << endl;
 
   const auto mainConfig = toml::parse(configFName);
   // const auto& w_para    = toml::find(mainConfig, "wafer_parameters");
-  const auto& r_para    = toml::find(mainConfig, "run_parameters");
+  const auto& gen_config   = toml::find(mainConfig, "General_Config_File");
   // const auto& l_para    = toml::find(mainConfig, "Layout_parameters");
 
   // -----------------------------------------------------------------
@@ -81,9 +91,9 @@ int plek::importCellDef(string configFName){
 
   // -----------------------------------------------------------------
 
-  string workDir      = toml::find<string>(r_para, "work_dir");
-  string cellLibFName = toml::find<string>(r_para, "cell_dis_gds");
-  cellLibFName        = cellLibFName.insert(0, workDir);
+  // string workDir      = toml::find<string>(r_para, "work_dir");
+  string cellLibFName = toml::find<string>(gen_config, "cell_dis_gds");
+  // cellLibFName        = cellLibFName.insert(0, workDir);
 
   // vector<string> celllist2 = toml::get<vector<string>>(mainConfig);
 
@@ -199,7 +209,7 @@ int plek::importCellDef(string configFName){
         this->gateList[index].pins_in_out_y.push_back(intVec[1] * GDSunitScale); // y
       }
       else{
-        cout << "Pin naming error with \"" << cellList[i] << "\" in \"" << cellLibFName << "\"" << endl;
+        cout << "Pin naming error with \"" << cellList[i] << "\" in \"" << cellLibFile << "\"" << endl;
         return 0;
       }
     }
@@ -220,7 +230,7 @@ int plek::importCellDef(string configFName){
     }
   }
 
-  cout << "Importing parameters done." << endl;
+  cout << "Importing cell parameters done." << endl;
   return 1;
 }
 
@@ -235,8 +245,8 @@ int plek::importParameters(string configFName){
   cout << "Importing parameters." << endl;
 
   const auto mainConfig = toml::parse(configFName);
-  const auto& w_para    = toml::find(mainConfig, "wafer_parameters");
-  const auto& l_para    = toml::find(mainConfig, "Layout_parameters");
+  const auto& w_para    = toml::find(mainConfig, "Wafer_Parameters");
+  const auto& l_para    = toml::find(mainConfig, "Layout_Parameters");
 
   // -----------------------------------------------------------------
 
@@ -260,18 +270,6 @@ int plek::importParameters(string configFName){
 }
 
 /**
- * [plek::optiLayout - Optimize the layout of the IC]
- * @return [1 - Good; 0 - Error]
- */
-
-int plek::optiLayout(){
-  this->sortRoutes();
-  this->stackLayout();
-  return 1;
-}
-
-
-/**
  * [plek::sortRoutes - sorts the routes according to a predefined rules]
  * @return [1 - Good; 0 - Error]
  */
@@ -286,9 +284,14 @@ int plek::sortRoutes(){
 
   // for(auto &itNodes: inNodes){
 
+  cout << "----------------------------------------------------" << endl;
   cout << "Optimizing(sorting) the layouts of the gates." << endl;
 
-  vector<vector<unsigned int>> USroutes; // unsorted routes
+  // cout << "Before sorting..." << endl;
+  // printRoutesSubset(this->routesWS);
+
+
+  // vector<vector<unsigned int>> USroutes; // unsorted routes
   vector<vector<unsigned int>> Sroutes;   // sorted routes
 
   vector<unsigned int> inputOrder, outputOrder;
@@ -311,25 +314,66 @@ int plek::sortRoutes(){
     }
   }
 
-  cout << "Input Order: ";
-  for(auto const &foo: inputOrder){
-    cout << this->nodes[foo].name << "; ";
+  // cout << "Input Order: ";
+  // for(auto const &foo: inputOrder){
+  //   cout << this->nodes[foo].name << "; ";
+  // }
+  // cout << endl;
+
+  // cout << "Output Order: ";
+  // for(auto const &foo: outputOrder){
+  //   cout << this->nodes[foo].name << "; ";
+  // }
+  // cout << endl;
+
+  // USroutes = this->routesWS;
+
+
+  vector<vector<unsigned int>> inputBuff, outputBuff, lengthBuff;
+
+
+  for(auto const &itInput: inputOrder){
+    inputBuff.clear();
+    // outputBuff.clear();
+    // lengthBuff.clear();
+
+    // Find/fill first buffer
+    for(auto const &itRoute: this->routesWS){
+      if(itInput == itRoute[0]){
+        inputBuff.push_back(itRoute);
+      }
+    }
+
+    // printRoutesSubset(inputBuff);
+
+
+    for(auto const &itOutput: outputOrder){
+      outputBuff.clear();
+
+      for(auto const &itRoute: inputBuff){
+        if(itOutput == itRoute.back()){
+          outputBuff.push_back(itRoute);
+          Sroutes.push_back(itRoute);
+        }
+      }
+      // Sroutes.push_back(outputBuff);
+      // printRoutesSubset(outputBuff);
+
+    }
+
+    // for(auto const &itInputBuff: inputBuff){
+    // }
+
+
   }
-  cout << endl;
-
-  cout << "Output Order: ";
-  for(auto const &foo: outputOrder){
-    cout << this->nodes[foo].name << "; ";
-  }
-  cout << endl;
 
 
-  USroutes = this->routesWS;
-
-
-
+  cout << "Post sorting..." << endl;
+  this->routesWS = Sroutes;
+  printRoutesSubset(this->routesWS);
 
   cout << "Optimizing(sorting) the layouts of the gates, done." << endl;
+  cout << "----------------------------------------------------" << endl;
 
   return 1;
 }
@@ -341,6 +385,8 @@ int plek::sortRoutes(){
 int plek::stackLayout(){
   cout << "Stacking the layouts of the gates." << endl;
 
+  // printRoutesSubset(this->routesWS);
+
   // Find longest routes
   unsigned int longestRoute = 0;
 
@@ -349,6 +395,8 @@ int plek::stackLayout(){
       longestRoute = this->routesWS[i].size();
     }
   }
+
+  cout << "1" << endl;
 
   this->layout.resize(longestRoute-2);
   bool found = false;
@@ -369,6 +417,16 @@ int plek::stackLayout(){
       }
     }
   }
+
+  //Shorten layout size if over size, not sure WHY!!!
+
+  if(this->layout.back().size() == 0){
+    this->layout.resize(this->layout.size()-1);
+  }
+
+  // printRoutesSubset(this->layout);
+
+  cout << "2" << endl;
 
   // adding the PAD to the list of used cells/gates
   this->used_gates.insert("PAD");
@@ -395,6 +453,8 @@ int plek::stackLayout(){
       this->layoutOutputs.push_back(this->routesWS[i].back());
     }
   }
+
+  cout << "3" << endl;
 
   // inserting clk clock in to input list
   for(unsigned int i = 0; i < this->nodes.size(); i++){
@@ -837,6 +897,23 @@ void plek::printRoutes(){
         cout << this->nodes[this->routes[i][j]].name << " -> ";
     }
     cout << this->nodes[this->routes[i][j]].name << endl;
+  }
+}
+
+/**
+ * [plek::printRoutesSubset - Displays the routes of the input subset]
+ */
+
+void plek::printRoutesSubset(vector<vector<unsigned int>> inRoute){
+  cout << "Subset routes:" << endl;
+
+  unsigned int j;
+
+  for(unsigned int i = 0; i < inRoute.size(); i++){
+    for(j = 0; j < inRoute[i].size()-1; j++){
+        cout << this->nodes[inRoute[i][j]].name << " -> ";
+    }
+    cout << this->nodes[inRoute[i][j]].name << endl;
   }
 }
 
