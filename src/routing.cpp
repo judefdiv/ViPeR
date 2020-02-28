@@ -47,11 +47,8 @@ int roete::fetchData(vector<BlifNode> inNodes, vector<BlifNet> inNets, vector<ce
 int roete::straightRoute(){
   cout << "Routing nets, straight." << endl;
   unsigned int toNode, fromNode;
-  vector<int> corX;
-  vector<int> corY;
-
-  vector<int> nodesInputCnt;
-  vector<int> nodesOutputCnt;
+  vector<int> corX, corY;
+  vector<int> nodesInputCnt, nodesOutputCnt;
 
   corX.resize(2);
   corY.resize(2);
@@ -73,53 +70,46 @@ int roete::straightRoute(){
   }
 
   for(unsigned int i = 0; i < this->nets.size(); i++){
-    for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
-      // if(this->nets[i].outNodes.size() > 0){
-      //   if(!this->nodes[this->nets[i].outNodes[j]].GateType.compare("SC")){
-      //     continue;
-      //   }
-      // }
-      // if(this->nets[i].inNodes.size() > 0){
-      //   if(!this->nodes[this->nets[i].inNodes[0]].GateType.compare("SC")){
-      //     continue;
-      //   }
-      // }
 
-
-      fromNode = this->nets[i].inNodes[0];
-      toNode = this->nets[i].outNodes[j];
-
-      if(this->nodes[fromNode].strRef == this->pad_index){
-        corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_in_out_x[0];
-        corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_in_out_y[0];
-      }
-      else{
-        corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
-        corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
-        nodesOutputCnt[fromNode]++;
-      }
-
-      // check if toNode is connecting with CLK
-      if(this->nodes[toNode].clkNet == i){        // check if toNode is connecting with CLK
-        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].clk_x[0];
-        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].clk_y[0];
-      }
-      else if(this->nodes[toNode].strRef == this->pad_index){
-        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_out_x[0];
-        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_out_y[0];
-      }
-      else{
-        corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
-        corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
-        nodesInputCnt[toNode]++;
-      }
-
-      this->nets[i].route.resize(this->nets[i].route.size()+1);
-      this->nets[i].route.back().layerNo = 4;
-      this->nets[i].route.back().corX = corX;
-      this->nets[i].route.back().corY = corY;
+    if(this->nets[i].inNodes.size() == 0 || this->nets[i].outNodes.size() == 0){
+      continue;
     }
+
+    fromNode = this->nets[i].inNodes[0];
+    toNode = this->nets[i].outNodes[0];
+
+    if(this->nodes[fromNode].strRef == this->pad_index){
+      corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_in_out_x[0];
+      corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_in_out_y[0];
+    }
+    else{
+      corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
+      corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
+      nodesOutputCnt[fromNode]++;
+    }
+
+    // check if toNode is connecting with CLK
+    if(this->nodes[toNode].clkNet == i && i != 0){        // check if toNode is connecting with CLK
+      corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].clk_x[0];
+      corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].clk_y[0];
+    }
+    else if(this->nodes[toNode].strRef == this->pad_index){
+      corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_out_x[0];
+      corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_out_y[0];
+    }
+    else{
+      corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
+      corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
+      nodesInputCnt[toNode]++;
+    }
+
+    this->nets[i].route.resize(this->nets[i].route.size()+1);
+    this->nets[i].route.back().layerNo = 4;
+    this->nets[i].route.back().corX = corX;
+    this->nets[i].route.back().corY = corY;
+
   }
+
   cout << "Routing nets, straight. Done." << endl;
   return 1;
 }

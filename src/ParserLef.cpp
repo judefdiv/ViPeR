@@ -80,11 +80,20 @@ int lef_file::importGDF(const string &fileName){
     element = toml::find(gateBlk, "pillar");
     intVec = toml::get<vector<int>>(element);
     if(intVec[0] != -1){
-      mac.obs.resize(1);
+
+      mac.obs.resize(2);
+
+      mac.obs[0].layer = "metal1";
       mac.obs[0].ptsX.push_back((intVec[0] * unitScale) - (biasSizeX/2));
       mac.obs[0].ptsY.push_back((intVec[1] * unitScale) - (biasSizeY/2));
       mac.obs[0].ptsX.push_back((intVec[0] * unitScale) + (biasSizeX/2));
       mac.obs[0].ptsY.push_back((intVec[1] * unitScale) + (biasSizeY/2));
+
+      mac.obs[1].layer = "metal2";
+      mac.obs[1].ptsX.push_back((intVec[0] * unitScale) - (biasSizeX/2));
+      mac.obs[1].ptsY.push_back((intVec[1] * unitScale) - (biasSizeY/2));
+      mac.obs[1].ptsX.push_back((intVec[0] * unitScale) + (biasSizeX/2));
+      mac.obs[1].ptsY.push_back((intVec[1] * unitScale) + (biasSizeY/2));
     }
 
     // ------------------------------------------------------------------------
@@ -338,9 +347,9 @@ int lef_file::exportLef(const string &fileName){
                                 << bar.ptsY[0] << " "
                                 << bar.ptsX[1] << " "
                                 << bar.ptsY[1] << " ;" << endl;
-      lefFile << "  END " << endl;
     }
-
+    if(foo.obs.size() > 0)
+      lefFile << "  END" << endl;
 
     lefFile << "END " << foo.name << endl;
   }

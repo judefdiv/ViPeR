@@ -10,8 +10,8 @@
 # version = 0.1
 
 [run_parameters]
-	# Command   = "blif2gds"
-	Command   = "gdf2lef"
+	Command   = "blif2gds"
+	# Command   = "gdf2lef"
 	# Command   = "verilog2gds"
 	# Command   = "runABC"
 

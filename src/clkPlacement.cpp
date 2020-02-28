@@ -567,20 +567,33 @@ int clkChip::mainCLKdistri(){
 
   // Create/connect initial CLK
   BlifNode fooNode;
-  BlifNet fooNet;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
   fooNode.GateType = "SPLIT";
   fooNode.strRef = this->splitIndex;
-  fooNode.inNets.push_back(this->nets.size()); // clk pad
+  fooNode.inNets.push_back(this->nodes[this->clkSplitIndex].outNets[0]); // clk pad
 
-  fooNet.name = "net_" + to_string(this->nets.size());
-  fooNet.inNodes.push_back(this->clkSplitIndex);
-  fooNet.outNodes.push_back(this->nodes.size());
+  this->nets[this->nodes[this->clkSplitIndex].outNets[0]].outNodes.push_back(this->nodes.size());
 
-  this->nets.push_back(fooNet);
   this->nodes.push_back(fooNode);
 
+  // // Create/connect initial CLK
+  // BlifNode fooNode;
+  // BlifNet fooNet;
+
+  // fooNode.name = "SC_" + to_string(this->nodes.size());
+  // fooNode.GateType = "SPLIT";
+  // fooNode.strRef = this->splitIndex;
+  // fooNode.inNets.push_back(this->nets.size()); // clk pad
+
+  // this->nodes[this->clkSplitIndex].outNets[0]
+
+  // fooNet.name = "net_" + to_string(this->nets.size());
+  // fooNet.inNodes.push_back(this->clkSplitIndex);
+  // fooNet.outNodes.push_back(this->nodes.size());
+
+  // this->nets.push_back(fooNet);
+  // this->nodes.push_back(fooNode);
 
   // calc number of levels needed
   int noLevels = ceil(log(this->rowCLKin.size())/log(2)) -1;

@@ -73,6 +73,7 @@ class ForgeSFQBlif{
 		int insertDFFs();
 
 		int insertGate(string GateType, unsigned int netNo, unsigned int noGates);
+		int insertSplit(unsigned int netNo);
 		int deleteGate(unsigned GateIndex);			// <- can be removed
 
 	public:

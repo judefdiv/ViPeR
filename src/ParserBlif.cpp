@@ -198,7 +198,7 @@ int SFQBlif::to_blif(string FileName){
 		  continue;
 		}
 
-		// cout << this->nodes[i].name << endl;
+		cout << this->nodes[i].name << endl;
 
 		lineStr = ".gate " + this->nodes[i].GateType;
 
@@ -214,7 +214,7 @@ int SFQBlif::to_blif(string FileName){
 		// Assuming that the output of the circuit can only be connected to a net with 1 output being it
 		for(unsigned int j = 0; j < this->nodes[i].outNets.size(); j++){
 			// if(this->nets[this->nodes[i].outNets[j]].outNodes[0] < this->inputCnt + this->outputCnt){
-			if(!this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].GateType.compare("output")){
+			if(!this->nodes[this->nets[this->nodes[i].outNets[j]].outNodes[0]].GateType.compare("output")){
 				lineStr += " out" + to_string(j) + "=" + this->nodes[this->nets[this->nodes[i].outNets[j]].outNodes[0]].name;
 			}
 			else{
@@ -357,21 +357,57 @@ void SFQBlif::to_str(){
 		cout << endl;
 	}
 
+	// cout << "\tNets: " << this->nets.size() << endl;
+	// for(unsigned int i = 0; i < this->nets.size(); i++){
+	// 	cout << "\t\tNet[" << i <<  "]: " << this->nets[i].name << endl;
+
+	// 	cout << "\t\tIn nodes:";
+	// 	for(unsigned int j = 0; j < this->nets[i].inNodes.size(); j++){
+	// 		cout << "\t" << this->nodes[this->nets[i].inNodes[j]].name;
+	// 	}
+	// 	cout << endl;
+
+	// 	cout << "\t\tOut nodes:";
+	// 	for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
+	// 		cout << "\t" << this->nodes[this->nets[i].outNodes[j]].name;
+	// 	}
+	// 	cout << endl;
+	// }
+
+
+
 	cout << "\tNets: " << this->nets.size() << endl;
+
+	cout << setw(15) << "Net_Name[n]:" << setw(10) << "inNode" << setw(4) << "->" << setw(10) << "outNode" << endl;
+
+	unsigned int index = 0;
+	string foo;
 	for(unsigned int i = 0; i < this->nets.size(); i++){
-		cout << "\t\tNet[" << i <<  "]: " << this->nets[i].name << endl;
+		foo = "[" + to_string(i) + "]:";
+		cout <<  setw(10) << foo << setw(10) << this->nets[i].name;
 
-		cout << "\t\tIn nodes:";
-		for(unsigned int j = 0; j < this->nets[i].inNodes.size(); j++){
-			cout << "\t" << this->nodes[this->nets[i].inNodes[j]].name;
-		}
-		cout << endl;
+		index = 0;
 
-		cout << "\t\tOut nodes:";
-		for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
-			cout << "\t" << this->nodes[this->nets[i].outNodes[j]].name;
+		while(index < this->nets[i].inNodes.size() || index < this->nets[i].outNodes.size()){
+			if(index < this->nets[i].inNodes.size()){
+				cout << setw(15) << this->nodes[this->nets[i].inNodes[index]].name << setw(4) << "->";
+			}
+			else{
+				cout << setw(39) << "->";
+			}
+
+			if(index < this->nets[i].outNodes.size()){
+				// cout << setw(10) << "outNode" << endl;
+				cout << setw(10) << this->nodes[this->nets[i].outNodes[index]].name << endl;
+			}
+			else{
+				// blank
+				cout << endl;
+			}
+
+			index++;
 		}
-		cout << endl;
+
 	}
 
 }

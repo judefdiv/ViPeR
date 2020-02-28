@@ -399,7 +399,8 @@ int ForgeSFQBlif::insertSplitters(){
 
 	for(unsigned int i = 0; i < this->nets.size(); i++){
 		if(this->nets[i].outNodes.size() == 2){
-			insertGate("SPLIT", i, 1);
+			// insertGate("SPLIT", i, 1);
+			this->insertSplit(i);
 		}
 		else if(this->nets[i].outNodes.size() > 2){
 			cout << "3 Output splitter is required..." << endl;
@@ -549,6 +550,59 @@ int ForgeSFQBlif::insertGate(string GateType, unsigned int netNo, unsigned int n
 		this->nets.push_back(fooNet);
 		netNo = this->nets.size() -1;
 	}
+
+	return 1;
+}
+
+/**
+ * [ForgeSFQBlif::insertSplit - inserts a splitter and creates 2 nets]
+ * @param  netNo [description]
+ * @return       [1 - all good; 0 - error]
+ */
+
+int ForgeSFQBlif::insertSplit(unsigned int netNo){
+	cout << "Inserting splitter for: " << this->nodes[this->nets[netNo].inNodes[0]].name << endl;
+
+	BlifNode splitNode;
+	BlifNet  s1net, s2net;
+	unsigned int index1, index2;
+
+	splitNode.name = "SPLIT_" + to_string(this->nodes.size());
+	splitNode.GateType = "SPLIT";
+	splitNode.inNets.push_back(netNo);
+	splitNode.outNets.push_back(this->nets.size());
+	splitNode.outNets.push_back(this->nets.size()+1);
+
+	s1net.name = "net_" + to_string(this->nets.size());
+	s1net.inNodes.push_back(this->nodes.size());
+	s1net.outNodes.push_back(this->nets[netNo].outNodes[0]);
+
+	s2net.name = "net_" + to_string(this->nets.size()+1);
+	s2net.inNodes.push_back(this->nodes.size());
+	s2net.outNodes.push_back(this->nets[netNo].outNodes[1]);
+
+	for(unsigned int i = 0; i < 2; i++){
+		if(this->nodes[this->nets[netNo].outNodes[0]].inNets[i] == netNo){
+			index1 = i;
+		}
+	}
+
+	for(unsigned int i = 0; i < 2; i++){
+		if(this->nodes[this->nets[netNo].outNodes[1]].inNets[i] == netNo){
+			index2 = i;
+		}
+	}
+
+
+	this->nodes[this->nets[netNo].outNodes[0]].inNets[index1] = this->nets.size();
+	this->nodes[this->nets[netNo].outNodes[1]].inNets[index2] = this->nets.size()+1;
+
+	this->nets[netNo].outNodes.clear();
+	this->nets[netNo].outNodes.push_back(this->nodes.size());
+
+	this->nodes.push_back(splitNode);
+	this->nets.push_back(s1net);
+	this->nets.push_back(s2net);
 
 	return 1;
 }

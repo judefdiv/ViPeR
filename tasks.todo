@@ -4,11 +4,9 @@ Current tasks:
 
 Must get DONE:
 	□	qRouter automate
-	□	Move config/similar files to ONE location
 	□	Calculated the size of the chip
 	□	vertical clock distribution
-	□ Decide/fix splitter output net, single or dual?
-		clkChip::drawCLKnode is dual!!!!
+	□	fix extra clock net
 
 Future:
 	□	Remove ParserDot
@@ -87,5 +85,7 @@ Completed:
 		✔	qRouter integration smoother @done (20-02-21 09:25)
 		✔	basic implementation of improved optimal cell layout @done (20-02-21 09:25)
 		✔ Improved algorithm for layout, (bug) @done (20-02-21 10:39)
+		✔	Consolidate all the library files into data/ @done (20-02-24 15:24)
+		✔ splitter output net, single fixed, with all bugs @done (20-02-27 08:55)
 
 Notes:
