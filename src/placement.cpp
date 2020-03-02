@@ -256,8 +256,9 @@ int plek::importParameters(string configFName){
   this->cellHeight = toml::find<int>(w_para, "cell_height") * GDSunitScale;
   this->padVerGap  = toml::find<int>(w_para, "pad_ver_gap") * GDSunitScale;
   this->padHorHap  = toml::find<int>(w_para, "pad_hor_gap") * GDSunitScale;
-  this->xOffset  = toml::find<int>(w_para, "x_offset") * GDSunitScale;
-  this->yOffset  = toml::find<int>(w_para, "y_offset") * GDSunitScale;
+  this->xOffset    = toml::find<int>(w_para, "x_offset") * GDSunitScale;
+  this->yOffset    = toml::find<int>(w_para, "y_offset") * GDSunitScale;
+  this->gridSize   = toml::find<int>(w_para, "grid_size") * GDSunitScale;
 
   auto barElement     = toml::find(l_para, "input_order");
   this->inputPinOrder  = toml::get<vector<string>>(barElement);
@@ -692,8 +693,8 @@ int plek::alignCentre(){
   ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
   cPtX = (rowWidthMax - ioWidth)/2;
   for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
-    this->nodes[this->layoutOutputs[i]].corX = cPtX;
-    this->nodes[this->layoutOutputs[i]].corY = cPtY;
+    this->nodes[this->layoutOutputs[i]].corX = rounder(cPtX, this->gridSize);
+    this->nodes[this->layoutOutputs[i]].corY = rounder(cPtY, this->gridSize);
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
   }
   cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
@@ -706,8 +707,8 @@ int plek::alignCentre(){
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
       index = this->layout[i][j];
 
-      this->nodes[index].corX = cPtX;
-      this->nodes[index].corY = cPtY;
+      this->nodes[index].corX = rounder(cPtX, this->gridSize);
+      this->nodes[index].corY = rounder(cPtY, this->gridSize);
 
       cPtX += gateList[(this->nodes[index].strRef)].sizeX + this->hGap;
     }
@@ -720,8 +721,8 @@ int plek::alignCentre(){
   cPtX = (rowWidthMax - ioWidth)/2;
   cPtY += this->padVerGap;
   for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
-    this->nodes[this->layoutInputs[i]].corX = cPtX;
-    this->nodes[this->layoutInputs[i]].corY = cPtY;
+    this->nodes[this->layoutInputs[i]].corX = rounder(cPtX, this->gridSize);
+    this->nodes[this->layoutInputs[i]].corY = rounder(cPtY, this->gridSize);
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
   }
 
@@ -748,7 +749,7 @@ int plek::alignJustify(){
   for(int i = this->layout.size()-1; i >= 0; i--){
     fooWdith = 0;
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
-      fooWdith += gateList[(this->nodes[this->layout[i][j]].strRef)].sizeX;
+      fooWdith += gateList[(this->nodes[this->layout[i][j]].strRef)].sizeX + this->hGap;
     }
     rowWidth[i] = fooWdith;
   }
@@ -764,8 +765,8 @@ int plek::alignJustify(){
   rowGapSize = (rowWidthMax - ioWidth)/(this->layoutOutputs.size()+1);
   cPtX = rowGapSize;
   for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
-    this->nodes[this->layoutOutputs[i]].corX = cPtX;
-    this->nodes[this->layoutOutputs[i]].corY = cPtY;
+    this->nodes[this->layoutOutputs[i]].corX = rounder(cPtX, this->gridSize);
+    this->nodes[this->layoutOutputs[i]].corY = rounder(cPtY, this->gridSize);
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
   }
   cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
@@ -780,8 +781,8 @@ int plek::alignJustify(){
 
       // cout << "Placed[" << index << "]: " << this->nodes[index].GateType << "; x=" << cPtX << " y=" << cPtY << endl;
 
-      this->nodes[index].corX = cPtX;
-      this->nodes[index].corY = cPtY;
+      this->nodes[index].corX = rounder(cPtX, this->gridSize);
+      this->nodes[index].corY = rounder(cPtY, this->gridSize);
 
       cPtX += gateList[(this->nodes[index].strRef)].sizeX + rowGapSize + this->hGap;
     }
@@ -798,15 +799,124 @@ int plek::alignJustify(){
   // double caster;
 
   for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
-    // caster = round(((double)cPtX / 1000)) *1000
-    this->nodes[this->layoutInputs[i]].corX = round(((double)cPtX / 1000)) *1000;
-    this->nodes[this->layoutInputs[i]].corY = round(((double)cPtY / 1000)) *1000;
-    // this->nodes[this->layoutInputs[i]].corX = cPtX;
-    // this->nodes[this->layoutInputs[i]].corY = cPtY;
+    this->nodes[this->layoutInputs[i]].corX = rounder(cPtX, this->gridSize);
+    this->nodes[this->layoutInputs[i]].corY = rounder(cPtY, this->gridSize);
+
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
   }
 
   return 1;
+}
+
+/**
+ * [plek::alignJustifyFlush - Aligns all the gates to the centre with equal spacing, flush at the ends]
+ * @return [1 - Good; 0 - Error]
+ */
+
+int plek::alignJustifyFlush(){
+  int cPtX; // current point on the X-axis
+  int cPtY = 0; // current point on the Y-axis
+  unsigned int index;
+  vector<unsigned int> rowWidth; // bottom to top
+  unsigned int rowWidthMax = 0;
+  unsigned int rowGapSize;
+
+  // ---------------------------------------------------------------------
+  // calculating the width of each row.
+  unsigned int fooWdith;
+  rowWidth.resize(this->layout.size());
+  for(int i = this->layout.size()-1; i >= 0; i--){
+    fooWdith = 0;
+    for(unsigned int j = 0; j < this->layout[i].size(); j++){
+      fooWdith += gateList[(this->nodes[this->layout[i][j]].strRef)].sizeX + this->hGap;
+    }
+    rowWidth[i] = fooWdith;
+  }
+  for(unsigned int i = 0; i < rowWidth.size(); i++){
+    if(rowWidthMax < rowWidth[i])
+      rowWidthMax = rowWidth[i];
+  }
+
+  // ---------------------------------------------------------------------
+  // inserting output pads
+  unsigned int ioWidth = 0;
+  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
+  rowGapSize = (rowWidthMax - ioWidth)/(this->layoutOutputs.size()-1);
+  cPtX = 0;
+  for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
+    this->nodes[this->layoutOutputs[i]].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+    this->nodes[this->layoutOutputs[i]].corY = rounderOffset(cPtY, this->gridSize, yOffset);
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
+  }
+  cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
+
+  // ---------------------------------------------------------------------
+  // The actual layout part
+  for(int i = this->layout.size()-1; i >= 0; i--){
+    rowGapSize = (rowWidthMax - rowWidth[i])/(this->layout[i].size()-1);
+    cPtX = 0;
+    for(unsigned int j = 0; j < this->layout[i].size(); j++){
+      index = this->layout[i][j];
+
+      // cout << "Placed[" << index << "]: " << this->nodes[index].GateType << "; x=" << cPtX << " y=" << cPtY << endl;
+
+      this->nodes[index].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+      this->nodes[index].corY = rounderOffset(cPtY, this->gridSize, yOffset);
+
+      cPtX += gateList[(this->nodes[index].strRef)].sizeX + rowGapSize + this->hGap;
+    }
+    cPtY += this->cellHeight + this->vGap;
+  }
+
+  // ---------------------------------------------------------------------
+  // inserting input pads
+  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutInputs.size();
+  rowGapSize = (rowWidthMax - ioWidth)/(this->layoutInputs.size()-1);
+  cPtX = 0;
+  cPtY += this->padVerGap;
+
+  for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
+    this->nodes[this->layoutInputs[i]].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+    this->nodes[this->layoutInputs[i]].corY = rounderOffset(cPtY, this->gridSize, yOffset);
+    cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
+  }
+
+  return 1;
+}
+
+
+/**
+ * [plek::rounder - Rouds of the value(coordinate) to adhere to the gird]
+ * @param  inVal   [The value to be rounded off]
+ * @param  roundTo [The nearest value... should be base 10]
+ * @return         [The rounded off number]
+ */
+
+int plek::rounder(int inVal, int roundTo){
+  double foo;
+
+  foo = inVal / roundTo;
+  foo = round(foo);
+
+  return foo * roundTo;
+}
+
+
+/**
+ * [plek::rounderOffset - Rouds of the value(coordinate) to adhere to the gird]
+ * @param  inVal   [The value to be rounded off]
+ * @param  roundTo [The nearest value... should be base 10]
+ * @param  offSet  [The offset value]
+ * @return         [The rounded off number]
+ */
+
+int plek::rounderOffset(int inVal, int roundTo, int offSet){
+  double foo;
+
+  foo = inVal / roundTo;
+  foo = round(foo);
+
+  return (int)(foo * roundTo) + offSet;
 }
 
 /**
@@ -827,6 +937,9 @@ gdsSTR plek::gsdLayout(){
   }
   else if(!this->rAlign.compare("justify")){
     this->alignJustify();
+  }
+  else if(!this->rAlign.compare("justifyFlush")){
+    this->alignJustifyFlush();
   }
   else{
     this->alignJustify();

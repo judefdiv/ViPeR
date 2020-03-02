@@ -322,7 +322,8 @@ int lef_file::exportLef(const string &fileName){
     // ------------ pins ------------
     for(auto &bar: foo.pins){
       lefFile << "  PIN " << bar.name << endl;
-      lefFile << "    DIRECTION " << bar.direction << " ;" << endl;
+      // lefFile << "    DIRECTION " << bar.direction << " ;" << endl;
+      lefFile << "    DIRECTION INOUT ;" << endl;
       lefFile << "    USE SIGNAL ;" << endl;
       lefFile << "      PORT" << endl;
 

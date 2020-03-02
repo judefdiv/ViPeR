@@ -54,6 +54,10 @@ class plek{
     int alignRight();
     int alignCentre();
     int alignJustify();
+    int alignJustifyFlush();
+
+    int rounder(int inVal, int roundTo);
+    int rounderOffset(int inVal, int roundTo, int offSet);
 
     // all gates parameters
     unsigned int port_size_x = 0;
@@ -75,6 +79,7 @@ class plek{
     int cellHeight = 0;
     int padVerGap = 0;
     int padHorHap = 0;
+    int gridSize = 0;
 
 
     // Others

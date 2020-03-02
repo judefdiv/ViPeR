@@ -357,25 +357,6 @@ void SFQBlif::to_str(){
 		cout << endl;
 	}
 
-	// cout << "\tNets: " << this->nets.size() << endl;
-	// for(unsigned int i = 0; i < this->nets.size(); i++){
-	// 	cout << "\t\tNet[" << i <<  "]: " << this->nets[i].name << endl;
-
-	// 	cout << "\t\tIn nodes:";
-	// 	for(unsigned int j = 0; j < this->nets[i].inNodes.size(); j++){
-	// 		cout << "\t" << this->nodes[this->nets[i].inNodes[j]].name;
-	// 	}
-	// 	cout << endl;
-
-	// 	cout << "\t\tOut nodes:";
-	// 	for(unsigned int j = 0; j < this->nets[i].outNodes.size(); j++){
-	// 		cout << "\t" << this->nodes[this->nets[i].outNodes[j]].name;
-	// 	}
-	// 	cout << endl;
-	// }
-
-
-
 	cout << "\tNets: " << this->nets.size() << endl;
 
 	cout << setw(15) << "Net_Name[n]:" << setw(10) << "inNode" << setw(4) << "->" << setw(10) << "outNode" << endl;

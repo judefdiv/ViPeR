@@ -214,7 +214,7 @@ int def_file::importNodesNets(vector<BlifNode> inNodes, vector<BlifNet> inNets){
 		if(!toCompType.compare("PAD") || !toCompType.compare("output")){
 			tempNet.ToPin = "INOUT_1";
 		}
-		else if(inNodes[toComp].clkNet == i){
+		else if(inNodes[toComp].clkNet == i && i != 0){
       tempNet.ToPin = "CLK";
 		}
 		else{
@@ -223,35 +223,6 @@ int def_file::importNodesNets(vector<BlifNode> inNodes, vector<BlifNet> inNets){
 		}
 
     this->nets.push_back(tempNet);
-
-
-      // fromNode = this->nets[i].inNodes[0];
-      // toNode = this->nets[i].outNodes[j];
-
-      // if(this->nodes[fromNode].strRef == this->pad_index){
-      //   corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_in_out_x[0];
-      //   corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_in_out_y[0];
-      // }
-      // else{
-      //   corX[0] = this->nodes[fromNode].corX + this->gateList[this->nodes[fromNode].strRef].pins_out_x[nodesOutputCnt[fromNode]];
-      //   corY[0] = this->nodes[fromNode].corY + this->gateList[this->nodes[fromNode].strRef].pins_out_y[nodesOutputCnt[fromNode]];
-      //   nodesOutputCnt[fromNode]++;
-      // }
-
-      // // check if toNode is connecting with CLK
-      // if(this->nodes[toNode].clkNet == i){        // check if toNode is connecting with CLK
-      //   corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].clk_x[0];
-      //   corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].clk_y[0];
-      // }
-      // else if(this->nodes[toNode].strRef == this->pad_index){
-      //   corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_out_x[0];
-      //   corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_out_y[0];
-      // }
-      // else{
-      //   corX[1] = this->nodes[toNode].corX + this->gateList[this->nodes[toNode].strRef].pins_in_x[nodesInputCnt[toNode]];
-      //   corY[1] = this->nodes[toNode].corY + this->gateList[this->nodes[toNode].strRef].pins_in_y[nodesInputCnt[toNode]];
-      //   nodesInputCnt[toNode]++;
-      // }
 
 	}
 
@@ -310,8 +281,8 @@ int def_file::to_def(const string &fileName){
 
   defFile << endl;
 
-  defFile << "TRACKS Y 0 DO 125 STEP 1000 LAYER metal1 ;" << endl;
-  defFile << "TRACKS Y 0 DO 125 STEP 1000 LAYER metal2 ;" << endl;
+  defFile << "TRACKS Y 0 DO 150 STEP 1000 LAYER metal1 ;" << endl;
+  defFile << "TRACKS Y 0 DO 150 STEP 1000 LAYER metal2 ;" << endl;
   defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER metal1 ;" << endl;
   defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER metal2 ;" << endl;
 
