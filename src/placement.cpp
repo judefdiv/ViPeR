@@ -678,9 +678,9 @@ int plek::alignCentre(){
   for(int i = this->layout.size()-1; i >= 0; i--){
     fooWdith = 0;
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
-      fooWdith += gateList[(this->nodes[this->layout[i][j]].strRef)].sizeX;
+      fooWdith += gateList[(this->nodes[this->layout[i][j]].strRef)].sizeX + this->hGap;
     }
-    rowWidth[i] = fooWdith;
+    rowWidth[i] = fooWdith - this->hGap;
   }
   for(unsigned int i = 0; i < rowWidth.size(); i++){
     if(rowWidthMax < rowWidth[i])
@@ -690,11 +690,11 @@ int plek::alignCentre(){
   // ---------------------------------------------------------------------
   // inserting output pads
   unsigned int ioWidth = 0;
-  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
+  ioWidth = (this->gateList[this->pad_index].sizeX + this->padHorHap) * this->layoutOutputs.size() - this->padHorHap;
   cPtX = (rowWidthMax - ioWidth)/2;
   for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
-    this->nodes[this->layoutOutputs[i]].corX = rounder(cPtX, this->gridSize);
-    this->nodes[this->layoutOutputs[i]].corY = rounder(cPtY, this->gridSize);
+    this->nodes[this->layoutOutputs[i]].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+    this->nodes[this->layoutOutputs[i]].corY = rounderOffset(cPtY, this->gridSize, yOffset);
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
   }
   cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
@@ -707,8 +707,8 @@ int plek::alignCentre(){
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
       index = this->layout[i][j];
 
-      this->nodes[index].corX = rounder(cPtX, this->gridSize);
-      this->nodes[index].corY = rounder(cPtY, this->gridSize);
+      this->nodes[index].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+      this->nodes[index].corY = rounderOffset(cPtY, this->gridSize, yOffset);
 
       cPtX += gateList[(this->nodes[index].strRef)].sizeX + this->hGap;
     }
@@ -717,12 +717,12 @@ int plek::alignCentre(){
 
   // ---------------------------------------------------------------------
   // inserting input pads
-  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutInputs.size();
+  ioWidth = (this->gateList[this->pad_index].sizeX + this->padHorHap) * this->layoutInputs.size() - this->padHorHap;
   cPtX = (rowWidthMax - ioWidth)/2;
   cPtY += this->padVerGap;
   for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
-    this->nodes[this->layoutInputs[i]].corX = rounder(cPtX, this->gridSize);
-    this->nodes[this->layoutInputs[i]].corY = rounder(cPtY, this->gridSize);
+    this->nodes[this->layoutInputs[i]].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+    this->nodes[this->layoutInputs[i]].corY = rounderOffset(cPtY, this->gridSize, yOffset);
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap;
   }
 
@@ -761,12 +761,12 @@ int plek::alignJustify(){
   // ---------------------------------------------------------------------
   // inserting output pads
   unsigned int ioWidth = 0;
-  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
+  ioWidth = (this->gateList[this->pad_index].sizeX + this->padHorHap) * this->layoutOutputs.size();
   rowGapSize = (rowWidthMax - ioWidth)/(this->layoutOutputs.size()+1);
   cPtX = rowGapSize;
   for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
-    this->nodes[this->layoutOutputs[i]].corX = rounder(cPtX, this->gridSize);
-    this->nodes[this->layoutOutputs[i]].corY = rounder(cPtY, this->gridSize);
+    this->nodes[this->layoutOutputs[i]].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+    this->nodes[this->layoutOutputs[i]].corY = rounderOffset(cPtY, this->gridSize, yOffset);
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
   }
   cPtY = this->padVerGap + this->gateList[this->pad_index].sizeY;
@@ -781,8 +781,8 @@ int plek::alignJustify(){
 
       // cout << "Placed[" << index << "]: " << this->nodes[index].GateType << "; x=" << cPtX << " y=" << cPtY << endl;
 
-      this->nodes[index].corX = rounder(cPtX, this->gridSize);
-      this->nodes[index].corY = rounder(cPtY, this->gridSize);
+      this->nodes[index].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+      this->nodes[index].corY = rounderOffset(cPtY, this->gridSize, yOffset);
 
       cPtX += gateList[(this->nodes[index].strRef)].sizeX + rowGapSize + this->hGap;
     }
@@ -791,7 +791,7 @@ int plek::alignJustify(){
 
   // ---------------------------------------------------------------------
   // inserting input pads
-  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutInputs.size();
+  ioWidth = (this->gateList[this->pad_index].sizeX + this->padHorHap) * this->layoutInputs.size();
   rowGapSize = (rowWidthMax - ioWidth)/(this->layoutInputs.size()+1);
   cPtX = rowGapSize;
   cPtY += this->padVerGap;
@@ -799,8 +799,8 @@ int plek::alignJustify(){
   // double caster;
 
   for(unsigned int i = 0; i < this->layoutInputs.size(); i++){
-    this->nodes[this->layoutInputs[i]].corX = rounder(cPtX, this->gridSize);
-    this->nodes[this->layoutInputs[i]].corY = rounder(cPtY, this->gridSize);
+    this->nodes[this->layoutInputs[i]].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+    this->nodes[this->layoutInputs[i]].corY = rounderOffset(cPtY, this->gridSize, yOffset);
 
     cPtX += this->gateList[this->pad_index].sizeX + this->padHorHap + rowGapSize;
   }
@@ -830,7 +830,7 @@ int plek::alignJustifyFlush(){
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
       fooWdith += gateList[(this->nodes[this->layout[i][j]].strRef)].sizeX + this->hGap;
     }
-    rowWidth[i] = fooWdith;
+    rowWidth[i] = fooWdith - this->hGap;
   }
   for(unsigned int i = 0; i < rowWidth.size(); i++){
     if(rowWidthMax < rowWidth[i])
@@ -840,7 +840,7 @@ int plek::alignJustifyFlush(){
   // ---------------------------------------------------------------------
   // inserting output pads
   unsigned int ioWidth = 0;
-  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutOutputs.size();
+  ioWidth = (this->gateList[this->pad_index].sizeX + this->padHorHap) * this->layoutOutputs.size();
   rowGapSize = (rowWidthMax - ioWidth)/(this->layoutOutputs.size()-1);
   cPtX = 0;
   for(unsigned int i = 0; i < this->layoutOutputs.size(); i++){
@@ -870,7 +870,7 @@ int plek::alignJustifyFlush(){
 
   // ---------------------------------------------------------------------
   // inserting input pads
-  ioWidth = this->gateList[this->pad_index].sizeX * this->layoutInputs.size();
+  ioWidth = (this->gateList[this->pad_index].sizeX + this->padHorHap) * this->layoutInputs.size();
   rowGapSize = (rowWidthMax - ioWidth)/(this->layoutInputs.size()-1);
   cPtX = 0;
   cPtY += this->padVerGap;
