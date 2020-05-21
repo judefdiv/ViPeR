@@ -56,8 +56,6 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                           SFQcir.get_CLKlevels());
   placedCir.populate(configFName);
   SFQchip.appendSTR(placedCir.defSTR());
-  // SFQchip.addSTR(placedCir.gsdLayout());
-
 
   // clk placement
   clkChip clockIt;
@@ -83,6 +81,8 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                   configFName);
   route.straightRoute();
   route.qrouter(fileExtensionRenamer(blifFile, ".def"));
+  runqRouter(fileExtensionRenamer(blifFile, ".def"), "./data/qrouter.cfg");
+
   SFQchip.addSTR(route.route2gds());
 
   SFQchip.forgeChip(gdsFile);
@@ -119,4 +119,33 @@ int gdf2lef(const string &gdfFile, const string &lefFile){
   foo.exportLef(lefFile);
 
   return 1;
+}
+
+/**
+ * [runqRouter - Runs qRouter]
+ * @param  defFile    [The location of the .def file
+ * @param  configFile [the location of the qRouter config file]
+ * @return            [0 - All good; 1 - Error]
+ */
+
+int runqRouter(const string &defFile, const string &configFile){
+  cout << "Executing qRouter." << endl;
+
+  stringstream ss;
+  ss << "qrouter -c " << configFile << " " << defFile << " &";
+  string bashCmd = ss.str();
+
+  if(system(bashCmd.c_str()) == -1){
+    cout << "Bash command :\"" << bashCmd << "\" error." << endl;
+  }
+
+  // ss.str("");
+  // ss << "exit";
+  // bashCmd = ss.str();
+
+  // if(system(bashCmd.c_str()) == -1){
+  //   cout << "Bash command :\"" << bashCmd << "\" error." << endl;
+  // }
+
+  return 0;
 }

@@ -31,3 +31,4 @@ int verilog2gds(string gdsFile, string veriFile, string cellFile, string configF
 int blif2gds(string gdsFile, string blifFile, string configFName);
 int runABC(string blifFile, string veriFile, string cellFile);
 int gdf2lef(const string &gdfFile, const string &lefFile);
+int runqRouter(const string &defFile, const string &configFile);

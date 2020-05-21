@@ -40,7 +40,7 @@
 [General_Config_File]
 	cell_dis     = "data/LSmitll.genlib"          # Logic cell/gate description for ABC
 	cell_dis_gds = "data/LSmitll_cell_lib.toml"   # Homebrewed description for physical cell layout
-	lef_file     = "data/SUNobs.lef"                 # Used for converting a GDF(Gate Definition File) to LEF
+	lef_file     = "data/SUN.lef"                 # Used for converting a GDF(Gate Definition File) to LEF
 
 [Layout_Parameters]
 	# RCA2
@@ -54,10 +54,10 @@
 [Wafer_Parameters]
 	x_offset       = 5
 	y_offset       = 5
-	grid_size			 = 10				 # The grid that tracks and gate stick to
-	vertical_gap   = 10         # Spacing between cells
-	horizontal_gap = 10         # Spacing between cells
-	cell_height    = 50        # The height of the cells
-	row_align      = "justifyFlush"    # Row alignment {left, centre, justify, justifyFlush}
-	pad_ver_gap    = 35        # The vertical distance between the pads and the gates/circuit
-	pad_hor_gap    = 0        # the horizontal gap between the pins/pads
+	grid_size			 = 10				      # The grid that tracks and gate stick to
+	vertical_gap   = 10             # Spacing between cells
+	horizontal_gap = 0             # Spacing between cells
+	cell_height    = 70             # The height of the cells
+	row_align      = "justify" # Row alignment {left, centre, justify, justifyFlush}
+	pad_ver_gap    = 35             # The vertical distance between the pads and the gates/circuit
+	pad_hor_gap    = 0              # the horizontal gap between the pins/pads
