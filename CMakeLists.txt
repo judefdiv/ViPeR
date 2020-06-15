@@ -3,8 +3,13 @@
 #  - cmake ..
 #  - make
 
-cmake_minimum_required(VERSION 2.6)
-project(ViPeR)                                  # creates ${PROJECT_NAME}
+cmake_minimum_required(VERSION 3.13.0)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+project(ViPeR VERSION 0.9)                    # creates ${PROJECT_NAME}
 
 set(SOURCES
   src/main.cpp

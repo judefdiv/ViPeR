@@ -41,46 +41,19 @@ int clkChip::execute(){
 
 
   // --------------------------- Method 2 ---------------------------
+  // this->initialLogic2CLK();
+  // this->mapInitialLogic2CLKNets();
+  // this->stitchCLKrows();
+  // this->mainCLKdistri();
+  // this->mergeLayouts();
+
+  // --------------------------- Method 3 ---------------------------
   this->initialLogic2CLK();
   this->mapInitialLogic2CLKNets();
   this->stitchCLKrows();
-  this->mainCLKdistri();
   this->mergeLayouts();
+  this->mainCLKvertical();
 
-  // cout << "----------- TESTING VECTOR FUNCTIONS -----------" << endl;
-
-  // vector<unsigned int> fooVec = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-  // vector<unsigned int> booVec;
-
-  // booVec =  vecInsert(fooVec, 9, 1);
-  // for(unsigned int i = 0; i < booVec.size(); i++){
-  //   cout << booVec[i] << ", ";
-  // }
-  // cout << endl;
-
-  // booVec =  vecInsert(fooVec, 9, 0);
-  // for(unsigned int i = 0; i < booVec.size(); i++){
-  //   cout << booVec[i] << ", ";
-  // }
-  // cout << endl;
-
-  // booVec =  vecInsert(fooVec, 9, 8);
-  // for(unsigned int i = 0; i < booVec.size(); i++){
-  //   cout << booVec[i] << ", ";
-  // }
-  // cout << endl;
-
-  // booVec =  vecInsert(fooVec, 9, 9);
-  // for(unsigned int i = 0; i < booVec.size(); i++){
-  //   cout << booVec[i] << ", ";
-  // }
-  // cout << endl;
-
-  // booVec =  vecInsert(fooVec, 9, 10);
-  // for(unsigned int i = 0; i < booVec.size(); i++){
-  //   cout << booVec[i] << ", ";
-  // }
-  // cout << endl;
 
   cout << "Clocking all the gates done." << endl;
 
@@ -468,95 +441,6 @@ int clkChip::stitchCLKrows(){
   return 1;
 }
 
-// int clkChip::stitchCLKrows(){
-//   cout << "Stitching clk row splitters." << endl;
-//   // find the widest row
-//   unsigned int widestRow;
-//   unsigned int widestRowCnt = 0;
-//   for(unsigned int i = 0; i < this->clkLayout.size(); i++){
-//     if(this->clkLayout[i].size() > widestRowCnt){
-//       widestRowCnt = this->clkLayout[i].size();
-//       widestRow = i;
-//     }
-//   }
-
-//   // calc number of levels needed
-//   int noLevels = ceil(log(widestRowCnt)/log(2));
-
-//   // loop through levels
-//   vector<unsigned int> splitJoin0, splitJoin1, splitPos, insertedNodes;
-//   int sIndex0, sIndex1;    // split index
-//   for(unsigned int i = 0; i < this->clkLayout.size(); i++){
-//     for(unsigned int j = 0; j < noLevels; j++){
-//         sIndex0 = -1;
-//         sIndex1 = -1;
-//         splitJoin0.clear();
-//         splitJoin1.clear();
-//         splitPos.clear();
-//         insertedNodes.clear();
-//       for(unsigned int k = 0; k < this->clkLayout[i].size(); k++){
-//         // find the next 2 splitters
-//         if(sIndex0 == -1 && this->nodes[this->clkLayout[i][k]].inNets.size() == 0){
-//           sIndex0 = k;
-//           splitJoin0.push_back(sIndex0);
-//         }
-//         else if(sIndex1 == -1 && this->nodes[this->clkLayout[i][k]].inNets.size() == 0){
-//           sIndex1 = k;
-//           splitJoin1.push_back(sIndex1);
-//         }
-
-//         if(sIndex0 != -1 && sIndex1 != -1){
-//           sIndex0 = -1;
-//           sIndex1 = -1;
-//         }
-//         else if(sIndex0 != -1 && k == this->clkLayout[i].size() -1){
-//           // the odd splitter
-//           // cout << "Odd splitter, thats a bit unfortunate" << endl;
-//         }
-//       }
-
-//       for(unsigned int k = 0; k < splitJoin0.size(); k++){
-
-//         if(splitJoin1.size() > k){
-//           insertedNodes.push_back(createCLKnode(this->clkLayout[i][splitJoin0[k]], this->clkLayout[i][splitJoin1[k]]));
-//         }
-//         else{
-//           insertedNodes.push_back(createCLKnodeAlone(this->clkLayout[i][splitJoin0[k]]));
-//         }
-
-//         if(splitJoin1.size() > 0){
-//           splitPos.push_back((splitJoin0[k] + splitJoin1[k]) / 2 +1);
-//         }
-//         else{
-//           splitPos.push_back((splitJoin0[k] + 0) / 2 +1);
-//         }
-//       }
-
-//       // for(unsigned int k = 0; k < splitPos.size(); k++){
-//       //   cout << "[" << k << "] = " << splitPos[k] << endl;
-//       // }
-
-//       // inserting splitters.... must improve
-//       // vector<unsigned int>::iterator itSplitPos;
-//       for(int l = splitPos.size()-1; l >= 0; l--){
-//         // itSplitPos = clkLayout[i].begin() + splitPos[l];
-//         // clkLayout[i].insert(itSplitPos, insertedNodes[l]);
-//         vecInsert(clkLayout, i, insertedNodes[l], splitPos[l]);
-//       }
-//     }
-
-//     for(unsigned int j = 0; j < this->clkLayout[i].size(); j++){
-//       if(this->nodes[this->clkLayout[i][j]].inNets.size() == 0){
-//         this->rowCLKin.push_back(this->clkLayout[i][j]);
-//         break;
-//       }
-//     }
-//   }
-
-//   cout << "Stitching clk row splitters done." << endl;
-//   return 1;
-// }
-
 /**
  * [clkChip::mainCLKdistro - Creates the main clock distribution. top down approach]
  * @return [1 - All good; 0 - Error]
@@ -577,24 +461,6 @@ int clkChip::mainCLKdistri(){
 
   this->nodes.push_back(fooNode);
 
-  // // Create/connect initial CLK
-  // BlifNode fooNode;
-  // BlifNet fooNet;
-
-  // fooNode.name = "SC_" + to_string(this->nodes.size());
-  // fooNode.GateType = "SPLIT";
-  // fooNode.strRef = this->splitIndex;
-  // fooNode.inNets.push_back(this->nets.size()); // clk pad
-
-  // this->nodes[this->clkSplitIndex].outNets[0]
-
-  // fooNet.name = "net_" + to_string(this->nets.size());
-  // fooNet.inNodes.push_back(this->clkSplitIndex);
-  // fooNet.outNodes.push_back(this->nodes.size());
-
-  // this->nets.push_back(fooNet);
-  // this->nodes.push_back(fooNode);
-
   // calc number of levels needed
   int noLevels = ceil(log(this->rowCLKin.size())/log(2)) -1;
 
@@ -603,17 +469,12 @@ int clkChip::mainCLKdistri(){
 
   for(unsigned int i = 0; i < noLevels; i++){
     newClkNodes.clear();
-    // for(unsigned int j = 0; j < insertedNodes.size(); j++){
     for(unsigned int j = 0; j < insertedNodes.size(); j += 2){
       fooVec = create2CLKnode(insertedNodes[j]);
       newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
     }
 
-    // vector<unsigned int>::iterator itSplitPos;
-    // for(unsigned int j = newClkNodes.size()-1; j >= 0; j--){
     for(unsigned int j = 0; j < newClkNodes.size(); j++){
-      // itSplitPos = insertedNodes.begin() + j*2;
-      // insertedNodes.insert(itSplitPos, newClkNodes[j]);
       insertedNodes = vecInsert(insertedNodes, newClkNodes[j], j*2);
     }
   }
@@ -627,93 +488,96 @@ int clkChip::mainCLKdistri(){
     }
   }
 
-
-
   // inserting into clk layout
   unsigned int midPos = this->clkLayout.size() / 2;
 
-  // vector<vector<unsigned int>>::iterator itClkLayout;
-  // itClkLayout = this->clkLayout.begin() + midPos;
-  // this->clkLayout.insert(itClkLayout, insertedNodes);
   this->clkLayout = vecInsertRow(this->clkLayout, insertedNodes, midPos);
 
-  // vector<unsigned int>::iterator itSplitPos;
-  // itSplitPos = rowSplitInsert.begin() + midPos;
-  // rowSplitInsert.insert(itSplitPos, (this->cellLayout.size() /2)-1);
   rowSplitInsert =  vecInsert(rowSplitInsert, (this->cellLayout.size() /2)-1, midPos);
 
   cout << "Stitching main clk row splitters done." << endl;
   return 1;
 }
 
-// int clkChip::mainCLKdistri(){
-//   cout << "Stitching main clk row splitters." << endl;
+/**
+ * [clkChip::mainCLKvertical - Creates the main clock vertical distribution.]
+ * @return [0 - All good; 1 - Error]
+ */
 
-//   // Create/connect initial CLK
-//   BlifNode fooNode;
-//   BlifNet fooNet;
+int clkChip::mainCLKvertical(){
+  cout << "Stitching main clock column, vertical." << endl;
 
-//   fooNode.name = "SC_" + to_string(this->nodes.size());
-//   fooNode.GateType = "SPLIT";
-//   fooNode.strRef = this->splitIndex;
-//   fooNode.inNets.push_back(this->nets.size()); // clk pad
+  // Create/connect initial CLK
+  BlifNode fooNode;
 
-//   fooNet.name = "net_" + to_string(this->nets.size());
-//   fooNet.inNodes.push_back(this->clkSplitIndex);
-//   fooNet.outNodes.push_back(this->nodes.size());
+  fooNode.name = "SC_" + to_string(this->nodes.size());
+  fooNode.GateType = "SPLIT";
+  fooNode.strRef = this->splitIndex;
+  fooNode.inNets.push_back(this->nodes[this->clkSplitIndex].outNets[0]); // clk pad
 
-//   this->nets.push_back(fooNet);
-//   this->nodes.push_back(fooNode);
+  this->nets[this->nodes[this->clkSplitIndex].outNets[0]].outNodes.push_back(this->nodes.size());
 
+  this->nodes.push_back(fooNode);
 
-//   // calc number of levels needed
-//   int noLevels = ceil(log(this->rowCLKin.size())/log(2));
+  // cout << "HERE: 1" << endl;
 
-//   vector<unsigned int> insertedNodes, newClkNodes, fooVec;
-//   insertedNodes.push_back(this->nodes.size()-1);    // adding in the first CLK splitter
+  // calc number of levels needed
+  int noLevels = ceil(log(this->rowCLKin.size())/log(2)) -1;
 
-//   for(unsigned int i = 0; i < noLevels; i++){
-//     newClkNodes.clear();
-//     for(unsigned int j = 0; j < insertedNodes.size(); j++){
-//       fooVec = create2CLKnode(insertedNodes[j]);
-//       newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
-//     }
+  vector<unsigned int> insertedNodes, newClkNodes, fooVec;
+  insertedNodes.push_back(this->nodes.size()-1);    // adding in the first CLK splitter
 
-//     vector<unsigned int>::iterator itSplitPos;
-//     // for(unsigned int j = newClkNodes.size()-1; j >= 0; j--){
-//     for(unsigned int j = 0; j < newClkNodes.size(); j++){
-//       // itSplitPos = insertedNodes.begin() + j*2;
-//       // insertedNodes.insert(itSplitPos, newClkNodes[j]);
-//       insertedNodes = vecInsert(insertedNodes, newClkNodes[j], j*2);
-//     }
-//   }
+  for(unsigned int i = 0; i < noLevels; i++){
+    newClkNodes.clear();
+    for(unsigned int j = 0; j < insertedNodes.size(); j += 2){
+      fooVec = create2CLKnode(insertedNodes[j]);
+      newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
+    }
 
-//   // connecting main clock to the rest of the clocks
-//   unsigned int clkCnt = 0;
-//   for(unsigned int i = 0; i < newClkNodes.size(); i++){
-//     this->stitch2Clk(newClkNodes[i], this->rowCLKin[clkCnt++]);
-//     if(clkCnt < this->rowCLKin.size()){
-//       this->stitch2Clk(newClkNodes[i], this->rowCLKin[clkCnt++]);
-//     }
-//   }
+    for(unsigned int j = 0; j < newClkNodes.size(); j++){
+      insertedNodes = vecInsert(insertedNodes, newClkNodes[j], j*2);
+    }
+  }
 
-//   // inserting into clk layout
-//   unsigned int midPos = this->clkLayout.size() / 2;
+  // cout << "HERE: 2" << endl;
 
-//   // vector<vector<unsigned int>>::iterator itClkLayout;
-//   // itClkLayout = this->clkLayout.begin() + midPos;
-//   // this->clkLayout.insert(itClkLayout, insertedNodes);
-//   this->clkLayout = vecInsertRow(this->clkLayout, insertedNodes, midPos);
+  unsigned int rowIndex = 0;
+  unsigned int mainClkindex = 0;
+  while(this->rowCLKin.size() > rowIndex){
+    this->stitch2Clk(newClkNodes[mainClkindex], this->rowCLKin[rowIndex++]);
+    if(this->rowCLKin.size() > rowIndex){
+      this->stitch2Clk(newClkNodes[mainClkindex++], this->rowCLKin[rowIndex++]);
+    }
+  }
+
+  // inserting into layout
+
+  // cout << "HERE: 3" << endl;
+
+  float gapSizeF = (float)this->cellLayout.size() / insertedNodes.size();
+  unsigned int gapSize = round(gapSizeF);
+  unsigned int index = 0;
 
 
-//   // vector<unsigned int>::iterator itSplitPos;
-//   // itSplitPos = rowSplitInsert.begin() + midPos;
-//   // rowSplitInsert.insert(itSplitPos, (this->cellLayout.size() /2)-1);
-//   rowSplitInsert =  vecInsert(rowSplitInsert, (this->cellLayout.size() /2)-1, midPos);
+  cout << "Gap size(rounded): " << gapSize << endl;
+  cout << "Gap size(clean): " << gapSizeF << endl;
+  cout << "insertedNodes.size(): " << insertedNodes.size() << endl;
+  cout << "this->cellLayout.size(): " << this->cellLayout.size() << endl;
 
-//   cout << "Stitching main clk row splitters done." << endl;
-//   return 1;
-// }
+  for(unsigned int i = 0; i < insertedNodes.size(); i++){
+    // index = gapSize*i;
+    index = round(gapSizeF*i);
+
+    cout << "Index[" << i << "]: " << index << endl;
+    
+    this->cellLayout[index].insert(this->cellLayout[index].begin(), insertedNodes[i]); 
+    // this->clkLayout = vecInsertRow(this->clkLayout, it, gapSize*i);
+  }
+
+  cout << "Stitching main clock column, vertical, done." << endl;
+
+  return 0;
+}
 
 /**
  * [clkChip::stitch2Clk description]

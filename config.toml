@@ -32,10 +32,21 @@
 	# work_dir  = "data/rca2/"
 	# blif_file = "rca2.blif"
 
-	work_dir    = "data/KSA4/"
-	blif_file   = "KSA4.blif"
+	# work_dir    = "data/KSA4/"
+	# blif_file   = "KSA4.blif"
 	# veri_file = "KSA4.v"
 
+	# work_dir  = "data/KSA8/"
+	# veri_file = "KSA8.v"
+
+	# work_dir    = "data/ID4/"
+	# veri_file = "ID4s.v"
+
+	# work_dir    = "data/arrmult4/"
+	# blif_file = "arrmult4.blif"
+
+	work_dir    = "data/c432/"
+	blif_file = "c432.blif"
 
 [General_Config_File]
 	cell_dis     = "data/LSmitll.genlib"          # Logic cell/gate description for ABC
@@ -47,9 +58,28 @@
 	# input_order = ["a0", "b0", "a1", "b1"]
 	# output_order = ["s0", "s1", "s2"]
 
-	# KSA4
-	input_order = ["cin", "a0", "b0", "a1", "b1", "a2", "b2", "a3", "b3"]
-	output_order = ["sum0", "sum1", "sum2", "sum3", "cout"]
+	# # KSA4
+	# input_order  = ["cin", "a0", "b0", "a1", "b1", "a2", "b2", "a3", "b3"]
+	# output_order = ["sum0", "sum1", "sum2", "sum3", "cout"]
+
+	# KSA8
+	# input_order  = ["cin", "a0", "b0", "a1", "b1", "a2", "b2", "a3", "b3", "a4", "b4", "a5", "b5", "a6", "b6", "a7", "b7"]
+	# output_order = ["sum0", "sum1", "sum2", "sum3", "sum4", "sum5", "sum6", "sum7", "cout"]
+
+	# ID4
+	# input_order  = ["X3", "X2", "X1", "X0", "D3", "D2", "D1", "D0"]
+	# output_order = ["Q3", "Q2", "Q1", "Q0", "R3", "R2", "R1", "R0"]
+
+	# arrmult4
+	# input_order  = ["a0", "b0", "a1", "b1", "a2", "b2", "a3", "b3"]
+  # output_order = ["m0", "m1", "m2", "m3", "m4", "m5", "m6", "m7"]
+
+	# c432
+  input_order  = ["G1gat", "G4gat", "G8gat", "G11gat", "G14gat", "G17gat", "G21gat", "G24gat", "G27gat", "G30gat",
+  	"G34gat", "G37gat", "G40gat", "G43gat", "G47gat", "G50gat", "G53gat", "G56gat", "G60gat", "G63gat",
+  	"G66gat", "G69gat", "G73gat", "G76gat", "G79gat", "G82gat", "G86gat", "G89gat", "G92gat", "G95gat",
+  	"G99gat", "G102gat", "G105gat", "G108gat", "G112gat", "G115gat"]
+  output_order = ["G223gat", "G329gat", "G370gat", "G421gat", "G430gat", "G431gat", "G432gat"]
 
 [Wafer_Parameters]
 	x_offset       = 5

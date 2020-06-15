@@ -15,7 +15,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <math.h>
+#include <cmath>
 // #include <map>
 
 // #include "toml/toml.hpp"
@@ -83,6 +83,7 @@ class clkChip{
     int mapInitialLogic2CLKNets();
     int stitchCLKrows();
     int mainCLKdistri();
+    int mainCLKvertical();
 
     // aux functions
     int drawCLKnodeBasic();

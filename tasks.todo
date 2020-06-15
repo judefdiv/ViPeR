@@ -1,12 +1,11 @@
 Current tasks:
-	□	Routing
+	✔	Routing @done (20-05-21 11:07)
 	□	Documentation
 
 Must get DONE:
-	□	qRouter automate
+	✔	qRouter automate @done (20-05-21 11:07)
 	□	Calculated the size of the chip
 	□	vertical clock distribution
-	□	fix extra clock net
 
 Future:
 	□	Remove ParserDot
@@ -21,7 +20,7 @@ ColdFlux Main Taks:
 		✔	Create/implement a standard interchange file for cell library @done (19-10-03 10:54)
 		✔	Logic placement @done (19-10-03 10:53)
 		□	Clock placement
-		□	Basic routing
+		✔	Basic routing @done (20-05-21 11:07)
 
 	□	P2-A3-M3: Develop advanced placement and routing techniques accounting for routability, timing margins, etc.
 		□	Advanced placement techniques for routability
@@ -87,5 +86,7 @@ Completed:
 		✔ Improved algorithm for layout, (bug) @done (20-02-21 10:39)
 		✔	Consolidate all the library files into data/ @done (20-02-24 15:24)
 		✔ splitter output net, single fixed, with all bugs @done (20-02-27 08:55)
+		✔	fix extra clock net @done (20-02-28 09:44)
+		✔	Ensure cell placement is on grid @done (20-03-03 10:25)
 
 Notes:
