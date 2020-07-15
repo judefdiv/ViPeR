@@ -49,6 +49,9 @@ class clkChip{
 
     unsigned int splitIndex = 0; // index of the splitter in gateList
     unsigned int clkSplitIndex = 0; // index of the start of the clock splitters in the nodes class
+    unsigned int clkSplitGateIndex = 0;
+    unsigned int clkBuffGateIndex = 0;
+
 
     unsigned int clkPinCnt = 0;
     vector<unsigned int> finCLKsplit;
@@ -56,6 +59,12 @@ class clkChip{
     unsigned int padHeightGap = 0;
     unsigned int cellHeight = 0;
     unsigned int veriticalHeightGap = 0;
+
+    // const string clkGateName = "CLKSPLIT";
+    // const string clkGateBuffName = "CLKBUFF";
+    const string clkGateName = "SPLIT";
+    const string clkGateBuffName = "SPLIT";
+
 
     // --------------------------- Method 1 ---------------------------
 
@@ -84,6 +93,7 @@ class clkChip{
     int stitchCLKrows();
     int mainCLKdistri();
     int mainCLKvertical();
+    int postCleanUP();
 
     // aux functions
     int drawCLKnodeBasic();

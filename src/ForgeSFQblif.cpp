@@ -47,6 +47,13 @@ int ForgeSFQBlif::toSFQ(){
 	cout << "Converting CMOS circuit to SFQ." << endl;
 
 	// improved
+	
+	// findLevels();
+	// findLevelsES();
+	// findLevelsWS();
+	// printRoutes();
+	// printRoutesWS();
+
 	this->insertDFFs();
 	this->insertSplitters();
 
@@ -73,7 +80,7 @@ int ForgeSFQBlif::toSFQ(){
 
 
 	this->findLevelsWS();
-	this->printRoutesWS();
+	// this->printRoutesWS();
 
 	return 1;
 }
@@ -403,8 +410,8 @@ int ForgeSFQBlif::insertSplitters(){
 			this->insertSplit(i);
 		}
 		else if(this->nets[i].outNodes.size() > 2){
-			cout << "3 Output splitter is required..." << endl;
-			return 0;
+			// cout << "3 Output splitter is required..." << endl;
+			this->insertSplitAuto(i);
 		}
 	}
 
@@ -419,6 +426,11 @@ int ForgeSFQBlif::insertSplitters(){
  */
 
 int ForgeSFQBlif::insertDFFs(){
+
+/**********************************************************************************
+ *********************************** Beginning ************************************
+ **********************************************************************************/
+
 	cout << "Inserting DFFs at the inputs." << endl;
 
 	// insert DFFs for the inputs
@@ -451,6 +463,21 @@ int ForgeSFQBlif::insertDFFs(){
 		}
 	}
 
+	cout << "Inserting DFFs at the inputs, done." << endl;
+
+	// this->findLevels();
+	// this->printRoutes();
+
+	// using namespace std::this_thread;     // sleep_for, sleep_until
+ //  using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
+ //  using std::chrono::system_clock;
+
+	// sleep_for(5s);
+
+/**********************************************************************************
+ ************************************* Middle *************************************
+ **********************************************************************************/
+
 	// insert DFFs for the rest of the circuit
 	cout << "Inserting DFFs at the throughout the circuit." << endl;
 	this->findLevels();
@@ -458,7 +485,14 @@ int ForgeSFQBlif::insertDFFs(){
 	unsigned int fooNet;
 	unsigned int fooNetLevel;
 
-	for(int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
+	// for(int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
+
+	for(int i = 0; i < this->nodes.size(); i++){
+		if(!this->nodes[i].GateType.compare("input") || !this->nodes[i].GateType.compare("output") || !this->nodes[i].GateType.compare("DFF")){
+			cout << "Skipping: " <<  this->nodes[i].name << endl;;
+			continue;
+		}
+
 		if(this->nodes[i].MaxLevel - this->nodes[i].MinLevel > 0){
 			fooNet = 0;
 			fooNetLevel = MaxNumberLevels;
@@ -488,6 +522,16 @@ int ForgeSFQBlif::insertDFFs(){
 		}
 	}
 
+	// this->findLevels();
+
+	cout << "Inserting DFFs at the throughout the circuit, done." << endl;
+
+	// sleep_for(5s);
+
+	/**********************************************************************************
+   ************************************** End ***************************************
+   **********************************************************************************/
+
 	// insert DFFs for the outputs
 	cout << "Inserting DFFs at the outputs." << endl;
 
@@ -506,8 +550,11 @@ int ForgeSFQBlif::insertDFFs(){
 		}
 	}
 
+	cout << "Inserting DFFs at the outputs, done." << endl;
+
 	this->findLevels();
-	this->printRoutes();
+	// this->printRoutes();
+
 
 
 	cout << "Done inserting DFFs." << endl;
@@ -605,6 +652,123 @@ int ForgeSFQBlif::insertSplit(unsigned int netNo){
 	this->nets.push_back(s2net);
 
 	return 1;
+}
+
+/**
+ * [ForgeSFQBlif::insertSplitAuto - Inserts the correct amount of splitters]
+ * @param  netNo [The net that must be split]
+ * @return       [0 - All good; 1 - Error]
+ */
+int ForgeSFQBlif::insertSplitAuto(unsigned int netNo){
+	cout << "Inserting splitter for: " << this->nodes[this->nets[netNo].inNodes[0]].name << endl;
+
+	if(this->nets[netNo].outNodes.size() > 2){
+		cout << "Creating a splitter with: " << this->nets[netNo].outNodes.size() << " outputs." << endl;
+	}
+	else{
+		this->insertSplit(netNo);
+		return 0;
+	}
+
+  // calc number of levels needed
+  int noLevels = ceil(log(this->nets[netNo].outNodes.size() )/log(2)) -1;
+
+  vector<unsigned int> newRow, oldRow, newNodes, looseNodes;
+
+  for(auto &itNodes: this->nets[netNo].outNodes){
+	  looseNodes.push_back(itNodes);
+	}
+
+	this->nets[netNo].outNodes.clear();
+	this->nets[netNo].outNodes.push_back(this->nodes.size());
+
+	BlifNode splitNode;
+
+	splitNode.name = "SPLIT_" + to_string(this->nodes.size());
+	splitNode.GateType = "SPLIT";
+	splitNode.inNets.push_back(netNo);
+	this->nodes.push_back(splitNode);
+
+  
+  // first node to be split
+  oldRow.push_back(this->nodes.size() -1);
+
+  for(unsigned int i = 0; i < noLevels; i++){
+    newRow.clear();
+    for(unsigned int j = 0; j < oldRow.size(); j++){
+      newNodes = createSplitter(oldRow[j]);
+      newRow.insert(newRow.end(), newNodes.begin(), newNodes.end());
+    }
+
+    oldRow = newRow;
+  }
+
+  BlifNet fooNet;
+  unsigned int rowIndex = 0;
+  for(unsigned int i = 0; i < looseNodes.size(); i++){
+    fooNet.name = "net_" + to_string(this->nets.size());
+    
+    fooNet.inNodes.clear();
+    fooNet.inNodes.push_back(oldRow[rowIndex]);
+    
+    fooNet.outNodes.clear();
+    fooNet.outNodes.push_back(looseNodes[i]);
+
+    for(unsigned int j = 0; j < 2; j++){
+    	if(netNo == this->nodes[looseNodes[i]].inNets[i]){
+    		this->nodes[looseNodes[i]].inNets[j] = this->nets.size();
+    	}
+    }
+    this->nodes[oldRow[rowIndex]].outNets.push_back(this->nets.size());
+    rowIndex++;
+    if(rowIndex % 2 == 0){
+    	rowIndex = 0;
+    }
+    this->nets.push_back(fooNet);
+  }
+
+	return 1;
+}
+
+/**
+ * [ForgeSFQBlif::createSplitter - creates a splitters]
+ * @param  netNo [The net that must be split]
+ * @return       [Index of created splitter nodes]
+ */
+vector<unsigned int> ForgeSFQBlif::createSplitter(unsigned int netNo){
+  BlifNode fooNode;
+  BlifNet fooNet;
+
+  vector<unsigned int> resVec;
+  unsigned int oldNode;
+
+  // oldNode = this->nets[netNo].inNodes[0];
+  oldNode = netNo;  // MUST RENAME netNo to nodeNo
+
+  fooNode.GateType = "SPLIT";
+
+  this->nodes[oldNode].outNets.clear();
+
+  this->nodes[oldNode].outNets.push_back(this->nets.size());
+  this->nodes[oldNode].outNets.push_back(this->nets.size()+1);
+
+  fooNet.inNodes.push_back(oldNode);
+
+  for(unsigned int i = 0; i < 2; i++){
+    fooNode.name = "SPLIT_" + to_string(this->nodes.size());
+    fooNode.inNets.clear();
+    fooNode.inNets.push_back(this->nets.size());
+
+    fooNet.name = "net_" + to_string(this->nets.size());
+    fooNet.outNodes.clear();
+    fooNet.outNodes.push_back(this->nodes.size());
+
+    resVec.push_back(this->nodes.size());
+    this->nodes.push_back(fooNode);
+    this->nets.push_back(fooNet);
+  }
+
+  return resVec;
 }
 
 /**

@@ -134,6 +134,9 @@ int plek::importCellDef(string configFName){
 
   // Importing cells
   unsigned int index = 0;
+  this->used_gates.insert("CLKSPLIT");
+  this->used_gates.insert("CLKBUFF");
+
   this->gateList.resize(this->used_gates.size());
   for(unsigned int i = 0; i < cellList.size(); i++){
 
@@ -397,7 +400,6 @@ int plek::stackLayout(){
     }
   }
 
-  cout << "1" << endl;
 
   this->layout.resize(longestRoute-2);
   bool found = false;
@@ -427,7 +429,6 @@ int plek::stackLayout(){
 
   // printRoutesSubset(this->layout);
 
-  cout << "2" << endl;
 
   // adding the PAD to the list of used cells/gates
   this->used_gates.insert("PAD");
@@ -455,12 +456,12 @@ int plek::stackLayout(){
     }
   }
 
-  cout << "3" << endl;
 
   // inserting clk clock in to input list
   for(unsigned int i = 0; i < this->nodes.size(); i++){
     if(!this->nodes[i].name.compare("clk")){
-      this->layoutInputs.push_back(i);
+      // this->layoutInputs.push_back(i);
+      this->layoutInputs.insert(this->layoutInputs.begin(), i);
       break;
     }
   }

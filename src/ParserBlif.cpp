@@ -198,7 +198,7 @@ int SFQBlif::to_blif(string FileName){
 		  continue;
 		}
 
-		cout << this->nodes[i].name << endl;
+		// cout << this->nodes[i].name << endl;
 
 		lineStr = ".gate " + this->nodes[i].GateType;
 

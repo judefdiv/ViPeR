@@ -19,6 +19,9 @@
 #include <fstream>
 #include <cmath>
 
+#include <chrono>
+#include <thread>
+
 #include "viper/genFunc.hpp"
 #include "viper/ParserBlif.hpp"
 
@@ -74,6 +77,8 @@ class ForgeSFQBlif{
 
 		int insertGate(string GateType, unsigned int netNo, unsigned int noGates);
 		int insertSplit(unsigned int netNo);
+		int insertSplitAuto(unsigned int netNo);
+		vector<unsigned int> createSplitter(unsigned int netNo);
 		int deleteGate(unsigned GateIndex);			// <- can be removed
 
 	public:
