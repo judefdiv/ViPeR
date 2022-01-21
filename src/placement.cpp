@@ -854,7 +854,21 @@ int plek::alignJustifyFlush(){
   // ---------------------------------------------------------------------
   // The actual layout part
   for(int i = this->layout.size()-1; i >= 0; i--){
-    rowGapSize = (rowWidthMax - rowWidth[i])/(this->layout[i].size()-1);
+    if(this->layout[i].size() == 1){
+      cPtX = (rowWidthMax - rowWidth[i])/2;
+      index = this->layout[i][0];
+
+      this->nodes[index].corX = rounderOffset(cPtX, this->gridSize, xOffset);
+      this->nodes[index].corY = rounderOffset(cPtY, this->gridSize, yOffset);
+
+      cPtY += this->cellHeight + this->vGap;
+
+      continue;
+
+    }
+    else{
+      rowGapSize = (rowWidthMax - rowWidth[i])/(this->layout[i].size()-1);
+    }
     cPtX = 0;
     for(unsigned int j = 0; j < this->layout[i].size(); j++){
       index = this->layout[i][j];

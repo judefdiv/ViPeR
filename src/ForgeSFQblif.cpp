@@ -48,10 +48,10 @@ int ForgeSFQBlif::toSFQ(){
 
 	// improved
 	
-	// findLevels();
+	findLevels();
 	// findLevelsES();
 	// findLevelsWS();
-	// printRoutes();
+	printRoutes();
 	// printRoutesWS();
 
 	this->insertDFFs();
@@ -675,6 +675,7 @@ int ForgeSFQBlif::insertSplitAuto(unsigned int netNo){
 
   vector<unsigned int> newRow, oldRow, newNodes, looseNodes;
 
+  // define the loose standing nodes
   for(auto &itNodes: this->nets[netNo].outNodes){
 	  looseNodes.push_back(itNodes);
 	}
@@ -703,6 +704,7 @@ int ForgeSFQBlif::insertSplitAuto(unsigned int netNo){
     oldRow = newRow;
   }
 
+  // stitching the splitters and the loose gates together
   BlifNet fooNet;
   unsigned int rowIndex = 0;
   for(unsigned int i = 0; i < looseNodes.size(); i++){

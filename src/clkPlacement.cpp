@@ -54,7 +54,7 @@ int clkChip::execute(){
   this->stitchCLKrows();
   this->mergeLayouts();
   this->mainCLKvertical();
-  this->postCleanUP();
+  // this->postCleanUP();
 
   cout << "Clocking all the gates done." << endl;
 
@@ -577,16 +577,16 @@ int clkChip::mainCLKvertical(){
   unsigned int index = 0;
 
 
-  cout << "Gap size(rounded): " << gapSize << endl;
-  cout << "Gap size(clean): " << gapSizeF << endl;
-  cout << "insertedNodes.size(): " << insertedNodes.size() << endl;
-  cout << "this->cellLayout.size(): " << this->cellLayout.size() << endl;
+  // cout << "Gap size(rounded): " << gapSize << endl;
+  // cout << "Gap size(clean): " << gapSizeF << endl;
+  // cout << "insertedNodes.size(): " << insertedNodes.size() << endl;
+  // cout << "this->cellLayout.size(): " << this->cellLayout.size() << endl;
 
   for(unsigned int i = 0; i < insertedNodes.size(); i++){
     // index = gapSize*i;
     index = round(gapSizeF*i);
 
-    cout << "Index[" << i << "]: " << index << endl;
+    // cout << "Index[" << i << "]: " << index << endl;
     
     this->cellLayout[index].insert(this->cellLayout[index].begin(), insertedNodes[i]); 
     // this->clkLayout = vecInsertRow(this->clkLayout, it, gapSize*i);
