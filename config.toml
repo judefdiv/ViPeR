@@ -36,7 +36,7 @@
   # blif_file   = "KSA4.blif"
   # veri_file = "KSA4.v"
 
-  work_dir  = "data/KSA8/"
+  work_dir  = "out/"
   veri_file = "KSA8.v"
 
   # work_dir    = "data/ID4/"
@@ -66,7 +66,7 @@
   # output_order = ["sum0", "sum1", "sum2", "sum3", "cout"]
 
   # KSA8
-  input_order  = ["cin", "a0", "b0", "a1", "b1", "a2", "b2", "a3", "b3", "a4", "b4", "a5", "b5", "a6", "b6", "a7", "b7"]
+  input_order  = ["a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "cin"]
   output_order = ["sum0", "sum1", "sum2", "sum3", "sum4", "sum5", "sum6", "sum7", "cout"]
 
   # ID4

@@ -1,6 +1,5 @@
 data/
 build/
-include/abc/
 bin/
 .*
 !.gitignore
