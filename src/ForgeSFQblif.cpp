@@ -437,7 +437,7 @@ int ForgeSFQBlif::insertDFFs(){
 	// finding the longed route per input
 	this->findLevels();
 
-	unsigned int inputLongestRouteLen[this->blifFile.get_inputCnt()];
+	vector<unsigned int> inputLongestRouteLen(this->blifFile.get_inputCnt());
 	unsigned int inputLongestRoute = 0;
 
 	for(unsigned int i = 0; i < this->routes.size(); i++){
