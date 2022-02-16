@@ -400,31 +400,34 @@ int plek::stackLayout(){
     }
   }
 
+  unordered_set<unsigned int> placedCells;
 
-  this->layout.resize(longestRoute-2);
-  bool found = false;
-  for(unsigned int i = 0; i < this->routesWS.size(); i++){
-    for(unsigned int j = 1; j < this->routesWS[i].size()-1; j++){
-      found = false;
-      for(unsigned int k = 0; k < this->layout.size(); k++){
-        for(unsigned int l = 0; l < this->layout[k].size(); l++){
-          if(this->layout[k][l] == this->routesWS[i][j]){
-            found = true;
-            break;
-          }
-        }
-      }
-      if(!found){
-        this->layout[j-1].push_back(this->routesWS[i][j]);
-        this->used_gates.insert(this->nodes[this->routesWS[i][j]].GateType);
+
+  this->layout.resize(longestRoute - 2);
+
+  /*  Loop through sorted routes (elements are unique keys corresponding to 
+      this->nodes)
+  */
+
+  unsigned int rowNum;
+
+  for (const auto &route : routesWS){
+    rowNum = 0;
+    for (const auto cellId : route){
+      string gateType = this->nodes[cellId].GateType;
+      if (gateType == "input" || gateType == "output") continue;
+      rowNum++;
+      // If cell is not already placed in layout
+      if(placedCells.find(cellId) == placedCells.end()){
+        /* Only if the cell is not a splitter cell, increment the row number
+        if (! (gateType == "SPLIT" && rowNum > 0)) 
+          rowNum++;
+        */ 
+        placedCells.insert(cellId);
+        this->layout[rowNum-1].push_back(cellId);
+        this->used_gates.insert(gateType);
       }
     }
-  }
-
-  //Shorten layout size if over size, not sure WHY!!!
-
-  if(this->layout.back().size() == 0){
-    this->layout.resize(this->layout.size()-1);
   }
 
   // printRoutesSubset(this->layout);
@@ -432,6 +435,7 @@ int plek::stackLayout(){
 
   // adding the PAD to the list of used cells/gates
   this->used_gates.insert("PAD");
+  bool found = false;
   for(unsigned int i = 0; i < this->routesWS.size(); i++){
     found = false;
     for(unsigned int j = 0; j < this->layoutInputs.size(); j++){
@@ -473,6 +477,13 @@ int plek::stackLayout(){
   }
   cout << endl;
 
+  //remove empty rows
+  for (auto it = this->layout.begin(); it < this->layout.end(); it++){
+    if ((*it).empty()){
+      this->layout.erase(it, it+1);
+      it--;
+    }
+  }
   cout << "Stacking the layouts of the gates, done." << endl;
 
   return 1;

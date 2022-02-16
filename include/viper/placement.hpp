@@ -17,6 +17,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <unordered_set>
 #include <map>
 
 #include "toml/toml.hpp"

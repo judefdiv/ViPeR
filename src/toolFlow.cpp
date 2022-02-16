@@ -133,7 +133,7 @@ int runqRouter(const string &defFile, const string &configFile){
   cout << "Executing qRouter." << endl;
 
   stringstream ss;
-  ss << "time qrouter -nog -noc -v 0 -c " << configFile << " " << defFile << " &";
+  ss << "time qrouter -nog -noc -v 0 -c " << configFile << " " << defFile;
   string bashCmd = ss.str();
 
   cout << "Bash command: " <<  bashCmd << endl;
