@@ -416,13 +416,12 @@ int plek::stackLayout(){
     for (const auto cellId : route){
       string gateType = this->nodes[cellId].GateType;
       if (gateType == "input" || gateType == "output") continue;
-      rowNum++;
+      // If dealing with a spitter cell and we are not in the first row -
+      // Do not increment rowNum 
+      if (!(gateType == "SPLIT" && rowNum > 0)) 
+        rowNum++;
       // If cell is not already placed in layout
       if(placedCells.find(cellId) == placedCells.end()){
-        /* Only if the cell is not a splitter cell, increment the row number
-        if (! (gateType == "SPLIT" && rowNum > 0)) 
-          rowNum++;
-        */ 
         placedCells.insert(cellId);
         this->layout[rowNum-1].push_back(cellId);
         this->used_gates.insert(gateType);
