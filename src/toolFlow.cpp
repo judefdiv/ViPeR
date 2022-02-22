@@ -10,6 +10,8 @@
  */
 
 #include "viper/toolFlow.hpp"
+#include "viper/ForgeSFQblif.hpp"
+#include <cstdio>
 
 /**
  * [verilog2gds - Converts a verilog to a GDS file]
@@ -82,7 +84,7 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                   configFName);
   route.straightRoute();
   route.qrouter(fileExtensionRenamer(blifFile, ".def"));
-  runqRouter(fileExtensionRenamer(blifFile, ".def"), "./data/qrouter.cfg");
+  runqRouter(fileExtensionRenamer(blifFile, ".def"), "./data/qrouter.cfg", SFQcir);
 
   SFQchip.addSTR(route.route2gds());
 
@@ -129,8 +131,53 @@ int gdf2lef(const string &gdfFile, const string &lefFile){
  * @return            [0 - All good; 1 - Error]
  */
 
-int runqRouter(const string &defFile, const string &configFile){
+int runqRouter(const string &defFile, const string &configFile, ForgeSFQBlif sfqblif){
+  // cout << "Determining priority routes" << endl;
+
+  // const auto nodes = sfqblif.get_nodes();
+  // vector<string> priority_nets;
+
+  // for (const auto& net : sfqblif.get_nets()){
+  //   for (const auto nodeIndex : net.inNodes){
+  //     if (nodes[nodeIndex].name.find("SC_") != string::npos){
+  //       priority_nets.push_back(net.name);
+  //       break;
+  //     }
+  //   }
+  //   for (const auto nodeIndex : net.outNodes){
+  //     if (nodes[nodeIndex].name.find("SC_") != string::npos){
+  //       priority_nets.push_back(net.name);
+  //       break;    
+  //     }
+  //   }
+  // }
+
+  // // populate configfile with priority routes
+
+  // ifstream filein(configFile);
+
+  // string strTemp;
+  // vector<string> lines;
+  // while(getline(filein, strTemp)){
+  //   lines.push_back(strTemp);
+  //   if (strTemp == "#start priority nets"){
+  //     for (const auto& net : priority_nets){
+  //       lines.push_back("route priority " + net);
+  //     }
+  //   }
+  // }
+
+  // filein.close();
+  // ofstream fileout(configFile);
+
+  // for (const auto& line : lines)
+  //   fileout << line << "\n";
+  
+  // fileout.close();
+  
   cout << "Executing qRouter." << endl;
+
+
 
   stringstream ss;
   ss << "time qrouter -nog -noc -v 0 -c " << configFile << " " << defFile;

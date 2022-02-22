@@ -11,6 +11,7 @@
 
 
 #include "viper/clkPlacement.hpp"
+#include "viper/ParserBlif.hpp"
 
 
 /**
@@ -54,7 +55,7 @@ int clkChip::execute(){
   this->stitchCLKrows();
   this->mergeLayouts();
   this->mainCLKvertical();
-  // this->postCleanUP();
+  this->postCleanUP();
 
   cout << "Clocking all the gates done." << endl;
 
@@ -210,7 +211,7 @@ int clkChip::drawCLKnode(int corX, int corY, unsigned int netNo){
     fooNet.inNodes.push_back(this->nodes.size());
     this->nets.push_back(fooNet);
   }
-
+  
   this->nets[netNo].outNodes.push_back(this->nodes.size());
   this->nodes.push_back(fooNode);
 
@@ -323,11 +324,13 @@ int clkChip::mapInitialLogic2CLKNets(){
 
     while(row0end == false || row1end == false){
       if(row0end == false){
+        // Check if cell is SPLIT
         if(this->nodes[this->cellLayout[row0][col0]].strRef != this->splitIndex){
           rowJoin.push_back(this->cellLayout[row0][col0]);
         }
       }
       if(row1end == false){
+        // Check if cell is SPLIT
         if(this->nodes[this->cellLayout[row1][col1]].strRef != this->splitIndex){
           rowJoin.push_back(this->cellLayout[row1][col1]);
         }
@@ -540,32 +543,52 @@ int clkChip::mainCLKvertical(){
   // cout << "HERE: 1" << endl;
 
   // calc number of levels needed
-  int noLevels = ceil(log(this->rowCLKin.size())/log(2)) -1;
+  // int noLevels = ceil(log(this->rowCLKin.size())/log(2)) -1;
 
-  vector<unsigned int> insertedNodes, newClkNodes, fooVec;
-  insertedNodes.push_back(this->nodes.size()-1);    // adding in the first CLK splitter
+  deque<unsigned int> insertedNodes;
+  insertedNodes.push_front(this->nodes.size()-1);    // adding in the first CLK splitter
 
-  for(unsigned int i = 0; i < noLevels; i++){
-    newClkNodes.clear();
-    for(unsigned int j = 0; j < insertedNodes.size(); j += 2){
-      fooVec = create2CLKnode(insertedNodes[j]);
-      newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
-    }
+  // Generate Counter-flow clock tree
+  for (int i = 0; i < rowCLKin.size()-1; i++){
+    BlifNode newClkNode;
+    newClkNode.name = "SC_" + to_string(this->nodes.size());
+    newClkNode.GateType = this->clkGateName;
+    newClkNode.strRef = this->clkSplitGateIndex;
+    newClkNode.inNets.push_back(this->nets.size());
 
-    for(unsigned int j = 0; j < newClkNodes.size(); j++){
-      insertedNodes = vecInsert(insertedNodes, newClkNodes[j], j*2);
-    }
+    BlifNet newNet;
+    newNet.name = "net_" + to_string(this->nets.size());
+    newNet.inNodes.clear();
+    newNet.inNodes.push_back(insertedNodes[0]);
+    newNet.outNodes.push_back(this->nodes.size());
+
+    this->nodes[insertedNodes[0]].outNets.push_back(this->nets.size());
+
+    insertedNodes.push_front(this->nodes.size());
+
+    this->nets.push_back(newNet);
+    this->nodes.push_back(newClkNode);
   }
+
+  // Generate balanced clock tree
+  // for(unsigned int i = 0; i < noLevels; i++){
+  //   newClkNodes.clear();
+  //   for(unsigned int j = 0; j < insertedNodes.size(); j += 2){
+  //     fooVec = create2CLKnode(insertedNodes[j]);
+  //     newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
+  //   }
+
+  //   for(unsigned int j = 0; j < newClkNodes.size(); j++){
+  //     insertedNodes = vecInsert(insertedNodes, newClkNodes[j], j*2);
+  //   }
+  // }
 
   // cout << "HERE: 2" << endl;
 
   unsigned int rowIndex = 0;
   unsigned int mainClkindex = 0;
   while(this->rowCLKin.size() > rowIndex){
-    this->stitch2Clk(newClkNodes[mainClkindex], this->rowCLKin[rowIndex++]);
-    if(this->rowCLKin.size() > rowIndex){
-      this->stitch2Clk(newClkNodes[mainClkindex++], this->rowCLKin[rowIndex++]);
-    }
+    this->stitch2Clk(insertedNodes[mainClkindex++], this->rowCLKin[rowIndex++]);
   }
 
   // inserting into layout
@@ -588,7 +611,10 @@ int clkChip::mainCLKvertical(){
 
     // cout << "Index[" << i << "]: " << index << endl;
     
-    this->cellLayout[index].insert(this->cellLayout[index].begin(), insertedNodes[i]); 
+    this->cellLayout[index].insert(
+      this->cellLayout[index].begin(), 
+      insertedNodes[i]
+    ); 
     // this->clkLayout = vecInsertRow(this->clkLayout, it, gapSize*i);
   }
 
