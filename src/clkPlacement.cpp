@@ -9,7 +9,7 @@
  * File:        clkPlacement.cpp
  */
 
-
+#include "viper/common.hpp"
 #include "viper/clkPlacement.hpp"
 #include "viper/ParserBlif.hpp"
 
@@ -76,21 +76,21 @@ void clkChip::fetchData(vector<BlifNode> inNodes,
   this->cellLayout = layout;
 
   for(unsigned int i = 0; i < this->gateList.size(); i++){
-    if(!this->gateList[i].name.compare("SPLIT")){
+    if(!this->gateList[i].name.compare(CLK_GATE_NAME)){
       this->splitIndex = i;
       break;
     }
   }
 
   for(unsigned int i = 0; i < this->gateList.size(); i++){
-    if(!this->gateList[i].name.compare(clkGateName)){
+    if(!this->gateList[i].name.compare(CLK_GATE_NAME)){
       this->clkSplitGateIndex = i;
       break;
     }
   }
 
   for(unsigned int i = 0; i < this->gateList.size(); i++){
-    if(!this->gateList[i].name.compare(clkGateBuffName)){
+    if(!this->gateList[i].name.compare(CLK_GATE_BUFF_NAME)){
       this->clkBuffGateIndex = i;
       break;
     }
@@ -196,7 +196,7 @@ int clkChip::drawCLKnode(int corX, int corY, unsigned int netNo){
   BlifNet fooNet;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
   fooNode.corX = corX;
   fooNode.corY = corY;
@@ -239,16 +239,8 @@ int clkChip::initialLogic2CLK(){
   for(unsigned int i = 0; i < this->cellLayout.size(); i++){
     cellCnt = 0;
     for(unsigned int j = 0; j < this->cellLayout[i].size(); j++){
-      if(this->nodes[cellLayout[i][j]].GateType.compare("SPLIT")){
+      if(this->nodes[cellLayout[i][j]].GateType.compare(CLK_GATE_NAME)){
         cellCnt++;
-      }
-    }
-
-    if(++i < this->cellLayout.size()){
-      for(unsigned int j = 0; j < this->cellLayout[i].size(); j++){
-        if(this->nodes[cellLayout[i][j]].GateType.compare("SPLIT")){
-          cellCnt++;
-        }
       }
     }
 
@@ -264,7 +256,7 @@ int clkChip::initialLogic2CLK(){
 
     this->clkLayout.push_back(clkRow);
 
-    this->rowSplitInsert.push_back(i-1);
+    this->rowSplitInsert.push_back(i);
 
     clkRow.clear();
   }
@@ -280,15 +272,34 @@ int clkChip::initialLogic2CLK(){
 int clkChip::mergeLayouts(){
   cout << "Merging logic circuit with clock." << endl;
   vector<vector<unsigned int>> newCellLayout;
-  for(unsigned int i = 0; i < this->cellLayout.size(); i++){
-    newCellLayout.push_back(this->cellLayout[i]);
-    for(unsigned int j = 0; j < this->rowSplitInsert.size(); j++){
-      if(i == this->rowSplitInsert[j]){
-        newCellLayout.push_back(this->clkLayout[j]);
-        // break;
-      }
-    }
+  vector<unsigned int> mergedClkRow;
+  unsigned int clkRowIdx = 0;
 
+  for(unsigned int i = 0; i < this->cellLayout.size(); i++){
+    
+    newCellLayout.push_back(this->cellLayout[i]);
+
+    if (i % 2 == 0){
+
+      mergedClkRow.clear();
+      auto itRow0 = clkLayout[clkRowIdx].begin();
+      auto itRow1 = clkLayout[clkRowIdx+1].begin();
+      bool endflag[2] = {false, false};
+
+      while (!endflag[0] || !endflag[1]){
+        if (itRow0 < clkLayout[clkRowIdx].end())
+          mergedClkRow.push_back(*itRow0++);
+        else
+          endflag[0] = true;
+        if (itRow1 < clkLayout[clkRowIdx+1].end())
+          mergedClkRow.push_back(*itRow1++);
+        else
+          endflag[1] = true;
+      }
+
+      clkRowIdx+=2;
+      newCellLayout.push_back(mergedClkRow);
+    }
   }
   this->cellLayout = newCellLayout;
   return 1;
@@ -302,48 +313,25 @@ int clkChip::mergeLayouts(){
 int clkChip::mapInitialLogic2CLKNets(){
   cout << "Mapping clock nets." << endl;
   vector<unsigned int> rowJoin;
-  unsigned int row0, row1, col0, col1, clkRow;
-  bool row0end, row1end;
+  unsigned int row, col, clkRow;
+  bool rowend;
 
   unsigned int clkSplitIndex, outNetIndex;
 
   clkRow = 0;
 
-  for(unsigned int i = 0; i < this->cellLayout.size(); i += 2){
-    row0 = i;
-    row1 = i+1;
-    col0 = 0;
-    col1 = 0;
-    row0end = false;
-    row1end = false;
+  for(unsigned int i = 0; i < this->cellLayout.size(); i++){
+    row = i;
+    col = 0;
+    rowend = false;
 
-    if(row1 >= this->cellLayout.size()){
-      // then last row does not exist
-      row1end = true;
-    }
-
-    while(row0end == false || row1end == false){
-      if(row0end == false){
-        // Check if cell is SPLIT
-        if(this->nodes[this->cellLayout[row0][col0]].strRef != this->splitIndex){
-          rowJoin.push_back(this->cellLayout[row0][col0]);
-        }
+    while(rowend == false){
+      if(this->nodes[this->cellLayout[row][col]].strRef != this->splitIndex){
+        rowJoin.push_back(this->cellLayout[row][col]);
       }
-      if(row1end == false){
-        // Check if cell is SPLIT
-        if(this->nodes[this->cellLayout[row1][col1]].strRef != this->splitIndex){
-          rowJoin.push_back(this->cellLayout[row1][col1]);
-        }
-      }
-
-      col0++;
-      col1++;
-
-      if(col0 >= this->cellLayout[row0].size()){
-        row0end = true;
-      }
-      if(col1 >= this->cellLayout[row1].size()){
-        row1end = true;
+      col++;
+      if(col >= this->cellLayout[row].size()){
+        rowend = true;
       }
     }
 
@@ -353,25 +341,25 @@ int clkChip::mapInitialLogic2CLKNets(){
     // }
     // cout << endl;
 
-  clkSplitIndex = 0;
-  outNetIndex = 0;
+    clkSplitIndex = 0;
+    outNetIndex = 0;
 
-  for(const auto &nodeIndex: rowJoin){
-    this->nodes[nodeIndex].clkNet = this->nodes[clkLayout[clkRow][clkSplitIndex]].outNets[outNetIndex];
-    this->nets[this->nodes[clkLayout[clkRow][clkSplitIndex]].outNets[outNetIndex]].outNodes.push_back(nodeIndex);
+    for(const auto &nodeIndex: rowJoin){
+      this->nodes[nodeIndex].clkNet = this->nodes[clkLayout[clkRow][clkSplitIndex]].outNets[outNetIndex];
+      this->nets[this->nodes[clkLayout[clkRow][clkSplitIndex]].outNets[outNetIndex]].outNodes.push_back(nodeIndex);
 
-    if(outNetIndex == 1){
-      clkSplitIndex++;
+      if(outNetIndex == 1){
+        clkSplitIndex++;
+      }
+
+      outNetIndex++;
+
+      if(outNetIndex == 2){
+        outNetIndex = 0;
+      }
     }
-
-    outNetIndex++;
-
-    if(outNetIndex == 2){
-      outNetIndex = 0;
-    }
-  }
-  clkRow++;
-  rowJoin.clear();
+    clkRow++;
+    rowJoin.clear();
   }
 
 
@@ -474,7 +462,7 @@ int clkChip::mainCLKdistri(){
   BlifNode fooNode;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
   fooNode.inNets.push_back(this->nodes[this->clkSplitIndex].outNets[0]); // clk pad
 
@@ -532,7 +520,7 @@ int clkChip::mainCLKvertical(){
   BlifNode fooNode;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
   fooNode.inNets.push_back(this->nodes[this->clkSplitIndex].outNets[0]); // clk pad
 
@@ -552,7 +540,7 @@ int clkChip::mainCLKvertical(){
   for (int i = 0; i < rowCLKin.size()-1; i++){
     BlifNode newClkNode;
     newClkNode.name = "SC_" + to_string(this->nodes.size());
-    newClkNode.GateType = this->clkGateName;
+    newClkNode.GateType = CLK_GATE_NAME;
     newClkNode.strRef = this->clkSplitGateIndex;
     newClkNode.inNets.push_back(this->nets.size());
 
@@ -633,9 +621,9 @@ int clkChip::postCleanUP(){
   cout << "Cleaning up clock." << endl;
 
   for(auto &itNodes: this->nodes){
-    if(!itNodes.GateType.compare(clkGateName)){
+    if(!itNodes.GateType.compare(CLK_GATE_NAME)){
       if(itNodes.outNets.size() == 1){
-        itNodes.GateType = this->clkGateBuffName;
+        itNodes.GateType = CLK_GATE_BUFF_NAME;
         itNodes.strRef = this->clkBuffGateIndex;
       }
     }
@@ -656,7 +644,7 @@ int clkChip::postCleanUP(){
 int clkChip::stitch2Clk(unsigned int parentCLK, unsigned int childCLK){
   BlifNet fooNet;
 
-  if(this->nodes[parentCLK].GateType.compare(clkGateName)){
+  if(this->nodes[parentCLK].GateType.compare(CLK_GATE_NAME)){
     cout << "Clock stitching error, not Splitter" << endl;
     return 0;
   }
@@ -696,7 +684,7 @@ unsigned int clkChip::createCLKnode(unsigned int CLKnode0, unsigned int CLKnode1
   BlifNet fooNet;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
 
   fooNode.outNets.push_back(this->nets.size());
@@ -740,7 +728,7 @@ unsigned int clkChip::createCLKnodeAlone(unsigned int CLKnode){
   BlifNet fooNet;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
 
   fooNode.outNets.push_back(this->nets.size());
@@ -773,7 +761,7 @@ vector<unsigned int> clkChip::create2CLKnode(unsigned int CLKnode){
 
   vector<unsigned int> resVec;
 
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
 
   this->nodes[CLKnode].outNets.push_back(this->nets.size());
@@ -815,7 +803,7 @@ int clkChip::drawCLKnodeBasic(){
   BlifNet fooNet;
 
   fooNode.name = "SC_" + to_string(this->nodes.size());
-  fooNode.GateType = this->clkGateName;
+  fooNode.GateType = CLK_GATE_NAME;
   fooNode.strRef = this->clkSplitGateIndex;
   // fooNode.corX = corX;
   // fooNode.corY = corY;

@@ -10,6 +10,7 @@
  */
 
 #include "viper/ParserDef.hpp"
+#include "viper/common.hpp"
 
 /**
  * DEF file class functions
@@ -203,23 +204,35 @@ int def_file::importNodesNets(vector<BlifNode> inNodes, vector<BlifNet> inNets){
 
 		// from/ output
 		if(!fromComType.compare("PAD") || !fromComType.compare("input")){
-			tempNet.fromPin = "INOUT_1";
+			tempNet.fromPin = PIN_PAD;
 		}
 		else{
-      nodesOutputCnt[fromComp]++;
-			tempNet.fromPin = "OUT_" + to_string(nodesOutputCnt[fromComp]);
+      		nodesOutputCnt[fromComp]++;
+			if (nodesOutputCnt[fromComp] == 1){
+				if (!fromComType.compare(CLK_GATE_NAME)){
+					tempNet.fromPin = PIN_FAN_OUT_1;
+				}else{
+					tempNet.fromPin = PIN_OUT_SINGLE;
+				}
+			}
+			else if (nodesOutputCnt[fromComp] == 2){
+				tempNet.fromPin = PIN_FAN_OUT_2;
+			}
 		}
 
 		// to/ input
 		if(!toCompType.compare("PAD") || !toCompType.compare("output")){
-			tempNet.ToPin = "INOUT_1";
+			tempNet.ToPin = PIN_PAD;
 		}
 		else if(inNodes[toComp].clkNet == i && i != 0){
-      tempNet.ToPin = "CLK";
+      		tempNet.ToPin = PIN_CLK;
 		}
 		else{
-      nodesInputCnt[toComp]++;
-			tempNet.ToPin = "IN_" + to_string(nodesInputCnt[toComp]);
+      		nodesInputCnt[toComp]++;
+			if (nodesInputCnt[toComp] == 1)
+				tempNet.ToPin = PIN_IN_1;
+			else if (nodesInputCnt[toComp] == 2)
+				tempNet.ToPin = PIN_IN_2;
 		}
 
     this->nets.push_back(tempNet);
@@ -281,10 +294,10 @@ int def_file::to_def(const string &fileName){
 
   defFile << endl;
 
-  defFile << "TRACKS Y 0 DO 150 STEP 1000 LAYER metal1 ;" << endl;
-  defFile << "TRACKS Y 0 DO 150 STEP 1000 LAYER metal2 ;" << endl;
-  defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER metal1 ;" << endl;
-  defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER metal2 ;" << endl;
+  defFile << "TRACKS Y 0 DO 150 STEP 1000 LAYER " << METAL_ROUTING_LAYER_1 << " ;" << endl;
+  defFile << "TRACKS Y 0 DO 150 STEP 1000 LAYER " << METAL_ROUTING_LAYER_2 << " ;" << endl;
+  defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER " << METAL_ROUTING_LAYER_1 << " ;" << endl;
+  defFile << "TRACKS X 0 DO 125 STEP 1000 LAYER " << METAL_ROUTING_LAYER_2 << " ;" << endl;
 
   defFile << endl;
 

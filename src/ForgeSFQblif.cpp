@@ -10,6 +10,7 @@
  */
 
 #include "viper/ForgeSFQblif.hpp"
+#include "viper/common.hpp"
 
 /**
  * Constructor
@@ -189,7 +190,7 @@ int ForgeSFQBlif::recurLevels(unsigned int curNode, unsigned int curLev, vector<
 }
 
 int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vector<unsigned int> fooRoute){
-	if(this->nodes[curNode].GateType.compare("SPLIT")){
+	if(this->nodes[curNode].GateType.compare(CLK_GATE_NAME)){
 		// cout << "Gate: " << this->nodes[curNode].GateType << endl;
 		fooRoute.push_back(curNode);
 	}
@@ -207,7 +208,7 @@ int ForgeSFQBlif::recurLevelsES(unsigned int curNode, unsigned int curLev, vecto
 			// this->setLevel(curNode, curLev);
 			this->nodes[curNode].CLKlevel = curLev;
 
-			if(this->nodes[curNode].GateType.compare("SPLIT")){
+			if(this->nodes[curNode].GateType.compare(CLK_GATE_NAME)){
 				this->recurLevelsES(this->nets[this->nodes[curNode].outNets[i]].outNodes[j], curLev+1, fooRoute);
 			}
 			else{
@@ -406,7 +407,7 @@ int ForgeSFQBlif::insertSplitters(){
 
 	for(unsigned int i = 0; i < this->nets.size(); i++){
 		if(this->nets[i].outNodes.size() == 2){
-			// insertGate("SPLIT", i, 1);
+			// insertGate(CLK_GATE_NAME, i, 1);
 			this->insertSplit(i);
 		}
 		else if(this->nets[i].outNodes.size() > 2){
@@ -452,7 +453,7 @@ int ForgeSFQBlif::insertDFFs(){
 
 	for(int i = 0; i < this->blifFile.get_inputCnt() ; i++){
 		if(inputLongestRoute > inputLongestRouteLen[i]){
-			this->insertGate("DFF", this->nodes[i].outNets[0], inputLongestRoute - inputLongestRouteLen[i]);
+			this->insertGate(DFF_NAME, this->nodes[i].outNets[0], inputLongestRoute - inputLongestRouteLen[i]);
 		}
 		else if(inputLongestRoute == inputLongestRouteLen[i]){
 			// the same length, do nothing
@@ -488,7 +489,7 @@ int ForgeSFQBlif::insertDFFs(){
 	// for(int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
 
 	for(int i = 0; i < this->nodes.size(); i++){
-		if(!this->nodes[i].GateType.compare("input") || !this->nodes[i].GateType.compare("output") || !this->nodes[i].GateType.compare("DFF")){
+		if(!this->nodes[i].GateType.compare("input") || !this->nodes[i].GateType.compare("output") || !this->nodes[i].GateType.compare(DFF_NAME)){
 			cout << "Skipping: " <<  this->nodes[i].name << endl;;
 			continue;
 		}
@@ -509,7 +510,7 @@ int ForgeSFQBlif::insertDFFs(){
 
 			}
 
-			this->insertGate("DFF", fooNet, this->nodes[i].MaxLevel - this->nodes[i].MinLevel);
+			this->insertGate(DFF_NAME, fooNet, this->nodes[i].MaxLevel - this->nodes[i].MinLevel);
 			this->findLevels();
 
 		}
@@ -546,7 +547,7 @@ int ForgeSFQBlif::insertDFFs(){
 
 	for(int i = this->blifFile.get_inputCnt(); i < this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i++){
 		if(this->nodes[i].MaxLevel < maxLev){
-			this->insertGate("DFF", this->nodes[i].inNets[0], maxLev - this->nodes[i].MaxLevel);
+			this->insertGate(DFF_NAME, this->nodes[i].inNets[0], maxLev - this->nodes[i].MaxLevel);
 		}
 	}
 
@@ -615,7 +616,7 @@ int ForgeSFQBlif::insertSplit(unsigned int netNo){
 	unsigned int index1, index2;
 
 	splitNode.name = "SPLIT_" + to_string(this->nodes.size());
-	splitNode.GateType = "SPLIT";
+	splitNode.GateType = CLK_GATE_NAME;
 	splitNode.inNets.push_back(netNo);
 	splitNode.outNets.push_back(this->nets.size());
 	splitNode.outNets.push_back(this->nets.size()+1);
@@ -686,7 +687,7 @@ int ForgeSFQBlif::insertSplitAuto(unsigned int netNo){
 	BlifNode splitNode;
 
 	splitNode.name = "SPLIT_" + to_string(this->nodes.size());
-	splitNode.GateType = "SPLIT";
+	splitNode.GateType = CLK_GATE_NAME;
 	splitNode.inNets.push_back(netNo);
 	this->nodes.push_back(splitNode);
 
@@ -747,7 +748,7 @@ vector<unsigned int> ForgeSFQBlif::createSplitter(unsigned int netNo){
   // oldNode = this->nets[netNo].inNodes[0];
   oldNode = netNo;  // MUST RENAME netNo to nodeNo
 
-  fooNode.GateType = "SPLIT";
+  fooNode.GateType = CLK_GATE_NAME;
 
   this->nodes[oldNode].outNets.clear();
 
@@ -827,10 +828,10 @@ int ForgeSFQBlif::calcStats(){
 		else if(!this->nodes[i].GateType.compare("output")){
 			this->outputCnt++;
 		}
-		else if(!this->nodes[i].GateType.compare("DFF")){
+		else if(!this->nodes[i].GateType.compare(DFF_NAME)){
 			this->DFFCnt++;
 		}
-		else if(!this->nodes[i].GateType.compare("SPLIT")){
+		else if(!this->nodes[i].GateType.compare(CLK_GATE_NAME)){
 			this->splitCnt++;
 		}
 		else{
@@ -900,13 +901,13 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
 		}
   }
   for(unsigned int i = 0; i < this->nodes.size(); i++){
-  	if(!this->nodes[i].GateType.compare("DFF")){
+  	if(!this->nodes[i].GateType.compare(DFF_NAME)){
 		  lineStr = "\t" + this->nodes[i].name + " [color=blue]; \n";
 		  fputs(lineStr.c_str(), dotFile);
   	}
   }
   for(unsigned int i = 0; i < this->nodes.size(); i++){
-  	if(!this->nodes[i].GateType.compare("SPLIT")){
+  	if(!this->nodes[i].GateType.compare(CLK_GATE_NAME)){
 		  lineStr = "\t" + this->nodes[i].name + " [color=red]; \n";
 		  fputs(lineStr.c_str(), dotFile);
   	}
@@ -925,7 +926,7 @@ int ForgeSFQBlif::to_jpgAdv(string fileName){
   for(unsigned int i = 0; i < this->CLKlevel.size(); i++){
   	lineStr = "\t{ rank = same; " + to_string(i) + ";";
   	for(unsigned int j = 0; j < this->CLKlevel[i].size(); j++){
-  		if(!this->nodes[this->CLKlevel[i][j]].GateType.compare("NULL") || !this->nodes[this->CLKlevel[i][j]].GateType.compare("SPLIT"))
+  		if(!this->nodes[this->CLKlevel[i][j]].GateType.compare("NULL") || !this->nodes[this->CLKlevel[i][j]].GateType.compare(CLK_GATE_NAME))
   			continue;
   		lineStr += " \"" + this->nodes[this->CLKlevel[i][j]].name + "\";";
   	}

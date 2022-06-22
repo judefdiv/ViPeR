@@ -10,6 +10,7 @@
  */
 
 #include "viper/placement.hpp"
+#include "viper/common.hpp"
 
 plek::plek(){
 
@@ -418,7 +419,7 @@ int plek::stackLayout(){
       if (gateType == "input" || gateType == "output") continue;
       // If dealing with a spitter cell and we are not in the first row -
       // Do not increment rowNum 
-      if (!(gateType == "SPLIT" && rowNum > 0)) 
+      if (!(gateType == CLK_GATE_NAME && rowNum > 0)) 
         rowNum++;
       // If cell is not already placed in layout
       if(placedCells.find(cellId) == placedCells.end()){

@@ -10,6 +10,7 @@
  */
 
 #include "viper/ParserLef.hpp"
+#include "viper/common.hpp"
 
 /**
  * [lef_file::importGDF description]
@@ -83,13 +84,13 @@ int lef_file::importGDF(const string &fileName){
 
       mac.obs.resize(2);
 
-      mac.obs[0].layer = "metal1";
+      mac.obs[0].layer = METAL_ROUTING_LAYER_1;
       mac.obs[0].ptsX.push_back((intVec[0] * unitScale) - (biasSizeX/2));
       mac.obs[0].ptsY.push_back((intVec[1] * unitScale) - (biasSizeY/2));
       mac.obs[0].ptsX.push_back((intVec[0] * unitScale) + (biasSizeX/2));
       mac.obs[0].ptsY.push_back((intVec[1] * unitScale) + (biasSizeY/2));
 
-      mac.obs[1].layer = "metal2";
+      mac.obs[1].layer = METAL_ROUTING_LAYER_2;
       mac.obs[1].ptsX.push_back((intVec[0] * unitScale) - (biasSizeX/2));
       mac.obs[1].ptsY.push_back((intVec[1] * unitScale) - (biasSizeY/2));
       mac.obs[1].ptsX.push_back((intVec[0] * unitScale) + (biasSizeX/2));
@@ -120,13 +121,13 @@ int lef_file::importGDF(const string &fileName){
 
       foo.ports.resize(2);
 
-      foo.ports[0].layer = "metal1";
+      foo.ports[0].layer = METAL_ROUTING_LAYER_1;
       foo.ports[0].ptsX.push_back(((double)intVec[0] * unitScale) - (viaSizeX/2));
       foo.ports[0].ptsY.push_back(((double)intVec[1] * unitScale) - (viaSizeY/2));
       foo.ports[0].ptsX.push_back(((double)intVec[0] * unitScale) + (viaSizeX/2));
       foo.ports[0].ptsY.push_back(((double)intVec[1] * unitScale) + (viaSizeY/2));
 
-      foo.ports[1].layer = "metal2";
+      foo.ports[1].layer = METAL_ROUTING_LAYER_2;
       foo.ports[1].ptsX.push_back(((double)intVec[0] * unitScale) - (viaSizeX/2));
       foo.ports[1].ptsY.push_back(((double)intVec[1] * unitScale) - (viaSizeY/2));
       foo.ports[1].ptsX.push_back(((double)intVec[0] * unitScale) + (viaSizeX/2));

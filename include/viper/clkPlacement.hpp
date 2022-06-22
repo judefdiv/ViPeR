@@ -61,10 +61,8 @@ class clkChip{
     unsigned int cellHeight = 0;
     unsigned int veriticalHeightGap = 0;
 
-    // const string clkGateName = "CLKSPLIT";
-    // const string clkGateBuffName = "CLKBUFF";
-    const string clkGateName = "SPLIT";
-    const string clkGateBuffName = "SPLIT";
+    // const string CLK_GATE_NAME = "CLKSPLIT";
+    // const string CLK_GATE_BUFF_NAME = "CLKBUFF";
 
 
     // --------------------------- Method 1 ---------------------------
@@ -103,7 +101,6 @@ class clkChip{
     unsigned int createCLKnodeAlone(unsigned int CLKnode);
     vector<unsigned int> create2CLKnode(unsigned int CLKnode);
     int stitch2Clk(unsigned int parentCLK, unsigned int childCLK);
-
 
   public:
     clkChip(){};

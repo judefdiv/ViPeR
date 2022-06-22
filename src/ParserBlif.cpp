@@ -9,6 +9,7 @@
  * File:				ParserBlif.cpp
  */
 
+#include "viper/common.hpp"
 #include "viper/ParserBlif.hpp"
 
 /* ----------------------------------------------------------------------------------------
@@ -267,13 +268,13 @@ int SFQBlif::to_jpg(string fileName){
 	  fputs(lineStr.c_str(), dotFile);
   }
   for(unsigned int i = this->inputCnt + this->outputCnt; i < this->nodes.size(); i++){
-  	if(!this->nodes[i].GateType.compare("DFF")){
+  	if(!this->nodes[i].GateType.compare(DFF_NAME)){
 		  lineStr = "\t" + this->nodes[i].name + " [color=blue]; \n";
 		  fputs(lineStr.c_str(), dotFile);
   	}
   }
   for(unsigned int i = this->inputCnt + this->outputCnt; i < this->nodes.size(); i++){
-  	if(!this->nodes[i].GateType.compare("SPLIT")){
+  	if(!this->nodes[i].GateType.compare(CLK_GATE_NAME)){
 		  lineStr = "\t" + this->nodes[i].name + " [color=red]; \n";
 		  fputs(lineStr.c_str(), dotFile);
   	}
@@ -419,7 +420,15 @@ int BlifFile::importBlif(string fileName){
 	}
 
 	while(getline(blifFile, lineIn)){
+		// Concatenates lines split into two with "\" char
+		while(lineIn[lineIn.size() - 1] == '\\'){
+			lineIn.pop_back();
+			string temp;
+			getline(blifFile, temp);
+			lineIn = lineIn + temp;
+		}
 		// removes leading white spaces and checks for commented and empty lines
+
 		tempChar = (char)lineIn.front();
 		while(tempChar == ' ' || tempChar == '\t'){
 			lineIn.erase(0, 1);
@@ -456,7 +465,7 @@ int BlifFile::importBlif(string fileName){
 
 int BlifFile::processLine(vector<string> &inVec){
 	string key = inVec[0];
-	if(!inVec[0].compare(".gate")){
+	if(!inVec[0].compare(".gate") || !inVec[0].compare(".subckt")){
 		BlifGate tempGate;
 		// vector<string> tempVec;
 		vector<string> fooIns;
@@ -486,7 +495,10 @@ int BlifFile::processLine(vector<string> &inVec){
 		this->modelName = inVec[1];
 	}
 	else if(!inVec[0].compare(".end")){
-
+		// Do nothing
+	}
+	else if(!inVec[0].compare(".names")){
+		// Do nothing
 	}
 	else{
 		return 0;

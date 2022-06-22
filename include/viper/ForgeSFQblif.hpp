@@ -24,6 +24,7 @@
 
 #include "viper/genFunc.hpp"
 #include "viper/ParserBlif.hpp"
+#include "viper/clkPlacement.hpp"
 
 using namespace std;
 
