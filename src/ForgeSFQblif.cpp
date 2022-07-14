@@ -17,7 +17,6 @@
  */
 
 ForgeSFQBlif::ForgeSFQBlif(){
-
 }
 
 /**
@@ -39,6 +38,16 @@ int ForgeSFQBlif::importBlif(string fileName){
 	return 1;
 }
 
+int ForgeSFQBlif::importParameters(string configFName){
+	cout << "Importing parameters." << endl;
+
+  	const auto mainConfig 		= toml::parse(configFName);
+  	const auto& b2gds_params    = toml::find(mainConfig, "Blif_To_GDS_Parameters");
+
+  	this->pathBalance     		= toml::find<bool>(b2gds_params, "path_balance");
+	return 1;
+}
+
 /**
  * [ForgeSFQBlif::toSFQ - Creates a SFQ circuit from the imported CMOS circuit]
  * @return [1 - All good; 0 - Error]
@@ -46,7 +55,6 @@ int ForgeSFQBlif::importBlif(string fileName){
 
 int ForgeSFQBlif::toSFQ(){
 	cout << "Converting CMOS circuit to SFQ." << endl;
-
 	// improved
 	
 	findLevels();
@@ -55,7 +63,13 @@ int ForgeSFQBlif::toSFQ(){
 	printRoutes();
 	// printRoutesWS();
 
-	this->insertDFFs();
+
+	if (this->pathBalance){
+		cout << "Performing path balancing\n";
+		this->insertDFFs();
+	}else{
+		cout << "Skipping path balancing\n";
+	}
 	this->insertSplitters();
 
 	this->calcCLKlevels();
@@ -485,18 +499,19 @@ int ForgeSFQBlif::insertDFFs(){
 
 	unsigned int fooNet;
 	unsigned int fooNetLevel;
+	bool foundImbalance;
 
 	// for(int i = this->blifFile.get_inputCnt() + this->blifFile.get_outputCnt(); i < this->nodes.size(); i++){
 
 	for(int i = 0; i < this->nodes.size(); i++){
 		if(!this->nodes[i].GateType.compare("input") || !this->nodes[i].GateType.compare("output") || !this->nodes[i].GateType.compare(DFF_NAME)){
-			cout << "Skipping: " <<  this->nodes[i].name << endl;;
+			cout << "Skipping: " <<  this->nodes[i].name << endl;
 			continue;
 		}
-
 		if(this->nodes[i].MaxLevel - this->nodes[i].MinLevel > 0){
 			fooNet = 0;
 			fooNetLevel = MaxNumberLevels;
+			foundImbalance = false;
 			for(unsigned int j = 0; j < this->nodes[i].inNets.size(); j++){
 				// assuming that upper nodes are balanced
 
@@ -505,14 +520,14 @@ int ForgeSFQBlif::insertDFFs(){
 				if(this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].MaxLevel < fooNetLevel){
 					fooNetLevel = this->nodes[this->nets[this->nodes[i].inNets[j]].inNodes[0]].MaxLevel;
 					fooNet = this->nodes[i].inNets[j];
-
+					foundImbalance = true;
 				}
 
 			}
-
-			this->insertGate(DFF_NAME, fooNet, this->nodes[i].MaxLevel - this->nodes[i].MinLevel);
+			if (foundImbalance)
+				this->insertGate(DFF_NAME, fooNet, this->nodes[i].MaxLevel - this->nodes[i].MinLevel);
+			
 			this->findLevels();
-
 		}
 		else if(this->nodes[i].MaxLevel - this->nodes[i].MinLevel == 0){
 			// just do nothing

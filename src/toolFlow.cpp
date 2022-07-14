@@ -40,6 +40,7 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
   // Logic conversion
   ForgeSFQBlif SFQcir;
   SFQcir.importBlif(blifFile);
+  SFQcir.importParameters(configFName);
   SFQcir.to_jpg(fileExtensionRenamer(blifFile, "_cmos.jpg"));
   // SFQcir.to_str();
   SFQcir.toSFQ();

@@ -41,6 +41,9 @@ class ForgeSFQBlif{
 		unsigned int LevelCnt = 0;
 		// vector<unsigned int> finCLKsplit;
 
+		//params
+		bool pathBalance = true;
+
 		SFQBlif blifFile;
 
 		// Stats:
@@ -87,6 +90,7 @@ class ForgeSFQBlif{
 		~ForgeSFQBlif(){};
 
 		int importBlif(string fileName);
+		int importParameters(string configFName);
 
 		int toSFQ();
 

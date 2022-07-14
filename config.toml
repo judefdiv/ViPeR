@@ -58,6 +58,7 @@
   cell_dis     = "data/LSmitll.genlib"          # Logic cell/gate description for ABC
   cell_dis_gds = "data/LSmitll_cell_lib.toml"   # Homebrewed description for physical cell layout
   lef_file     = "data/SUN.lef"                 # Used for converting a GDF(Gate Definition File) to LEF
+  path_balance = true
 
 [Layout_Parameters]
   # RCA2
