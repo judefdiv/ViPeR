@@ -1,6 +1,9 @@
 data/
 build/
-include/abc/
 bin/
+.*
+!.gitignore
 /projectFile.sublime-project
 /projectFile.sublime-workspace
+/viper.sublime-project
+/viper.sublime-workspace

@@ -4,7 +4,7 @@
  * For:					Supertools, Coldflux Project - IARPA
  * Created: 		2019-07-3
  * Modified:
- * license: 
+ * license:
  * Description: Parser/class for BLIF (The Berkeley Logic Interchange Format).
  * File:				ParserBlif.hpp
  */
@@ -19,30 +19,58 @@
 #include <vector>
 #include <fstream>
 
-#include "die2sim/genFunc.hpp"
+struct BlifNode;
+struct BlifNet;
 
-#define binGVfile "data/bin/raw.gv"
+#include "viper/genFunc.hpp"
+// #include "viper/ParserDef.hpp"
+
+// #define binGVfile "data/bin/raw.gv"
 
 using namespace std;
 
 /* ----------------------------------------------------------------------------------------
    ---------------------------------- Refined blif Parser ---------------------------------
-   ---------------------------------------------------------------------------------------- */ 
+   ---------------------------------------------------------------------------------------- */
 
 #define MaxNumberLevels 124
 
 struct BlifNode{ 			// includes input and outputs
 	string name = "\0";										// Must be a unique ID
-	string GateType = "\0";
+	string GateType = "\0";								// Must be GDS structure name
 
 	vector<unsigned int> inNets;
 	vector<unsigned int> outNets;
+	unsigned int clkNet = 0;
 
 	// Levels
 	unsigned int CLKlevel = 0;
 	unsigned int MaxLevel = 0;
 	unsigned int MinLevel = MaxNumberLevels;
 
+	// Chip layout parameters, used in placement.hpp
+  int corX = 0;
+  int corY = 0;
+  int strRef = -1;
+
+  void to_str(){
+  	cout << "Node struct:" << endl;
+    cout << "\tName: " << name << endl;
+    cout << "\tType: " << GateType << endl;
+    cout << "\tCLKlevel: " << CLKlevel << endl;
+    cout << "\tStrRef: " << strRef << endl;
+    cout << "\tCorX: " << corX << endl;
+    cout << "\tCorY: " << corY << endl;
+    cout << endl;
+  }
+};
+
+struct netRoute{
+	unsigned int layerNo = 0;
+	unsigned int viaNo = 0;					// zero implies no via
+
+	vector<int> corX;
+	vector<int> corY;
 };
 
 struct BlifNet{
@@ -50,6 +78,8 @@ struct BlifNet{
 
 	vector<unsigned int> inNodes;
 	vector<unsigned int> outNodes;
+
+	vector<netRoute> route;
 };
 
 class SFQBlif{
@@ -70,7 +100,7 @@ class SFQBlif{
 		unsigned int gateCnt = 0;
 		unsigned int inputCnt = 0;
 		unsigned int outputCnt = 0;
-		
+
 
 		// functions
 		int FindLevels();
@@ -102,7 +132,7 @@ class SFQBlif{
 		unsigned int get_gateCnt(){return this->gateCnt;};
 		string get_modelName(){return this->modelName;};
 		// unsigned int get_(){return this->;};
-		
+
 
 		void receiveNodesNets(vector<BlifNode> &exVec0, vector<BlifNet> &exVec1){
 			nodes = exVec0;
@@ -116,7 +146,7 @@ class SFQBlif{
 
 /* ----------------------------------------------------------------------------------------
    ------------------------------------- RAW blif Parser ----------------------------------
-   ---------------------------------------------------------------------------------------- */ 
+   ---------------------------------------------------------------------------------------- */
 
 struct BlifGate
 {
@@ -126,7 +156,7 @@ struct BlifGate
 	// net name
 	vector<string> inputs;
 	vector<string> outputs;
-	
+
 };
 
 class BlifFile{
