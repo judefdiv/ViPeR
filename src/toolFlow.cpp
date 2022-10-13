@@ -14,22 +14,6 @@
 #include <cstdio>
 
 /**
- * [verilog2gds - Converts a verilog to a GDS file]
- * @param  gdsFile  [The .gds output file]
- * @param  veriFile [The .v input file]
- * @param  cellFile [The .genlib input file]
- * @return          [1 - All good; 0 - Error]
- */
-
-int verilog2gds(string gdsFile, string veriFile, string cellFile, string configFName){
-  string cmosBlif =  fileExtensionRenamer(veriFile, ".blif");
-  ABCconvertV2blif(cmosBlif, veriFile, cellFile);
-
-  blif2gds(gdsFile, cmosBlif, configFName);
-  return 1;
-}
-
-/**
  * [blif2gds - Convert a blif file to a GDS file]
  * @param  gdsFile  [The .gds output file]
  * @param  blifFile [The .blif input file]
@@ -90,22 +74,6 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
   SFQchip.addSTR(route.route2gds());
 
   SFQchip.forgeChip(gdsFile);
-
-  return 1;
-}
-
-/**
- * [runABC - Uses ABC to generate a .blif file from .v]
- * @param  blifFile [The .blif output file]
- * @param  veriFile [The verilog input file that must be converted]
- * @param  cellFile [The cell library file ABC uses to generate the .blif file]
- * @return          [1 - All good; 0 - Error]
- */
-
-int runABC(string blifFile, string veriFile, string cellFile){
-  cout << "Converting .v to .blif using ABC" << endl;
-  ABCconvertV2blif(blifFile, veriFile, cellFile);
-  cout << "Done converting .v to .blif using ABC" << endl;
 
   return 1;
 }

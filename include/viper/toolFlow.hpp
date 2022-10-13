@@ -14,7 +14,6 @@
 
 // #include "viper/ParserBlif.hpp"
 // #include "viper/ParserDot.hpp"
-#include "viper/ParserABC.hpp"
 #include "viper/genFunc.hpp"
 #include "viper/ForgeSFQblif.hpp"
 #include "viper/placement.hpp"
@@ -27,8 +26,6 @@
 
 using namespace std;
 
-int verilog2gds(string gdsFile, string veriFile, string cellFile, string configFName);
 int blif2gds(string gdsFile, string blifFile, string configFName);
-int runABC(string blifFile, string veriFile, string cellFile);
 int gdf2lef(const string &gdfFile, const string &lefFile);
 int runqRouter(const string &defFile, const string &configFile, ForgeSFQBlif SFQcir);

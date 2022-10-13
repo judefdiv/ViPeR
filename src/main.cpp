@@ -136,7 +136,6 @@ int RunToolFromConfig(string fileName){
 	string command  = "\0";
 	string gdsFName = "\0";
 	string bliFName = "\0";			// The standard blif file
-	string verFName = "\0";			// verilog
 	string glbFName = "\0";			// .genlib
 	string clbFName = "\0";			// .toml
 	string lefFName = "\0";			// .toml
@@ -168,12 +167,6 @@ int RunToolFromConfig(string fileName){
 		bliFName = bliFName.insert(0, workDir);
 	}
 
-	it_run_para = cir_Files.find("veri_file");
-	if(it_run_para != cir_Files.end()){
-		verFName = it_run_para->second;
-		verFName = verFName.insert(0, workDir);
-	}
-
 	it_run_para = gen_Files.find("cell_dis");
 	if(it_run_para != gen_Files.end()){
 		glbFName = it_run_para->second;
@@ -192,16 +185,7 @@ int RunToolFromConfig(string fileName){
 		// lefFName = lefFName.insert(0, workDir);
 	}
 
-	if(!command.compare("verilog2gds")){
-		if(verFName.compare("\0") && gdsFName.compare("\0") && glbFName.compare("\0")){
-			return verilog2gds(gdsFName, verFName, glbFName, fileName);
-		}
-		else{
-			cout << "Input argument error." << endl;
-			return 0;
-		}
-	}
-	else if(!command.compare("blif2gds")){
+	if(!command.compare("blif2gds")){
 		if(bliFName.compare("\0") && gdsFName.compare("\0")){
 			return blif2gds(gdsFName, bliFName, fileName);
 		}
@@ -213,15 +197,6 @@ int RunToolFromConfig(string fileName){
 	else if(!command.compare("gdf2lef")){
 		if(lefFName.compare("\0") && clbFName.compare("\0")){
 			return gdf2lef(clbFName, lefFName);
-		}
-		else{
-			cout << "Input argument error." << endl;
-			return 0;
-		}
-	}
-	else if(!command.compare("runABC")){
-		if(verFName.compare("\0") && bliFName.compare("\0") && glbFName.compare("\0")){
-			return runABC(bliFName, verFName, glbFName);
 		}
 		else{
 			cout << "Input argument error." << endl;

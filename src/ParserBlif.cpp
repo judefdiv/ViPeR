@@ -163,7 +163,7 @@ int SFQBlif::to_blif(string FileName){
 
   string lineStr;
 
-	lineStr = "# Created \"" + FileName + "\" using ABC and ViPeR.\n";
+	lineStr = "# Created \"" + FileName + "\" using ViPeR.\n";
 	fputs(lineStr.c_str(), SFQblif);
 
 	lineStr = ".model " + this->modelName + "\n";

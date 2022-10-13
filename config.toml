@@ -12,9 +12,6 @@
 [run_parameters]
   # Command   = "blif2gds"
   # Command   = "gdf2lef"
-  Command   = "verilog2gds"
-  # Command   = "runABC"
-
 
 [Circuit_Files]
   # work_dir  = "data/.../"   # Working directory, all file names will be referenced with this

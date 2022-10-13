@@ -3,7 +3,7 @@
 ViPeR(Verilog to Placement and Routing) is a Stellenbosch University homegrown/in-house tool which synthesises RSFQ circuits from a HDL(hardware Description Language) file. ABC is used to synthesis the sequential logic circuit from a HDL(Verilog) file. Then ViPeR creates the RSFQ circuit by inserting DFF and splitter gates where required. The gates are then placed into an optimal layout to minimise track lengths and via count. The gates are then clocked using an h-tree structure. After the layout is complete, qRouter generates optimal routing.
 
 
-Verilog -> [ABC] -> .BLIF -> [CMOS to RSFQ] -> [Layout/Placement] -> .DEF -> [qRouter] -> .DEF(routed)
+Verilog -> YoSYS -> .BLIF -> [CMOS to RSFQ] -> [Layout/Placement] -> .DEF -> [qRouter] -> .DEF(routed)
 
 Version: 0.9
 
