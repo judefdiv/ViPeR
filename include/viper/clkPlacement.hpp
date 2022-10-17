@@ -47,6 +47,7 @@ class clkChip{
     vector<BlifNet> nets;
     vector<cellDis> gateList;
     vector<vector<unsigned int>> cellLayout;
+    vector<unsigned int> cellRowIndices;
 
     unsigned int splitIndex = 0; // index of the splitter in gateList
     unsigned int clkSplitIndex = 0; // index of the start of the clock splitters in the nodes class

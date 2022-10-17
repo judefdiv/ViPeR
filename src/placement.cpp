@@ -461,11 +461,11 @@ int plek::stackLayout(){
   }
 
 
-  // inserting clk clock in to input list
+  // inserting clk clock in the middle of output list
   for(unsigned int i = 0; i < this->nodes.size(); i++){
     if(!this->nodes[i].name.compare("clk")){
       // this->layoutInputs.push_back(i);
-      this->layoutInputs.insert(this->layoutInputs.begin(), i);
+      this->layoutOutputs.insert(this->layoutOutputs.begin() + this->layoutOutputs.size() / 2, i);
       break;
     }
   }

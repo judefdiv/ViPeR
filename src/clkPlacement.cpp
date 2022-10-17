@@ -271,13 +271,17 @@ int clkChip::initialLogic2CLK(){
 
 int clkChip::mergeLayouts(){
   cout << "Merging logic circuit with clock." << endl;
-  vector<vector<unsigned int>> newCellLayout;
+  vector<vector<unsigned int>> newCellLayout; 
   vector<unsigned int> mergedClkRow;
   unsigned int clkRowIdx = 0;
+
+  unsigned int newLayoutIdx = 0;
 
   for(unsigned int i = 0; i < this->cellLayout.size(); i++){
     
     newCellLayout.push_back(this->cellLayout[i]);
+    this->cellRowIndices.push_back(newLayoutIdx);
+    newLayoutIdx++;
 
     if (i % 2 == 0){
 
@@ -297,8 +301,10 @@ int clkChip::mergeLayouts(){
           endflag[1] = true;
       }
 
-      clkRowIdx+=2;
       newCellLayout.push_back(mergedClkRow);
+      newLayoutIdx++;
+
+      clkRowIdx+=2;
     }
   }
   this->cellLayout = newCellLayout;
@@ -558,52 +564,20 @@ int clkChip::mainCLKvertical(){
     this->nodes.push_back(newClkNode);
   }
 
-  // Generate balanced clock tree
-  // for(unsigned int i = 0; i < noLevels; i++){
-  //   newClkNodes.clear();
-  //   for(unsigned int j = 0; j < insertedNodes.size(); j += 2){
-  //     fooVec = create2CLKnode(insertedNodes[j]);
-  //     newClkNodes.insert(newClkNodes.end(), fooVec.begin(), fooVec.end());
-  //   }
-
-  //   for(unsigned int j = 0; j < newClkNodes.size(); j++){
-  //     insertedNodes = vecInsert(insertedNodes, newClkNodes[j], j*2);
-  //   }
-  // }
-
-  // cout << "HERE: 2" << endl;
-
   unsigned int rowIndex = 0;
   unsigned int mainClkindex = 0;
   while(this->rowCLKin.size() > rowIndex){
     this->stitch2Clk(insertedNodes[mainClkindex++], this->rowCLKin[rowIndex++]);
   }
 
-  // inserting into layout
-
-  // cout << "HERE: 3" << endl;
-
-  float gapSizeF = (float)this->cellLayout.size() / insertedNodes.size();
-  unsigned int gapSize = round(gapSizeF);
-  unsigned int index = 0;
-
-
-  // cout << "Gap size(rounded): " << gapSize << endl;
-  // cout << "Gap size(clean): " << gapSizeF << endl;
-  // cout << "insertedNodes.size(): " << insertedNodes.size() << endl;
-  // cout << "this->cellLayout.size(): " << this->cellLayout.size() << endl;
-
-  for(unsigned int i = 0; i < insertedNodes.size(); i++){
-    // index = gapSize*i;
-    index = round(gapSizeF*i);
-
-    // cout << "Index[" << i << "]: " << index << endl;
-    
-    this->cellLayout[index].insert(
-      this->cellLayout[index].begin(), 
-      insertedNodes[i]
-    ); 
-    // this->clkLayout = vecInsertRow(this->clkLayout, it, gapSize*i);
+  auto rowIt = this->cellRowIndices.begin();
+  for(const auto node : insertedNodes){
+    // inserting into the middle of the layout
+    this->cellLayout[*rowIt].insert(
+      this->cellLayout[*rowIt].begin() + this->cellLayout[*rowIt].size()/2, 
+      node
+    );
+    rowIt++;
   }
 
   cout << "Stitching main clock column, vertical, done." << endl;
@@ -623,7 +597,7 @@ int clkChip::postCleanUP(){
   for(auto &itNodes: this->nodes){
     if(!itNodes.GateType.compare(CLK_GATE_NAME)){
       if(itNodes.outNets.size() == 1){
-        itNodes.GateType = CLK_GATE_BUFF_NAME;
+        itNodes.GateType = CLK_GATE_NAME;
         itNodes.strRef = this->clkBuffGateIndex;
       }
     }

@@ -69,11 +69,9 @@ int blif2gds(string gdsFile, string blifFile, string configFName){
                   configFName);
   route.straightRoute();
   route.qrouter(fileExtensionRenamer(blifFile, ".def"));
-  runqRouter(fileExtensionRenamer(blifFile, ".def"), "./data/qrouter.cfg", SFQcir);
-
   SFQchip.addSTR(route.route2gds());
-
   SFQchip.forgeChip(gdsFile);
+  runqRouter(fileExtensionRenamer(blifFile, ".def"), "./data/qrouter.cfg", SFQcir);
 
   return 1;
 }
