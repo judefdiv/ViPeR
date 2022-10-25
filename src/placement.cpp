@@ -135,8 +135,7 @@ int plek::importCellDef(string configFName){
 
   // Importing cells
   unsigned int index = 0;
-  this->used_gates.insert("CLKSPLIT");
-  this->used_gates.insert("CLKBUFF");
+  this->used_gates.insert(CLK_GATE_BUFF_NAME);
 
   this->gateList.resize(this->used_gates.size());
   for(unsigned int i = 0; i < cellList.size(); i++){

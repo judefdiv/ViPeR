@@ -12,6 +12,7 @@
 #include "viper/common.hpp"
 #include "viper/clkPlacement.hpp"
 #include "viper/ParserBlif.hpp"
+#include "viper/constants.hpp"
 
 
 /**
@@ -55,7 +56,7 @@ int clkChip::execute(){
   this->stitchCLKrows();
   this->mergeLayouts();
   this->mainCLKvertical();
-  this->postCleanUP();
+  //this->postCleanUP();
 
   cout << "Clocking all the gates done." << endl;
 
@@ -280,31 +281,60 @@ int clkChip::mergeLayouts(){
   for(unsigned int i = 0; i < this->cellLayout.size(); i++){
     
     newCellLayout.push_back(this->cellLayout[i]);
-    this->cellRowIndices.push_back(newLayoutIdx);
-    newLayoutIdx++;
+    this->cellRowIndices.push_back(newLayoutIdx++);
 
     if (i % 2 == 0){
 
-      mergedClkRow.clear();
-      auto itRow0 = clkLayout[clkRowIdx].begin();
-      auto itRow1 = clkLayout[clkRowIdx+1].begin();
-      bool endflag[2] = {false, false};
+      // mergedClkRow.clear();
 
-      while (!endflag[0] || !endflag[1]){
-        if (itRow0 < clkLayout[clkRowIdx].end())
-          mergedClkRow.push_back(*itRow0++);
-        else
-          endflag[0] = true;
-        if (itRow1 < clkLayout[clkRowIdx+1].end())
-          mergedClkRow.push_back(*itRow1++);
-        else
-          endflag[1] = true;
-      }
+      // // determine longest row and make sure row0 ptr is longest row
+      // int offset = clkLayout[clkRowIdx].size() - clkLayout[clkRowIdx+1].size();
+      // auto itRow0 = clkLayout[clkRowIdx].begin();
+      // auto itRow1 = clkLayout[clkRowIdx+1].begin();
+      // auto row0end = clkLayout[clkRowIdx].end();
+      // auto row1end = clkLayout[clkRowIdx+1].end();
+      // if (offset < 0){
+      //   auto itRow0 = clkLayout[clkRowIdx+1].begin();
+      //   auto itRow1 = clkLayout[clkRowIdx].begin();
+      //   auto row0end = clkLayout[clkRowIdx+1].end();
+      //   auto row1end = clkLayout[clkRowIdx].end();
+      // }
+      // // making offset positive again and dividing by 2 so that clock rows are merged in the middle
+      // offset = abs(offset)/2;
+      
+      // bool endflag[2] = {false, false};
+      // // count number of cells inserted by row0 to make sure row1 only starts inserting after a certain offset
+      // unsigned int cnt = 0;
+      // while (!endflag[0] || !endflag[1]){
+      //   if (itRow0 < row0end){
+      //     mergedClkRow.push_back(*itRow0++);
+      //     cnt++;
+      //   }else{
+      //     endflag[0] = true;
+      //   }if (itRow1 < row1end){
+      //     if (cnt > offset){
+      //       mergedClkRow.push_back(*itRow1++);
+      //     }
+      //   }else{
+      //     endflag[1] = true;
+      //   }
+      // }
 
-      newCellLayout.push_back(mergedClkRow);
+      // newCellLayout.push_back(mergedClkRow);
+      // newLayoutIdx++;
+
+      // clkRowIdx+=2;
+
+      if(clkRowIdx >= cellLayout.size()) break;
+
+      newCellLayout.push_back(clkLayout[clkRowIdx++]);
       newLayoutIdx++;
 
-      clkRowIdx+=2;
+      if(clkRowIdx >= cellLayout.size()) break;
+
+      newCellLayout.push_back(clkLayout[clkRowIdx++]);
+      newLayoutIdx++;
+
     }
   }
   this->cellLayout = newCellLayout;
@@ -390,14 +420,11 @@ int clkChip::stitchCLKrows(){
     }
   }
 
-  // calc number of levels needed
-  int noLevels = ceil(log(widestRowCnt)/log(2));
-
   // loop through levels
   vector<unsigned int> splitJoin0, splitJoin1, splitPos, insertedNodes;
   int sIndex0, sIndex1;    // split index
   for(unsigned int i = 0; i < this->clkLayout.size(); i++){
-    for(unsigned int j = 0; j < noLevels; j++){
+    while(1){
         sIndex0 = -1;
         sIndex1 = -1;
         splitJoin0.clear();
@@ -442,6 +469,9 @@ int clkChip::stitchCLKrows(){
         // clkLayout[i].insert(itSplitPos, insertedNodes[l]);
         vecInsert(clkLayout, i, insertedNodes[l], splitPos[l]);
       }
+      // Break out as soon as only one splitter was inserted.
+      // Meaning only one open clock splitter input exists.
+      if (splitPos.size() == 1) break;
     }
 
     for(unsigned int j = 0; j < this->clkLayout[i].size(); j++){
@@ -597,7 +627,7 @@ int clkChip::postCleanUP(){
   for(auto &itNodes: this->nodes){
     if(!itNodes.GateType.compare(CLK_GATE_NAME)){
       if(itNodes.outNets.size() == 1){
-        itNodes.GateType = CLK_GATE_NAME;
+        itNodes.GateType = CLK_GATE_BUFF_NAME;
         itNodes.strRef = this->clkBuffGateIndex;
       }
     }

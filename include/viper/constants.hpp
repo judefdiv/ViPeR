@@ -1,7 +1,7 @@
 #pragma once
 
 #define CLK_GATE_NAME "SPLITT"
-#define CLK_GATE_BUFF_NAME "SPLITT"
+#define CLK_GATE_BUFF_NAME "BUFFT"
 #define DFF_NAME "DFFT"
 #define XOR_NAME "XORT"
 #define PAD_NAME "PAD"
