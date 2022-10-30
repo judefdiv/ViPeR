@@ -54,6 +54,7 @@ class clkChip{
     unsigned int clkSplitGateIndex = 0;
     unsigned int clkBuffGateIndex = 0;
 
+    bool mergeClkRows = true;
 
     unsigned int clkPinCnt = 0;
     vector<unsigned int> finCLKsplit;

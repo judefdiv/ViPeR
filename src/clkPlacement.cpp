@@ -109,6 +109,8 @@ void clkChip::fetchData(vector<BlifNode> inNodes,
   this->cellHeight         = toml::find<int>(w_para, "cell_height") * 1000;
   this->padHeightGap       = toml::find<int>(w_para, "pad_ver_gap") * 1000;
 
+  const auto& b2gds_para   = toml::find(ConfigFile, "Blif_To_GDS_Parameters");
+  this->mergeClkRows       = toml::find_or<bool>(b2gds_para, "merge_clk_rows", true);
 }
 
 /* ----------------------------------------------------------------------------------
@@ -284,57 +286,57 @@ int clkChip::mergeLayouts(){
     this->cellRowIndices.push_back(newLayoutIdx++);
 
     if (i % 2 == 0){
+      if (this->mergeClkRows){
+        mergedClkRow.clear();
 
-      // mergedClkRow.clear();
+        // determine longest row and make sure row0 ptr is longest row
+        int offset = clkLayout[clkRowIdx].size() - clkLayout[clkRowIdx+1].size();
+        auto itRow0 = clkLayout[clkRowIdx].begin();
+        auto itRow1 = clkLayout[clkRowIdx+1].begin();
+        auto row0end = clkLayout[clkRowIdx].end();
+        auto row1end = clkLayout[clkRowIdx+1].end();
+        if (offset < 0){
+          auto itRow0 = clkLayout[clkRowIdx+1].begin();
+          auto itRow1 = clkLayout[clkRowIdx].begin();
+          auto row0end = clkLayout[clkRowIdx+1].end();
+          auto row1end = clkLayout[clkRowIdx].end();
+        }
+        // making offset positive again and dividing by 2 so that clock rows are merged in the middle
+        offset = abs(offset)/2;
+        
+        bool endflag[2] = {false, false};
+        // count number of cells inserted by row0 to make sure row1 only starts inserting after a certain offset
+        unsigned int cnt = 0;
+        while (!endflag[0] || !endflag[1]){
+          if (itRow0 < row0end){
+            mergedClkRow.push_back(*itRow0++);
+            cnt++;
+          }else{
+            endflag[0] = true;
+          }if (itRow1 < row1end){
+            if (cnt > offset){
+              mergedClkRow.push_back(*itRow1++);
+            }
+          }else{
+            endflag[1] = true;
+          }
+        }
 
-      // // determine longest row and make sure row0 ptr is longest row
-      // int offset = clkLayout[clkRowIdx].size() - clkLayout[clkRowIdx+1].size();
-      // auto itRow0 = clkLayout[clkRowIdx].begin();
-      // auto itRow1 = clkLayout[clkRowIdx+1].begin();
-      // auto row0end = clkLayout[clkRowIdx].end();
-      // auto row1end = clkLayout[clkRowIdx+1].end();
-      // if (offset < 0){
-      //   auto itRow0 = clkLayout[clkRowIdx+1].begin();
-      //   auto itRow1 = clkLayout[clkRowIdx].begin();
-      //   auto row0end = clkLayout[clkRowIdx+1].end();
-      //   auto row1end = clkLayout[clkRowIdx].end();
-      // }
-      // // making offset positive again and dividing by 2 so that clock rows are merged in the middle
-      // offset = abs(offset)/2;
-      
-      // bool endflag[2] = {false, false};
-      // // count number of cells inserted by row0 to make sure row1 only starts inserting after a certain offset
-      // unsigned int cnt = 0;
-      // while (!endflag[0] || !endflag[1]){
-      //   if (itRow0 < row0end){
-      //     mergedClkRow.push_back(*itRow0++);
-      //     cnt++;
-      //   }else{
-      //     endflag[0] = true;
-      //   }if (itRow1 < row1end){
-      //     if (cnt > offset){
-      //       mergedClkRow.push_back(*itRow1++);
-      //     }
-      //   }else{
-      //     endflag[1] = true;
-      //   }
-      // }
+        newCellLayout.push_back(mergedClkRow);
+        newLayoutIdx++;
 
-      // newCellLayout.push_back(mergedClkRow);
-      // newLayoutIdx++;
+        clkRowIdx+=2;
+      }else{
+        if(clkRowIdx >= cellLayout.size()) break;
 
-      // clkRowIdx+=2;
+        newCellLayout.push_back(clkLayout[clkRowIdx++]);
+        newLayoutIdx++;
 
-      if(clkRowIdx >= cellLayout.size()) break;
+        if(clkRowIdx >= cellLayout.size()) break;
 
-      newCellLayout.push_back(clkLayout[clkRowIdx++]);
-      newLayoutIdx++;
-
-      if(clkRowIdx >= cellLayout.size()) break;
-
-      newCellLayout.push_back(clkLayout[clkRowIdx++]);
-      newLayoutIdx++;
-
+        newCellLayout.push_back(clkLayout[clkRowIdx++]);
+        newLayoutIdx++;
+      }
     }
   }
   this->cellLayout = newCellLayout;
@@ -420,11 +422,14 @@ int clkChip::stitchCLKrows(){
     }
   }
 
+  // calc number of levels needed
+  int noLevels = ceil(log(widestRowCnt)/log(2));
+
   // loop through levels
   vector<unsigned int> splitJoin0, splitJoin1, splitPos, insertedNodes;
   int sIndex0, sIndex1;    // split index
   for(unsigned int i = 0; i < this->clkLayout.size(); i++){
-    while(1){
+    for(int levelcnt = 0; levelcnt < noLevels; levelcnt++){
         sIndex0 = -1;
         sIndex1 = -1;
         splitJoin0.clear();
@@ -459,7 +464,13 @@ int clkChip::stitchCLKrows(){
         }
         else{
           insertedNodes.push_back(createCLKnodeAlone(this->clkLayout[i][splitJoin0[k]]));
-          splitPos.push_back((splitJoin0[k] + 0) / 2 +1);
+          if(splitJoin0.size() > 1){
+            // insert clock node between previous clock node and final clock node
+            splitPos.push_back((this->clkLayout[i].size() + splitJoin0[k-1]) / 2 + 1);
+          }else{
+            // top level clock splitter encountered
+            splitPos.push_back(this->clkLayout[i].size()  / 2);
+          }
         }
       }
 
@@ -469,9 +480,6 @@ int clkChip::stitchCLKrows(){
         // clkLayout[i].insert(itSplitPos, insertedNodes[l]);
         vecInsert(clkLayout, i, insertedNodes[l], splitPos[l]);
       }
-      // Break out as soon as only one splitter was inserted.
-      // Meaning only one open clock splitter input exists.
-      if (splitPos.size() == 1) break;
     }
 
     for(unsigned int j = 0; j < this->clkLayout[i].size(); j++){
